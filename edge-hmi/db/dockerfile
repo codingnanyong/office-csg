@@ -1,0 +1,38 @@
+FROM timescale/timescaledb:latest-pg16
+
+USER root
+
+# 1. Alpine용: pg_cron 소스 빌드 및 "모든" SQL 파일 복사
+RUN apk add --no-cache build-base git postgresql16-dev && \
+    git clone https://github.com/citusdata/pg_cron.git /tmp/pg_cron && \
+    cd /tmp/pg_cron && git checkout v1.6.5 && \
+    make pg_cron.so && \
+    V=$(grep default_version pg_cron.control | sed "s/.*= *'\([^']*\)'.*/\1/") && \
+    # [수정] pg_cron.sql 하나만 복사하는 것이 아니라 모든 sql 파일을 복사해야 합니다.
+    # 업그레이드용 스크립트들이 있어야 최신 스키마(active, jobname 컬럼)가 정상 생성됩니다.
+    cp pg_cron*.sql "$(pg_config --sharedir)/extension/" && \
+    cp pg_cron.sql "$(pg_config --sharedir)/extension/pg_cron--${V}.sql" && \
+    cp pg_cron.control "$(pg_config --sharedir)/extension/" && \
+    cp pg_cron.so "$(pg_config --pkglibdir)/" && \
+    rm -rf /tmp/pg_cron
+
+# 2. 환경 변수 (동일)
+ENV POSTGRES_DB=${POSTGRES_DB:-edge_hmi} \
+    POSTGRES_USER=${POSTGRES_USER:-admin} \
+    POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-1q2w3e4r} \
+    TZ=${TZ:-Asia/Seoul}
+
+# 3. PostgreSQL 설정 주입
+# [수정] cron.log_run을 'on'으로 설정하여 실행 이력(job_run_details)이 남도록 합니다.
+RUN echo "shared_preload_libraries = 'timescaledb,pg_cron'" >> /usr/local/share/postgresql/postgresql.conf.sample && \
+    echo "cron.database_name = 'edge_hmi'" >> /usr/local/share/postgresql/postgresql.conf.sample && \
+    echo "cron.log_run = 'on'" >> /usr/local/share/postgresql/postgresql.conf.sample
+
+# 4. 초기화 스크립트 복사 (동일)
+COPY ./sql/init-db.sql /docker-entrypoint-initdb.d/00-init-db.sql
+COPY ./sql/kpi-scheduler.sql /docker-entrypoint-initdb.d/01-kpi-scheduler.sql
+
+USER postgres
+
+EXPOSE 5432
+CMD ["postgres"]

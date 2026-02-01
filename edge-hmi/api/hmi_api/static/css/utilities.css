@@ -1,0 +1,26 @@
+/* Edge HMI API - utilities */
+.loading {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin: 10px auto;
+  max-width: 1400px;
+  padding: 20px;
+  text-align: center;
+  color: #2d3748;
+}
+
+#error-container { max-width: 1400px; margin: 10px auto; padding: 0 20px; }
+
+#error-container .error {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 15px;
+  color: #c62828;
+  border-left: 4px solid #f44336;
+}
+
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #1a4d2e; }
+::-webkit-scrollbar-thumb { background: #2d5a3d; border-radius: 5px; }

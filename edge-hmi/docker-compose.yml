@@ -1,0 +1,374 @@
+# Edge HMI: DB + 테이블별 API 컨테이너 + 통합 hmi-api
+# 실행: docker compose up -d --build  (로컬 빌드만 사용, pull 안 함)
+# DB .env: db/.env (POSTGRES_DB, USER, PASSWORD, SCHEMA)
+name: edge-hmi
+
+services:
+  db:
+    build:
+      context: ./db
+      dockerfile: dockerfile
+    image: btx/edge-hmi-db:latest
+    pull_policy: never
+    container_name: hmi-db-postgres
+    env_file: ./db/.env
+    environment:
+      - TZ=${TZ:-Asia/Seoul}
+      - POSTGRES_DB=${POSTGRES_DB:-edge_hmi}
+      - POSTGRES_USER=${POSTGRES_USER:-admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-1q2w3e4r}
+    ports:
+      - "5432:5432"
+    volumes:
+      - edge_hmi_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-admin} -d ${POSTGRES_DB:-edge_hmi}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  line_mst:
+    build:
+      context: ./api
+      dockerfile: line_mst/Dockerfile
+    image: btx/edge-hmi-api-line-mst:latest
+    pull_policy: never
+    container_name: hmi-api-line-mst
+    env_file: ./db/.env
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-edge_hmi}
+      - POSTGRES_USER=${POSTGRES_USER:-admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-1q2w3e4r}
+      - POSTGRES_SCHEMA=core
+    ports:
+      - "8001:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  equip_mst:
+    build:
+      context: ./api
+      dockerfile: equip_mst/Dockerfile
+    image: btx/edge-hmi-api-equip-mst:latest
+    pull_policy: never
+    container_name: hmi-api-equip-mst
+    env_file: ./db/.env
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-edge_hmi}
+      - POSTGRES_USER=${POSTGRES_USER:-admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-1q2w3e4r}
+      - POSTGRES_SCHEMA=core
+    ports:
+      - "8002:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  sensor_mst:
+    build:
+      context: ./api
+      dockerfile: sensor_mst/Dockerfile
+    image: btx/edge-hmi-api-sensor-mst:latest
+    pull_policy: never
+    container_name: hmi-api-sensor-mst
+    env_file: ./db/.env
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-edge_hmi}
+      - POSTGRES_USER=${POSTGRES_USER:-admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-1q2w3e4r}
+      - POSTGRES_SCHEMA=core
+    ports:
+      - "8003:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  kpi_sum:
+    build:
+      context: ./api
+      dockerfile: kpi_sum/Dockerfile
+    image: btx/edge-hmi-api-kpi-sum:latest
+    pull_policy: never
+    container_name: hmi-api-kpi-sum
+    env_file: ./db/.env
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-edge_hmi}
+      - POSTGRES_USER=${POSTGRES_USER:-admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-1q2w3e4r}
+      - POSTGRES_SCHEMA=core
+    ports:
+      - "8004:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  worker_mst:
+    build:
+      context: ./api
+      dockerfile: worker_mst/Dockerfile
+    image: btx/edge-hmi-api-worker-mst:latest
+    pull_policy: never
+    container_name: hmi-api-worker-mst
+    env_file: ./db/.env
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-edge_hmi}
+      - POSTGRES_USER=${POSTGRES_USER:-admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-1q2w3e4r}
+      - POSTGRES_SCHEMA=core
+    ports:
+      - "8005:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  shift_cfg:
+    build:
+      context: ./api
+      dockerfile: shift_cfg/Dockerfile
+    image: btx/edge-hmi-api-shift-cfg:latest
+    pull_policy: never
+    container_name: hmi-api-shift-cfg
+    env_file: ./db/.env
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-edge_hmi}
+      - POSTGRES_USER=${POSTGRES_USER:-admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-1q2w3e4r}
+      - POSTGRES_SCHEMA=core
+    ports:
+      - "8006:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  kpi_cfg:
+    build:
+      context: ./api
+      dockerfile: kpi_cfg/Dockerfile
+    image: btx/edge-hmi-api-kpi-cfg:latest
+    pull_policy: never
+    container_name: hmi-api-kpi-cfg
+    env_file: ./db/.env
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-edge_hmi}
+      - POSTGRES_USER=${POSTGRES_USER:-admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-1q2w3e4r}
+      - POSTGRES_SCHEMA=core
+    ports:
+      - "8007:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  alarm_cfg:
+    build:
+      context: ./api
+      dockerfile: alarm_cfg/Dockerfile
+    image: btx/edge-hmi-api-alarm-cfg:latest
+    pull_policy: never
+    container_name: hmi-api-alarm-cfg
+    env_file: ./db/.env
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-edge_hmi}
+      - POSTGRES_USER=${POSTGRES_USER:-admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-1q2w3e4r}
+      - POSTGRES_SCHEMA=core
+    ports:
+      - "8008:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  maint_cfg:
+    build:
+      context: ./api
+      dockerfile: maint_cfg/Dockerfile
+    image: btx/edge-hmi-api-maint-cfg:latest
+    pull_policy: never
+    container_name: hmi-api-maint-cfg
+    env_file: ./db/.env
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-edge_hmi}
+      - POSTGRES_USER=${POSTGRES_USER:-admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-1q2w3e4r}
+      - POSTGRES_SCHEMA=core
+    ports:
+      - "8009:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  measurement:
+    build:
+      context: ./api
+      dockerfile: measurement/Dockerfile
+    image: btx/edge-hmi-api-measurement:latest
+    pull_policy: never
+    container_name: hmi-api-measurement
+    env_file: ./db/.env
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-edge_hmi}
+      - POSTGRES_USER=${POSTGRES_USER:-admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-1q2w3e4r}
+      - POSTGRES_SCHEMA=core
+    ports:
+      - "8010:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  status_his:
+    build:
+      context: ./api
+      dockerfile: status_his/Dockerfile
+    image: btx/edge-hmi-api-status-his:latest
+    pull_policy: never
+    container_name: hmi-api-status-his
+    env_file: ./db/.env
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-edge_hmi}
+      - POSTGRES_USER=${POSTGRES_USER:-admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-1q2w3e4r}
+      - POSTGRES_SCHEMA=core
+    ports:
+      - "8011:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  prod_his:
+    build:
+      context: ./api
+      dockerfile: prod_his/Dockerfile
+    image: btx/edge-hmi-api-prod-his:latest
+    pull_policy: never
+    container_name: hmi-api-prod-his
+    env_file: ./db/.env
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-edge_hmi}
+      - POSTGRES_USER=${POSTGRES_USER:-admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-1q2w3e4r}
+      - POSTGRES_SCHEMA=core
+    ports:
+      - "8012:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  alarm_his:
+    build:
+      context: ./api
+      dockerfile: alarm_his/Dockerfile
+    image: btx/edge-hmi-api-alarm-his:latest
+    pull_policy: never
+    container_name: hmi-api-alarm-his
+    env_file: ./db/.env
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-edge_hmi}
+      - POSTGRES_USER=${POSTGRES_USER:-admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-1q2w3e4r}
+      - POSTGRES_SCHEMA=core
+    ports:
+      - "8013:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  maint_his:
+    build:
+      context: ./api
+      dockerfile: maint_his/Dockerfile
+    image: btx/edge-hmi-api-maint-his:latest
+    pull_policy: never
+    container_name: hmi-api-maint-his
+    env_file: ./db/.env
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-edge_hmi}
+      - POSTGRES_USER=${POSTGRES_USER:-admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-1q2w3e4r}
+      - POSTGRES_SCHEMA=core
+    ports:
+      - "8014:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  shift_map:
+    build:
+      context: ./api
+      dockerfile: shift_map/Dockerfile
+    image: btx/edge-hmi-api-shift-map:latest
+    pull_policy: never
+    container_name: hmi-api-shift-map
+    env_file: ./db/.env
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-edge_hmi}
+      - POSTGRES_USER=${POSTGRES_USER:-admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-1q2w3e4r}
+      - POSTGRES_SCHEMA=core
+    ports:
+      - "8015:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  hmi-api:
+    build:
+      context: ./api
+      dockerfile: hmi_api/Dockerfile
+    image: btx/edge-hmi-api:latest
+    pull_policy: never
+    container_name: hmi-api
+    environment:
+      - TABLE_SERVICE_PORT=8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      - line_mst
+      - equip_mst
+      - sensor_mst
+      - kpi_sum
+      - worker_mst
+      - shift_cfg
+      - kpi_cfg
+      - alarm_cfg
+      - maint_cfg
+      - measurement
+      - status_his
+      - prod_his
+      - alarm_his
+      - maint_his
+      - shift_map
+
+volumes:
+  edge_hmi_data:

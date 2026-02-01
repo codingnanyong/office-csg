@@ -1,0 +1,25 @@
+/* Edge HMI API - base */
+html {
+  box-sizing: border-box;
+  overflow-y: scroll;
+}
+
+*, *:before, *:after { box-sizing: inherit; }
+
+body {
+  margin: 0;
+  background: linear-gradient(135deg, #0d2818 0%, #1a4d2e 50%, #0d2818 100%);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  color: #2d3748;
+  min-height: 100vh;
+  padding-bottom: 20px;
+}
+
+#swagger-ui {
+  padding: 0;
+  max-width: 1400px;
+  margin: 0 auto;
+  background: transparent;
+  min-height: 100vh;
+}

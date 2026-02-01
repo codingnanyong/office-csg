@@ -1,0 +1,88 @@
+/* Edge HMI API - header (Felt Montrg style) */
+#swagger-ui .swagger-ui {
+  background: #fff;
+  border-radius: 12px 12px 0 0;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  overflow: hidden;
+  margin: 0;
+}
+
+#swagger-ui .information-container,
+.swagger-ui .information-container,
+.information-container.wrapper {
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+.swagger-ui .info {
+  background: linear-gradient(135deg, #10b981 0%, #34d399 50%, #6ee7b7 100%) !important;
+  border-radius: 12px 12px 0 0 !important;
+  padding: 25px 30px !important;
+  margin: 0 !important;
+  color: #fff !important;
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.swagger-ui .info .title {
+  color: #fff !important;
+  font-size: 2rem !important;
+  font-weight: 700 !important;
+  margin: 0 0 15px 0 !important;
+  text-align: center !important;
+}
+
+.swagger-ui .info .description {
+  color: #fff !important;
+  font-size: 1rem !important;
+  margin: 10px 0 0 0 !important;
+  text-align: center !important;
+  width: 100% !important;
+}
+
+.swagger-ui .info .service-info-extra {
+  margin-top: 10px;
+  text-align: center !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.swagger-ui .info .service-info-extra p { margin: 0; font-size: 0.95rem; color: #fff !important; }
+.swagger-ui .info .info__contact,
+.swagger-ui .info .link,
+.swagger-ui .info .base-url,
+.swagger-ui .info .schemes,
+.swagger-ui .info .host { display: none !important; }
+
+.swagger-ui .info__version {
+  background: rgba(255,255,255,0.2) !important;
+  color: #fff !important;
+  padding: 4px 10px !important;
+  border-radius: 15px !important;
+  font-size: 0.75rem !important;
+  margin-left: 10px !important;
+}
+
+.service-tags-container {
+  display: inline-flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  justify-content: center !important;
+  margin-left: 8px !important;
+}
+
+.service-tag {
+  display: inline-block !important;
+  background: rgba(45,55,72,0.8) !important;
+  color: #e2e8f0 !important;
+  padding: 4px 12px !important;
+  border-radius: 12px !important;
+  font-size: 0.85rem !important;
+  font-weight: 500 !important;
+}
+
+.service-tag:hover {
+  background: rgba(55,65,82,0.9) !important;
+}
