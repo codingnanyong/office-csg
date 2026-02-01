@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sensor-threshold-mapping-service
+  namespace: flet-montrg
+  labels:
+    app: sensor-threshold-mapping-service
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "8000"
+    prometheus.io/path: "/metrics"
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8000
+    nodePort: 30011
+    protocol: TCP
+  - name: metrics
+    port: 8000
+    targetPort: 8000
+    nodePort: 30240
+    protocol: TCP
+  selector:
+    app: sensor-threshold-mapping-service

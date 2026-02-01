@@ -1,0 +1,34 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: alert-service-network-policy
+  namespace: flet-montrg
+spec:
+  podSelector:
+    matchLabels:
+      app: alert-service
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - {}  # 우선 전체 허용(문제 분리 후 좁히기)
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 172.23.0.3/32  # Postgres (kind 네트워크 IP)
+    ports:
+    - protocol: TCP
+      port: 5432
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: flet-montrg
+    ports:
+    - protocol: TCP
+      port: 80  # thresholds-service, location-service, sensor-threshold-mapping-service
+  - to: []  # DNS 허용
+    ports:
+    - protocol: TCP
+      port: 53
+    - protocol: UDP
+      port: 53

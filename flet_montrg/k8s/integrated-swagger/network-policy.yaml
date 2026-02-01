@@ -1,0 +1,41 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: integrated-swagger-service-network-policy
+  namespace: flet-montrg
+spec:
+  podSelector:
+    matchLabels:
+      app: integrated-swagger-service
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - {}  # 전체 허용 (대시보드 접근을 위해)
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: flet-montrg
+    ports:
+    - protocol: TCP
+      port: 8000  # 다른 마이크로서비스들과 통신
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: kube-system
+    ports:
+    - protocol: TCP
+      port: 443  # Kubernetes API 서버 접근
+  - to: []  # DNS 허용
+    ports:
+    - protocol: TCP
+      port: 53
+    - protocol: UDP
+      port: 53
+  - to: []  # HTTP/HTTPS 허용 (외부 API 호출 가능)
+    ports:
+    - protocol: TCP
+      port: 80
+    - protocol: TCP
+      port: 443

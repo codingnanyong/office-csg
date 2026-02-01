@@ -1,0 +1,311 @@
+/* ===== 본문 컨텐츠 스타일 ===== */
+
+/* 메인 컨텐츠 영역 */
+.swagger-ui .wrapper:not(.information-container) {
+    background: transparent !important;
+    padding: 20px 0 0 0 !important;
+}
+
+/* information-container.wrapper는 padding 제거 */
+.swagger-ui .wrapper.information-container,
+.swagger-ui .information-container.wrapper,
+#swagger-ui .wrapper.information-container,
+#swagger-ui .information-container.wrapper {
+    padding: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+/* 커스텀 헤더 이후 API 컨텐츠 영역 통합 */
+.custom-header-section + * {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Swagger UI 내부 wrapper 스타일 */
+#swagger-ui .swagger-ui .wrapper {
+    background: transparent;
+    padding: 0 0 0 0 !important;
+    margin-bottom: 0 !important;
+}
+
+/* 헤더와 본문 사이에 적절한 간격 */
+#swagger-ui .swagger-ui .wrapper {
+    padding-top: 20px !important;
+}
+
+/* 태그 섹션 - 카드 스타일 */
+.swagger-ui .opblock-tag {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    padding: 20px 30px !important;
+    margin: 16px 20px 16px 20px !important;
+    font-size: 1.25rem !important;
+    font-weight: 600 !important;
+    color: #2d3748 !important;
+    border-left: 4px solid #10b981 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    transition: all 0.3s ease !important;
+}
+
+/* 첫 번째 태그 섹션은 헤더 바로 아래 적절한 간격 */
+.swagger-ui .opblock-tag:first-of-type {
+    margin-top: 30px !important;
+    padding-top: 20px !important;
+}
+
+.swagger-ui .opblock-tag:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15) !important;
+    transform: translateY(-2px) !important;
+    border-left-color: #059669 !important;
+}
+
+.swagger-ui .opblock-tag small {
+    color: #718096 !important;
+    font-weight: 400 !important;
+    font-size: 0.9rem !important;
+    display: block !important;
+    margin-top: 5px !important;
+}
+
+.swagger-ui .opblock-tag-section {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* 초기 상태에서만 opblock 숨기기 (접힌 상태일 때만) */
+.swagger-ui .opblock-tag-section:not(.is-open) .opblock,
+#swagger-ui .opblock-tag-section:not(.is-open) .opblock {
+    display: none;
+    visibility: hidden;
+}
+
+/* 태그가 열려있으면 opblock 표시 (Swagger UI 기본 동작) - 우선순위 높게 */
+.swagger-ui .opblock-tag-section.is-open .opblock,
+#swagger-ui .opblock-tag-section.is-open .opblock {
+    display: block !important;
+    visibility: visible !important;
+}
+
+/* 접힌 상태의 태그 헤더 스타일 */
+.swagger-ui .opblock-tag-section:not(.is-open) .opblock-tag,
+.swagger-ui .opblock-tag-section[data-collapsed="true"] .opblock-tag {
+    margin-bottom: 16px !important;
+}
+
+/* 접힌 상태의 화살표 방향 (오른쪽 방향) */
+.swagger-ui .opblock-tag-section:not(.is-open) .opblock-tag .arrow,
+.swagger-ui .opblock-tag:not(.is-open) .arrow,
+.swagger-ui .opblock-tag-section[data-collapsed="true"] .opblock-tag .arrow {
+    transform: rotate(-90deg) !important;
+}
+
+/* 접힌 상태의 태그 섹션 내부 콘텐츠 숨기기 */
+.swagger-ui .opblock-tag-section:not(.is-open) > .opblock,
+.swagger-ui .opblock-tag-section[data-collapsed="true"] > .opblock {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* 모든 태그 섹션을 기본적으로 접힌 상태로 시작 (강제) */
+.swagger-ui .opblock-tag-section.is-open[data-collapsed="true"] {
+    /* data-collapsed가 있으면 강제로 접기 */
+}
+
+.swagger-ui .opblock-tag-section.is-open[data-collapsed="true"] .opblock {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* 헤더 바로 아래 첫 번째 태그 섹션 간격 제거 */
+#swagger-ui .opblock-tag-section:first-child {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* API 엔드포인트 카드들 */
+.swagger-ui .opblock {
+    background: #ffffff !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1) !important;
+    margin: 0 20px 12px 20px !important;
+    border: 1px solid #e2e8f0 !important;
+    transition: all 0.3s ease !important;
+    overflow: hidden !important;
+}
+
+.swagger-ui .opblock:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    transform: translateY(-2px) !important;
+}
+
+.swagger-ui .opblock-summary {
+    padding: 12px 16px !important;
+    background: #ffffff !important;
+    border-bottom: 1px solid #f7fafc !important;
+    border-radius: 6px 6px 0 0 !important;
+}
+
+/* HTTP 메서드 버튼 */
+.swagger-ui .opblock-summary-method {
+    font-size: 0.75rem !important;
+    padding: 5px 10px !important;
+    border-radius: 4px !important;
+    font-weight: 600 !important;
+    color: #ffffff !important;
+    text-transform: uppercase !important;
+    min-width: 60px !important;
+    text-align: center !important;
+    letter-spacing: 0.5px !important;
+}
+
+.swagger-ui .opblock.opblock-get .opblock-summary-method { 
+    background: #48bb78 !important;
+}
+.swagger-ui .opblock.opblock-post .opblock-summary-method { 
+    background: #4299e1 !important;
+}
+.swagger-ui .opblock.opblock-put .opblock-summary-method { 
+    background: #ed8936 !important;
+}
+.swagger-ui .opblock.opblock-delete .opblock-summary-method { 
+    background: #f56565 !important;
+}
+.swagger-ui .opblock.opblock-patch .opblock-summary-method { 
+    background: #9f7aea !important;
+}
+
+.swagger-ui .opblock-summary-path {
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    color: #2d3748 !important;
+    font-family: 'SF Mono', Monaco, Consolas, monospace !important;
+    margin-left: 12px !important;
+}
+
+.swagger-ui .opblock-summary-description {
+    color: #718096 !important;
+    font-size: 0.85rem !important;
+    margin-top: 4px !important;
+}
+
+/* 버튼 스타일 */
+.swagger-ui .try-out button {
+    background: #10b981 !important;
+    color: #ffffff !important;
+    border-radius: 6px !important;
+    padding: 8px 16px !important;
+    font-size: 0.9rem !important;
+    font-weight: 500 !important;
+    border: none !important;
+    transition: background-color 0.2s ease !important;
+}
+
+.swagger-ui .try-out button:hover {
+    background: #059669 !important;
+}
+
+.swagger-ui .btn.execute {
+    background: #48bb78 !important;
+    color: #ffffff !important;
+    border-radius: 6px !important;
+    padding: 10px 20px !important;
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    border: none !important;
+    transition: background-color 0.2s ease !important;
+}
+
+.swagger-ui .btn.execute:hover {
+    background: #38a169 !important;
+}
+
+/* 입력 필드 */
+.swagger-ui input, .swagger-ui select, .swagger-ui textarea {
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 6px !important;
+    padding: 8px 12px !important;
+    font-size: 0.9rem !important;
+    transition: border-color 0.2s ease !important;
+}
+
+.swagger-ui input:focus, .swagger-ui select:focus, .swagger-ui textarea:focus {
+    border-color: #10b981 !important;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1) !important;
+    outline: none !important;
+}
+
+/* 파라미터 섹션 */
+.swagger-ui .parameters-col_description {
+    font-size: 0.85rem !important;
+    color: #718096 !important;
+}
+
+.swagger-ui .parameter__name {
+    font-weight: 600 !important;
+    color: #2d3748 !important;
+}
+
+.swagger-ui .parameter__type {
+    color: #a0aec0 !important;
+    font-size: 0.8rem !important;
+}
+
+/* 응답 섹션 */
+.swagger-ui .response-col_status {
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+}
+
+.swagger-ui .response-col_description {
+    font-size: 0.85rem !important;
+    color: #718096 !important;
+}
+
+/* 코드 블록 */
+.swagger-ui .opblock-body pre {
+    background: #2d3748 !important;
+    color: #f7fafc !important;
+    border-radius: 6px !important;
+    padding: 16px !important;
+    overflow-x: auto !important;
+    font-size: 0.85rem !important;
+    border: none !important;
+}
+
+/* 스키마 섹션 숨기기 */
+.swagger-ui .model-title {
+    display: none !important;
+}
+
+.swagger-ui .model-toggle {
+    display: none !important;
+}
+
+/* INVALID 버튼 및 모델 관련 요소 완전히 숨기기 */
+.swagger-ui .invalid,
+.swagger-ui .btn.invalid,
+.swagger-ui button.invalid,
+.swagger-ui .model,
+.swagger-ui .model-container,
+.swagger-ui .model-box,
+.swagger-ui .model-box-control,
+.swagger-ui .models,
+.swagger-ui .models-control,
+.swagger-ui .model-toggle,
+.swagger-ui table.model,
+.swagger-ui .property-row,
+.swagger-ui .response-schema,
+.swagger-ui .scheme-container .model-toggle,
+.swagger-ui button[title*="invalid" i],
+.swagger-ui button[title*="model" i],
+.swagger-ui .btn[aria-label*="invalid" i],
+.swagger-ui [class*="invalid" i],
+.swagger-ui [id*="invalid" i] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+}

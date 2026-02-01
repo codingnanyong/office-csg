@@ -1,0 +1,125 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: integrated-swagger-service
+  namespace: flet-montrg
+  labels:
+    app: integrated-swagger-service
+    version: v1.0.0
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: integrated-swagger-service
+  template:
+    metadata:
+      labels:
+        app: integrated-swagger-service
+        version: v1.0.0
+    spec:
+      serviceAccountName: integrated-swagger-service-sa
+      containers:
+      - name: integrated-swagger-service
+        image: flet-montrg/integrated-swagger-service:latest  
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8000
+          name: http
+        env:
+        - name: APP_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: integrated-swagger-service-config
+              key: APP_NAME
+        - name: ENVIRONMENT
+          valueFrom:
+            configMapKeyRef:
+              name: integrated-swagger-service-config
+              key: ENVIRONMENT
+        - name: HOST
+          valueFrom:
+            configMapKeyRef:
+              name: integrated-swagger-service-config
+              key: HOST
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: integrated-swagger-service-config
+              key: PORT
+        - name: LOG_LEVEL
+          valueFrom:
+            configMapKeyRef:
+              name: integrated-swagger-service-config
+              key: LOG_LEVEL
+        - name: DEBUG
+          valueFrom:
+            configMapKeyRef:
+              name: integrated-swagger-service-config
+              key: DEBUG
+        - name: KUBERNETES_NAMESPACE
+          valueFrom:
+            configMapKeyRef:
+              name: integrated-swagger-service-config
+              key: KUBERNETES_NAMESPACE
+        - name: SERVICES_TO_MONITOR
+          valueFrom:
+            configMapKeyRef:
+              name: integrated-swagger-service-config
+              key: SERVICES_TO_MONITOR
+        - name: DASHBOARD_TITLE
+          valueFrom:
+            configMapKeyRef:
+              name: integrated-swagger-service-config
+              key: DASHBOARD_TITLE
+        - name: DASHBOARD_REFRESH_INTERVAL
+          valueFrom:
+            configMapKeyRef:
+              name: integrated-swagger-service-config
+              key: DASHBOARD_REFRESH_INTERVAL
+        - name: HEALTH_CHECK_TIMEOUT
+          valueFrom:
+            configMapKeyRef:
+              name: integrated-swagger-service-config
+              key: HEALTH_CHECK_TIMEOUT
+        - name: HEALTH_CHECK_INTERVAL
+          valueFrom:
+            configMapKeyRef:
+              name: integrated-swagger-service-config
+              key: HEALTH_CHECK_INTERVAL
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+# Temporarily disabled health checks for debugging
+        # livenessProbe:
+        #   httpGet:
+        #     path: /health
+        #     port: 8000
+        #   initialDelaySeconds: 30
+        #   periodSeconds: 10
+        #   timeoutSeconds: 5
+        #   failureThreshold: 3
+        # readinessProbe:
+        #   httpGet:
+        #     path: /health
+        #     port: 8000
+        #   initialDelaySeconds: 10
+        #   periodSeconds: 5
+        #   timeoutSeconds: 3
+        #   failureThreshold: 3
+        # startupProbe:
+        #   httpGet:
+        #     path: /health
+        #     port: 8000
+        #   initialDelaySeconds: 15
+        #   periodSeconds: 5
+        #   timeoutSeconds: 3
+        #   failureThreshold: 30

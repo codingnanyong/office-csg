@@ -1,0 +1,570 @@
+/**
+ * Swagger UI JavaScript 로직
+ */
+
+let swaggerUI = null;
+let availableServices = {};
+
+// Swagger UI 초기화
+function initSwaggerUI(specUrl, title = "API Documentation") {
+    const ui = SwaggerUIBundle({
+        url: specUrl,
+        dom_id: '#swagger-ui',
+        deepLinking: true,
+        presets: [
+            SwaggerUIBundle.presets.apis,
+            SwaggerUIStandalonePreset
+        ],
+        plugins: [
+            SwaggerUIBundle.plugins.DownloadUrl
+        ],
+        layout: "StandaloneLayout",
+        // UI 개선: 불필요한 요소들 숨기기
+        displayOperationId: false,
+        showExtensions: false,
+        showCommonExtensions: false,
+        tryItOutEnabled: true,
+        tryItOutEnabled: true,
+        requestInterceptor: (request) => {
+            console.log("🔍 Request Interceptor - Original request:", request.url);
+            
+            // Swagger 관련 요청은 프록시를 거치지 않음
+            if (request.url.includes('/swagger/')) {
+                console.log("⏭️ Skipping swagger request:", request.url);
+                return request;
+            }
+            
+            // OpenAPI 스펙 요청도 프록시를 거치지 않음  
+            if (request.url.includes('openapi.json') || request.url.includes('/spec')) {
+                console.log("⏭️ Skipping spec request:", request.url);
+                return request;
+            }
+            
+            // API 프록시를 통해 요청 라우팅
+            if (request.url.startsWith('/api/proxy/')) {
+                console.log("✅ Already proxy URL:", request.url);
+                return request;
+            }
+            
+            // API v1 경로인 경우 서비스명을 추출해서 프록시 경로로 변환 (상대/절대 경로 모두 처리)
+            if (request.url.includes('/api/v1/')) {
+                let pathToConvert = request.url;
+                let baseUrl = '';
+                
+                // 절대 URL인 경우 경로 부분만 추출
+                if (request.url.startsWith('http')) {
+                    const urlObj = new URL(request.url);
+                    pathToConvert = urlObj.pathname + urlObj.search;
+                    baseUrl = urlObj.origin;
+                }
+                
+                const serviceName = extractServiceFromPath(pathToConvert);
+                console.log("🔄 Extracting service name from:", pathToConvert, "-> Service:", serviceName);
+                
+                if (serviceName) {
+                    // 초단축 URL: /api/{resource}/ 형태로 변환
+                    let resourcePath = pathToConvert.replace(/^\/api\/v\d+\//, '/');
+                    const newUrl = baseUrl + `/api${resourcePath}`;
+                    console.log("🚀 Converting URL:", request.url, "->", newUrl);
+                    console.log("📏 Ultra-shortened URL - Original:", pathToConvert, "-> Final:", `/api${resourcePath}`);
+                    request.url = newUrl;
+                }
+            }
+            
+            console.log("📤 Final request URL:", request.url);
+            return request;
+        },
+        onComplete: () => {
+            hideLoading();
+            
+            // 기본 Swagger UI 헤더에 동적 서비스 정보 추가
+            setTimeout(() => {
+                // information-container의 padding 강제로 제거
+                const infoContainers = document.querySelectorAll('.information-container, .information-container.wrapper, .wrapper.information-container');
+                infoContainers.forEach(container => {
+                    container.style.setProperty('padding', '0', 'important');
+                    container.style.setProperty('padding-top', '0', 'important');
+                    container.style.setProperty('padding-bottom', '0', 'important');
+                    container.style.setProperty('padding-left', '0', 'important');
+                    container.style.setProperty('padding-right', '0', 'important');
+                    container.style.setProperty('margin', '0', 'important');
+                });
+                
+                updateDefaultSwaggerHeader();
+                console.log("✅ Default Swagger UI header updated");
+                
+                // 주기적으로 헤더 업데이트 (동적 로딩 대응)
+                const updateInterval = setInterval(() => {
+                    const infoContainer = document.querySelector('.swagger-ui .information-container .info');
+                    if (infoContainer && !infoContainer.querySelector('.service-info-extra')) {
+                        updateDefaultSwaggerHeader();
+                    }
+                }, 1000);
+                
+                // 5초 후 인터벌 정리
+                setTimeout(() => clearInterval(updateInterval), 5000);
+                
+                // 나머지 불필요한 요소들 숨기기
+                const unwantedSelectors = [
+                    '.swagger-ui .topbar',
+                    '.swagger-ui .authorization__btn',
+                    '.swagger-ui .auth-wrapper',
+                    '.swagger-ui .scheme-container',
+                    '.swagger-ui .models',
+                    '.swagger-ui .model-container',
+                    '.swagger-ui .model',
+                    '.swagger-ui .model-toggle',
+                    '.swagger-ui .model-box',
+                    '.swagger-ui .model-box-control',
+                    '.swagger-ui .models-control',
+                    '.swagger-ui .invalid',
+                    '.swagger-ui .validation-errors',
+                    '.swagger-ui .response-schema',
+                    '.swagger-ui table.model',
+                    '.swagger-ui .property-row',
+                    '.swagger-ui .download-contents',
+                    '.swagger-ui .copy-to-clipboard'
+                ];
+                
+                unwantedSelectors.forEach(selector => {
+                    const elements = document.querySelectorAll(selector);
+                    elements.forEach(el => {
+                        el.style.display = 'none';
+                        console.log("🧹 Hidden schema/model element:", selector);
+                    });
+                });
+                
+                // API 섹션들은 확실히 표시
+                const apiSections = document.querySelectorAll('.swagger-ui .opblock, .swagger-ui .opblock-tag');
+                apiSections.forEach(el => {
+                    el.style.display = 'block';
+                    el.style.visibility = 'visible';
+                });
+                
+                console.log("✅ Custom header layout complete");
+                
+                // 주기적으로 불필요한 요소들을 제거 (Swagger UI가 동적으로 추가할 수 있으므로)
+                const cleanUpInterval = setInterval(() => {
+                    const dynamicUnwantedSelectors = [
+                        '.swagger-ui .models',
+                        '.swagger-ui .model',
+                        '.swagger-ui .invalid',
+                        '.swagger-ui .btn.invalid',
+                        '.swagger-ui table.model',
+                        '.swagger-ui .model-container',
+                        '.swagger-ui .response-schema',
+                        '.swagger-ui .model-toggle',
+                        '.swagger-ui .model-box',
+                        '.swagger-ui .model-box-control',
+                        '.swagger-ui .scheme-container .model-toggle',
+                        'button[title*="invalid" i]',
+                        'button[title*="model" i]'
+                    ];
+                    
+                    let found = false;
+                    dynamicUnwantedSelectors.forEach(selector => {
+                        const elements = document.querySelectorAll(selector);
+                        if (elements.length > 0) {
+                            elements.forEach(el => {
+                                el.style.display = 'none';
+                                el.style.visibility = 'hidden';
+                                el.remove();
+                                found = true;
+                            });
+                        }
+                    });
+                    
+                    // INVALID 텍스트가 포함된 모든 버튼 제거 (더 강력하게)
+                    const allButtons = document.querySelectorAll('button, .btn, [class*="btn"], [class*="button"]');
+                    allButtons.forEach(btn => {
+                        const text = (btn.textContent || btn.innerText || '').trim();
+                        const ariaLabel = (btn.getAttribute('aria-label') || '').toUpperCase();
+                        const title = (btn.getAttribute('title') || '').toUpperCase();
+                        
+                        if (text.toUpperCase().includes('INVALID') || 
+                            ariaLabel.includes('INVALID') ||
+                            title.includes('INVALID') ||
+                            btn.classList.contains('invalid') ||
+                            btn.classList.toString().toUpperCase().includes('INVALID')) {
+                            btn.style.display = 'none';
+                            btn.style.visibility = 'hidden';
+                            btn.style.opacity = '0';
+                            btn.style.position = 'absolute';
+                            btn.style.left = '-9999px';
+                            btn.remove();
+                            found = true;
+                        }
+                    });
+                    
+                    // {} 아이콘이 있는 버튼도 제거
+                    const allElements = document.querySelectorAll('*');
+                    allElements.forEach(el => {
+                        const text = (el.textContent || el.innerText || '').trim();
+                        if ((text === '{}' || text === '{ }' || text.includes('INVALID')) && 
+                            (el.tagName === 'BUTTON' || el.classList.contains('btn') || el.getAttribute('role') === 'button')) {
+                            el.style.display = 'none';
+                            el.style.visibility = 'hidden';
+                            el.remove();
+                            found = true;
+                        }
+                    });
+                    
+                    if (found) {
+                        console.log("🧹 Cleaned up dynamically added unwanted elements");
+                    }
+                }, 500);
+                
+                // 10초 후 인터벌 정리
+                setTimeout(() => {
+                    clearInterval(cleanUpInterval);
+                    console.log("✅ Cleanup interval stopped");
+                }, 10000);
+                
+            }, 200);
+        },
+        onFailure: (err) => {
+            console.error('Swagger UI failed to load:', err);
+            showError('API 스펙을 불러오는데 실패했습니다: ' + err.message);
+            hideLoading();
+        }
+    });
+    
+    return ui;
+}
+
+// URL에서 서비스명 추출
+function getServiceFromUrl(url) {
+    try {
+        const urlObj = new URL(url);
+        const hostname = urlObj.hostname;
+        // k8s 서비스명 형태인지 확인 (service-name.namespace.svc.cluster.local)
+        if (hostname.includes('.')) {
+            return hostname.split('.')[0];
+        }
+        return hostname;
+    } catch (e) {
+        return 'unknown';
+    }
+}
+
+// URL에서 경로 추출
+function getPathFromUrl(url) {
+    try {
+        const urlObj = new URL(url);
+        return urlObj.pathname + urlObj.search;
+    } catch (e) {
+        return '/';
+    }
+}
+
+// API 경로에서 서비스명 추출
+function extractServiceFromPath(path) {
+    // /api/v1/aggregation/ -> aggregation-service
+    // /api/v1/location/ -> location-service  
+    // /api/v1/realtime/ -> realtime-service
+    // /api/v1/thresholds/ -> thresholds-service
+    
+    const pathSegments = path.split('/').filter(seg => seg);
+    if (pathSegments.length >= 3 && pathSegments[0] === 'api' && pathSegments[1] === 'v1') {
+        const servicePath = pathSegments[2];
+        
+        // 서비스명 매핑
+        const serviceMapping = {
+            'aggregation': 'aggregation-service',
+            'location': 'location-service', 
+            'realtime': 'realtime-service',
+            'thresholds': 'thresholds-service'
+        };
+        
+        return serviceMapping[servicePath] || servicePath;
+    }
+    
+    return null;
+}
+
+// 서비스 목록 로드
+async function loadServices() {
+    try {
+        const response = await fetch('/api/v1/swagger/services');
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        
+        const data = await response.json();
+        availableServices = data.services || {};
+        
+        updateServiceSelector();
+        updateServiceCount();
+        updateDefaultSwaggerHeader();
+        
+    } catch (error) {
+        console.error('Failed to load services:', error);
+        showError('Failed to load service list: ' + error.message);
+    }
+}
+
+// Swagger 기본 헤더에 동적 서비스 정보 추가
+function updateDefaultSwaggerHeader() {
+    try {
+        const infoContainer = document.querySelector('.swagger-ui .information-container .info');
+        if (!infoContainer) {
+            console.warn('⚠️ Swagger info container not found');
+            return;
+        }
+        
+        // 기존 서비스 정보 요소 제거 (중복 방지)
+        const existingExtra = infoContainer.querySelector('.service-info-extra');
+        if (existingExtra) {
+            existingExtra.remove();
+        }
+        
+        // 중복되는 contact, link, servers 정보 숨기기
+        const contact = infoContainer.querySelector('.info__contact');
+        if (contact) contact.style.display = 'none';
+        
+        const link = infoContainer.querySelector('.link');
+        if (link) link.style.display = 'none';
+        
+        // base-url이나 servers 정보도 숨기기
+        const baseUrl = infoContainer.querySelector('.base-url');
+        if (baseUrl) baseUrl.style.display = 'none';
+        
+        const serviceNames = Object.keys(availableServices).filter(name => {
+            const service = availableServices[name];
+            return service && service.is_available;
+        });
+        
+        const count = serviceNames.length;
+        
+        // description 내용 업데이트 (서비스 개수 표시) - 중앙 정렬
+        const description = infoContainer.querySelector('.description');
+        if (description) {
+            description.textContent = `Total ${count} microservices integrated API documentation`;
+            description.style.textAlign = 'center';
+            description.style.width = '100%';
+        }
+        
+        // 서비스 목록만 추가 (중앙 정렬)
+        const serviceInfoDiv = document.createElement('div');
+        serviceInfoDiv.className = 'service-info-extra';
+        serviceInfoDiv.innerHTML = `
+            <p style="margin: 0; text-align: center; width: 100%;">
+                <strong>Included services:</strong> <span id="service-list">${serviceNames.length > 0 ? serviceNames.join(', ') : 'Loading...'}</span>
+            </p>
+        `;
+        
+        // description 뒤에 추가
+        if (description) {
+            description.insertAdjacentElement('afterend', serviceInfoDiv);
+        } else {
+            // description이 없으면 title 뒤에 추가
+            const title = infoContainer.querySelector('.title');
+            if (title) {
+                title.insertAdjacentElement('afterend', serviceInfoDiv);
+            }
+        }
+        
+        console.log(`✅ Default Swagger header updated: ${count} microservices`);
+    } catch (error) {
+        console.error('Failed to update default Swagger header:', error);
+    }
+}
+
+// 헤더의 서비스 정보 업데이트 (레거시 호환성)
+function updateHeaderServiceInfo() {
+    updateDefaultSwaggerHeader();
+}
+
+// 서비스 선택 드롭다운 업데이트
+function updateServiceSelector() {
+    const select = document.getElementById('service-select');
+    
+    // service-select 요소가 없으면 스킵
+    if (!select) {
+        console.log('⚠️ service-select element not found, skipping');
+        return;
+    }
+    
+    // 기존 옵션 제거 (첫 번째 통합 옵션 제외)
+    while (select.children.length > 1) {
+        select.removeChild(select.lastChild);
+    }
+    
+    // 서비스별 옵션 추가
+    Object.entries(availableServices).forEach(([serviceName, spec]) => {
+        const option = document.createElement('option');
+        option.value = serviceName;
+        
+        if (spec.is_available) {
+            option.textContent = `📋 ${spec.title} (v${spec.version})`;
+        } else {
+            option.textContent = `❌ ${serviceName} (unavailable)`;
+            option.disabled = true;
+        }
+        
+        select.appendChild(option);
+    });
+}
+
+// 서비스 개수 업데이트
+function updateServiceCount() {
+    const serviceCount = document.getElementById('service-count');
+    if (!serviceCount) {
+        // service-count 요소가 없으면 스킵
+        return;
+    }
+    
+    const available = Object.values(availableServices).filter(s => s.is_available).length;
+    const total = Object.keys(availableServices).length;
+    serviceCount.textContent = `${available}/${total} available microservices`;
+}
+
+// 선택된 서비스의 API 스펙 로드
+async function loadSelectedService() {
+    const select = document.getElementById('service-select');
+    const selectedService = select.value;
+    
+    clearError();
+    clearServiceInfo();
+    showLoading();
+    
+    try {
+        let specUrl;
+        let title;
+        
+        if (selectedService === 'integrated') {
+            specUrl = '/openapi.json';
+            title = 'Felt Montrg API Documentation';
+            showServiceInfo({
+                title: 'Felt Montrg API Documentation',
+                description: `Total ${Object.values(availableServices).filter(s => s.is_available).length} microservices integrated API`,
+                version: '1.0.0',
+                services: Object.keys(availableServices).filter(name => availableServices[name].is_available)
+            });
+        } else {
+            specUrl = `/api/v1/swagger/services/${selectedService}/spec`;
+            const serviceSpec = availableServices[selectedService];
+            title = serviceSpec ? serviceSpec.title : selectedService;
+            
+            if (serviceSpec) {
+                showServiceInfo(serviceSpec);
+            }
+            
+            // 디버깅을 위한 로그
+            console.log(`Loading service spec: ${selectedService}`);
+            console.log(`Spec URL: ${specUrl}`);
+        }
+        
+        // Swagger UI 다시 초기화
+        swaggerUI = initSwaggerUI(specUrl, title);
+        
+    } catch (error) {
+        console.error('Failed to load service spec:', error);
+        showError('Failed to load API specification: ' + error.message);
+        hideLoading();
+    }
+}
+
+// 서비스 정보 표시
+function showServiceInfo(info) {
+    const container = document.getElementById('service-info-container');
+    
+    let servicesText = '';
+    if (info.services && info.services.length > 0) {
+        servicesText = `<p><strong>Included services:</strong> ${info.services.join(', ')}</p>`;
+    }
+    
+    container.innerHTML = `
+        <div class="service-info">
+            <h3>${info.title}</h3>
+            <p><strong>Version:</strong> ${info.version}</p>
+            <p><strong>Description:</strong> ${info.description || 'API documentation'}</p>
+            ${servicesText}
+        </div>
+    `;
+}
+
+function clearServiceInfo() {
+    document.getElementById('service-info-container').innerHTML = '';
+}
+
+// API 스펙 새로고침
+async function refreshSpecs() {
+    showLoading();
+    clearError();
+    
+    try {
+        // 서버에서 스펙 새로고침 요청
+        const response = await fetch('/api/v1/swagger/refresh', { method: 'POST' });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        
+        // 서비스 목록 다시 로드 (헤더 정보도 업데이트됨)
+        await loadServices();
+        
+        // 현재 선택된 서비스 다시 로드
+        const serviceSelect = document.getElementById('service-select');
+        if (serviceSelect) {
+            await loadSelectedService();
+        } else {
+            // 서비스 선택이 없으면 Swagger UI만 다시 초기화
+            swaggerUI = initSwaggerUI('/openapi.json', 'Felt Montrg API Documentation');
+        }
+        
+        console.log('API specs refreshed successfully');
+        
+    } catch (error) {
+        console.error('Failed to refresh specs:', error);
+        showError('Failed to refresh API specification: ' + error.message);
+    } finally {
+        hideLoading();
+    }
+}
+
+// UI 유틸리티 함수들
+function showLoading() {
+    document.getElementById('loading').style.display = 'block';
+}
+
+function hideLoading() {
+    document.getElementById('loading').style.display = 'none';
+}
+
+function showError(message) {
+    const container = document.getElementById('error-container');
+    container.innerHTML = `<div class="error">${message}</div>`;
+}
+
+function clearError() {
+    document.getElementById('error-container').innerHTML = '';
+}
+
+// 초기화
+document.addEventListener('DOMContentLoaded', async function() {
+    console.log('🚀 Initializing Swagger UI...');
+    
+    // 서비스 선택 요소가 있으면 이벤트 리스너 추가
+    const serviceSelect = document.getElementById('service-select');
+    if (serviceSelect) {
+        serviceSelect.addEventListener('change', loadSelectedService);
+        console.log('✅ Service selector found and event listener attached');
+    } else {
+        console.warn('⚠️ Service selector not found, skipping service selection feature');
+    }
+    
+    // 서비스 목록 먼저 로드 (헤더 정보 업데이트를 위해)
+    try {
+        await loadServices();
+    } catch (error) {
+        console.warn('⚠️ Failed to load services list:', error);
+    }
+    
+    // 통합 API 스펙 로드 (기본값)
+    try {
+        showLoading();
+        console.log('📡 Loading integrated API spec from /openapi.json...');
+        swaggerUI = initSwaggerUI('/openapi.json', 'Felt Montrg API Documentation');
+        console.log('✅ Swagger UI initialized');
+    } catch (error) {
+        console.error('❌ Failed to initialize Swagger UI:', error);
+        showError('Failed to load API specification: ' + error.message);
+        hideLoading();
+    }
+});

@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: integrated-swagger-service-config
+  namespace: flet-montrg
+  labels:
+    app: integrated-swagger-service
+data:
+  APP_NAME: "Integrated Swagger Service"
+  ENVIRONMENT: "production"
+  HOST: "0.0.0.0"
+  PORT: "8000"
+  LOG_LEVEL: "INFO"
+  DEBUG: "false"
+  KUBERNETES_NAMESPACE: "flet-montrg"
+  SERVICES_TO_MONITOR: "aggregation-service,location-service,realtime-service,thresholds-service,alert-service,alert-subscription-service,alert-notification-service,sensor-threshold-mapping-service"
+  DASHBOARD_TITLE: "통합 API 문서"
+  DASHBOARD_REFRESH_INTERVAL: "30"
+  HEALTH_CHECK_TIMEOUT: "10"
+  HEALTH_CHECK_INTERVAL: "60"
+  METRICS_COLLECTION_INTERVAL: "30"
+  SERVICE_DISCOVERY_ENABLED: "true"
+  # Service URLs for OpenAPI spec collection
+  AGGREGATION_SERVICE_URL: "http://aggregation-service:80"
+  LOCATION_SERVICE_URL: "http://location-service:80"
+  REALTIME_SERVICE_URL: "http://realtime-service:80"
+  THRESHOLDS_SERVICE_URL: "http://thresholds-service:80"
+  ALERT_SERVICE_URL: "http://alert-service:80"
+  ALERT_SUBSCRIPTION_SERVICE_URL: "http://alert-subscription-service:80"
+  ALERT_NOTIFICATION_SERVICE_URL: "http://alert-notification-service:80"
+  SENSOR_THRESHOLD_MAPPING_SERVICE_URL: "http://sensor-threshold-mapping-service:80"

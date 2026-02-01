@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: aggregation-service-network-policy
+  namespace: flet-montrg
+spec:
+  podSelector:
+    matchLabels:
+      app: aggregation-service
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: flet-montrg
+    ports:
+    - protocol: TCP
+      port: 8000
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: flet-montrg
+    ports:
+    - protocol: TCP
+      port: 5432

@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: thresholds-service
+  namespace: flet-montrg
+  labels:
+    app: thresholds-service
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "8000"
+    prometheus.io/path: "/metrics"
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8000
+    nodePort: 30001
+    protocol: TCP
+  - name: metrics
+    port: 8000
+    targetPort: 8000
+    nodePort: 30231
+    protocol: TCP
+  selector:
+    app: thresholds-service

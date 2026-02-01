@@ -1,0 +1,600 @@
+/* 통합 Swagger UI - 깔끔하고 심플한 디자인 */
+
+html {
+    box-sizing: border-box;
+    overflow: -moz-scrollbars-vertical;
+    overflow-y: scroll;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+body {
+    margin: 0;
+    background: linear-gradient(135deg, #0d2818 0%, #1a4d2e 50%, #0d2818 100%);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.6;
+    color: #2d3748;
+    min-height: 100vh;
+    padding-bottom: 20px;
+}
+
+#swagger-ui {
+    padding: 0;
+    max-width: 1400px;
+    margin: 0 auto;
+    background: transparent;
+    min-height: 100vh;
+}
+
+/* ===== Swagger 기본 헤더를 커스텀 헤더처럼 스타일링 ===== */
+#swagger-ui .swagger-ui {
+    background: #ffffff;
+    border-radius: 12px 12px 0 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    margin: 0;
+}
+
+/* Swagger UI 정보 컨테이너 스타일 */
+#swagger-ui .information-container,
+.swagger-ui .information-container,
+.information-container,
+#swagger-ui .information-container.wrapper,
+.swagger-ui .information-container.wrapper,
+.information-container.wrapper,
+#swagger-ui .wrapper.information-container,
+.swagger-ui .wrapper.information-container {
+    margin: 0 !important;
+    padding: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    background: transparent !important;
+}
+
+/* ===== 헤더 섹션 - 연녹색 그라데이션 ===== */
+.swagger-ui .info {
+    background: linear-gradient(135deg, #10b981 0%, #34d399 50%, #6ee7b7 100%) !important;
+    border-radius: 12px 12px 0 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 25px 30px !important;
+    margin: 0 !important;
+    color: white !important;
+    width: 100% !important;
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.swagger-ui .info .title {
+    color: #ffffff !important;
+    font-size: 2rem !important;
+    font-weight: 700 !important;
+    border-bottom: none !important;
+    padding: 0 !important;
+    margin: 0 0 15px 0 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
+    text-align: center !important;
+    opacity: 1 !important;
+}
+
+.swagger-ui .info .description {
+    color: #ffffff !important;
+    font-size: 1rem !important;
+    line-height: 1.6 !important;
+    margin: 10px 0 0 0 !important;
+    font-weight: 400 !important;
+    display: block !important; /* description 표시 */
+    text-align: center !important;
+    opacity: 1 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+    width: 100% !important;
+}
+
+/* 서비스 정보 추가 영역 */
+.swagger-ui .info .service-info-extra {
+    margin-top: 10px;
+    text-align: center !important;
+    width: 100%;
+    max-width: none;
+    display: flex !important;
+    justify-content: center !important;
+}
+
+.swagger-ui .info .service-info-extra p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #ffffff !important;
+    text-align: center !important;
+    font-weight: 400 !important;
+    opacity: 1 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+.swagger-ui .info .service-info-extra p strong {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+}
+
+/* 중복되는 contact, link, servers 정보 숨기기 */
+.swagger-ui .info .info__contact,
+.swagger-ui .info .link,
+.swagger-ui .info .base-url,
+.swagger-ui .info .schemes,
+.swagger-ui .info .host {
+    display: none !important;
+}
+
+/* 서비스 목록 컨테이너 스타일 */
+.service-list-container {
+    max-width: 800px;
+    margin: 10px auto 0 auto;
+    padding: 0;
+}
+
+.service-list-container p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.swagger-ui .info__version {
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+    padding: 4px 10px !important;
+    border-radius: 15px !important;
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    margin-left: 10px !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    display: inline !important;
+}
+
+/* ===== 메인 컨텐츠 영역 ===== */
+.swagger-ui .wrapper:not(.information-container) {
+    background: transparent !important;
+    padding: 20px 0 0 0 !important;
+}
+
+/* information-container.wrapper는 padding 제거 */
+.swagger-ui .wrapper.information-container,
+.swagger-ui .information-container.wrapper,
+#swagger-ui .wrapper.information-container,
+#swagger-ui .information-container.wrapper {
+    padding: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+/* 커스텀 헤더 이후 API 컨텐츠 영역 통합 */
+.custom-header-section + * {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Swagger UI 내부 wrapper 스타일 */
+#swagger-ui .swagger-ui .wrapper {
+    background: transparent;
+    padding: 0 0 0 0 !important;
+    margin-bottom: 0 !important;
+}
+
+/* ===== 태그 섹션 - 카드 스타일 ===== */
+.swagger-ui .opblock-tag {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    padding: 20px 30px !important;
+    margin: 16px 20px 16px 20px !important;
+    font-size: 1.25rem !important;
+    font-weight: 600 !important;
+    color: #2d3748 !important;
+    border-left: 4px solid #10b981 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    transition: all 0.3s ease !important;
+}
+
+/* 첫 번째 태그 섹션은 헤더 바로 아래 적절한 간격 */
+.swagger-ui .opblock-tag:first-of-type {
+    margin-top: 30px !important;
+    padding-top: 20px !important;
+}
+
+/* 헤더와 본문 사이에 적절한 간격 */
+#swagger-ui .swagger-ui .wrapper {
+    padding-top: 20px !important;
+}
+
+.swagger-ui .opblock-tag:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15) !important;
+    transform: translateY(-2px) !important;
+    border-left-color: #059669 !important;
+}
+
+.swagger-ui .opblock-tag small {
+    color: #718096 !important;
+    font-weight: 400 !important;
+    font-size: 0.9rem !important;
+    display: block !important;
+    margin-top: 5px !important;
+}
+
+/* ===== API 엔드포인트 카드들 ===== */
+.swagger-ui .opblock {
+    background: #ffffff !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1) !important;
+    margin: 0 20px 12px 20px !important;
+    border: 1px solid #e2e8f0 !important;
+    transition: all 0.3s ease !important;
+    overflow: hidden !important;
+}
+
+.swagger-ui .opblock:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    transform: translateY(-2px) !important;
+}
+
+.swagger-ui .opblock-summary {
+    padding: 12px 16px !important;
+    background: #ffffff !important;
+    border-bottom: 1px solid #f7fafc !important;
+    border-radius: 6px 6px 0 0 !important;
+}
+
+/* ===== HTTP 메서드 버튼 ===== */
+.swagger-ui .opblock-summary-method {
+    font-size: 0.75rem !important;
+    padding: 5px 10px !important;
+    border-radius: 4px !important;
+    font-weight: 600 !important;
+    color: #ffffff !important;
+    text-transform: uppercase !important;
+    min-width: 60px !important;
+    text-align: center !important;
+    letter-spacing: 0.5px !important;
+}
+
+.swagger-ui .opblock.opblock-get .opblock-summary-method { 
+    background: #48bb78 !important;
+}
+.swagger-ui .opblock.opblock-post .opblock-summary-method { 
+    background: #4299e1 !important;
+}
+.swagger-ui .opblock.opblock-put .opblock-summary-method { 
+    background: #ed8936 !important;
+}
+.swagger-ui .opblock.opblock-delete .opblock-summary-method { 
+    background: #f56565 !important;
+}
+.swagger-ui .opblock.opblock-patch .opblock-summary-method { 
+    background: #9f7aea !important;
+}
+
+.swagger-ui .opblock-summary-path {
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    color: #2d3748 !important;
+    font-family: 'SF Mono', Monaco, Consolas, monospace !important;
+    margin-left: 12px !important;
+}
+
+.swagger-ui .opblock-summary-description {
+    color: #718096 !important;
+    font-size: 0.85rem !important;
+    margin-top: 4px !important;
+}
+
+/* ===== 버튼 스타일 ===== */
+.swagger-ui .try-out button {
+    background: #10b981 !important;
+    color: #ffffff !important;
+    border-radius: 6px !important;
+    padding: 8px 16px !important;
+    font-size: 0.9rem !important;
+    font-weight: 500 !important;
+    border: none !important;
+    transition: background-color 0.2s ease !important;
+}
+
+.swagger-ui .try-out button:hover {
+    background: #059669 !important;
+}
+
+.swagger-ui .btn.execute {
+    background: #48bb78 !important;
+    color: #ffffff !important;
+    border-radius: 6px !important;
+    padding: 10px 20px !important;
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    border: none !important;
+    transition: background-color 0.2s ease !important;
+}
+
+.swagger-ui .btn.execute:hover {
+    background: #38a169 !important;
+}
+
+/* ===== 입력 필드 ===== */
+.swagger-ui input, .swagger-ui select, .swagger-ui textarea {
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 6px !important;
+    padding: 8px 12px !important;
+    font-size: 0.9rem !important;
+    transition: border-color 0.2s ease !important;
+}
+
+.swagger-ui input:focus, .swagger-ui select:focus, .swagger-ui textarea:focus {
+    border-color: #10b981 !important;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1) !important;
+    outline: none !important;
+}
+
+/* ===== 파라미터 섹션 ===== */
+.swagger-ui .parameters-col_description {
+    font-size: 0.85rem !important;
+    color: #718096 !important;
+}
+
+.swagger-ui .parameter__name {
+    font-weight: 600 !important;
+    color: #2d3748 !important;
+}
+
+.swagger-ui .parameter__type {
+    color: #a0aec0 !important;
+    font-size: 0.8rem !important;
+}
+
+/* ===== 응답 섹션 ===== */
+.swagger-ui .response-col_status {
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+}
+
+.swagger-ui .response-col_description {
+    font-size: 0.85rem !important;
+    color: #718096 !important;
+}
+
+/* ===== 코드 블록 ===== */
+.swagger-ui .opblock-body pre {
+    background: #2d3748 !important;
+    color: #f7fafc !important;
+    border-radius: 6px !important;
+    padding: 16px !important;
+    overflow-x: auto !important;
+    font-size: 0.85rem !important;
+    border: none !important;
+}
+
+/* ===== 스키마 섹션 숨기기 ===== */
+.swagger-ui .model-title {
+    display: none !important;
+}
+
+.swagger-ui .model-toggle {
+    display: none !important;
+}
+
+/* INVALID 버튼 및 모델 관련 요소 완전히 숨기기 */
+.swagger-ui .invalid,
+.swagger-ui .btn.invalid,
+.swagger-ui button.invalid,
+.swagger-ui .model,
+.swagger-ui .model-container,
+.swagger-ui .model-box,
+.swagger-ui .model-box-control,
+.swagger-ui .models,
+.swagger-ui .models-control,
+.swagger-ui .model-toggle,
+.swagger-ui table.model,
+.swagger-ui .property-row,
+.swagger-ui .response-schema,
+.swagger-ui .scheme-container .model-toggle,
+.swagger-ui button[title*="invalid" i],
+.swagger-ui button[title*="model" i],
+.swagger-ui .btn[aria-label*="invalid" i],
+/* 추가 선택자로 모든 INVALID 버튼 타겟팅 */
+.swagger-ui [class*="invalid" i],
+.swagger-ui [id*="invalid" i] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+}
+
+/* ===== 기본 Swagger UI 헤더 표시 유지 ===== */
+/* 기본 헤더는 표시 유지, 커스텀 헤더와 함께 사용 */
+
+/* ===== 전체 레이아웃 정리 ===== */
+.swagger-ui .swagger-ui > .information-container,
+#swagger-ui .swagger-ui > .information-container {
+    margin: 0 !important;
+    padding: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    background: transparent !important;
+    border-radius: 12px 12px 0 0;
+    overflow: hidden;
+}
+
+.swagger-ui .opblock-tag-section {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* 헤더 바로 아래 첫 번째 태그 섹션 간격 제거 */
+#swagger-ui .opblock-tag-section:first-child {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* 커스텀 헤더와 API 내용은 정상 표시 */
+
+/* ===== 반응형 디자인 ===== */
+@media (max-width: 768px) {
+    .swagger-ui .info {
+        padding: 30px 20px !important;
+    }
+    
+    .swagger-ui .info .title {
+        font-size: 2rem !important;
+    }
+    
+    .swagger-ui .wrapper {
+        padding: 20px !important;
+    }
+}
+
+/* ===== 서비스 선택 UI 스타일 ===== */
+.services-control {
+    max-width: 1400px;
+    margin: 10px auto;
+    padding: 0 20px;
+}
+
+.services-control > div {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.services-control label {
+    font-weight: 600;
+    color: #2d3748;
+    font-size: 14px;
+}
+
+.services-control select {
+    padding: 6px 10px;
+    border: 2px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 14px;
+    min-width: 200px;
+    background: white;
+}
+
+.services-control button {
+    background: #10b981;
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.services-control button:hover {
+    background: #059669;
+}
+
+.services-control #service-count {
+    margin-left: auto;
+    color: #718096;
+    font-size: 14px;
+}
+
+/* ===== 푸터 스타일 ===== */
+.custom-footer {
+    max-width: 1400px;
+    margin: 0 auto 20px auto;
+    padding: 0;
+    text-align: center;
+}
+
+.footer-content {
+    background: #ffffff;
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    padding: 24px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.footer-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin: 0 0 8px 0;
+}
+
+.footer-credit {
+    font-size: 0.85rem;
+    color: #718096;
+    margin: 0;
+}
+
+/* ===== 스크롤바 개선 ===== */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1a4d2e;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #2d5a3d;
+    border-radius: 5px;
+    border: 2px solid #1a4d2e;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #3d6b4f;
+}
+
+/* ===== 로딩 및 에러 메시지 스타일 ===== */
+.loading {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin: 10px auto;
+    max-width: 1400px;
+    padding: 20px;
+    text-align: center;
+    color: #2d3748;
+}
+
+#error-container {
+    max-width: 1400px;
+    margin: 10px auto;
+    padding: 0 20px;
+}
+
+#error-container .error {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    color: #c62828;
+    border-left: 4px solid #f44336;
+}
+
+#service-info-container {
+    max-width: 1400px;
+    margin: 10px auto;
+    padding: 0 20px;
+}
+
+#service-info-container .service-info {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    border-left: 4px solid #10b981;
+}
