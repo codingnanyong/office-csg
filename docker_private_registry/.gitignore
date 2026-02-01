@@ -1,0 +1,10 @@
+# Docker volumes
+/media/de/data/registry/
+
+# Local certificates (if copied)
+domain.crt
+domain.key
+
+# Temporary files
+*.tmp
+*.log

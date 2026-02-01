@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker Guide</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🐳%3C/text%3E%3C/svg%3E">
+    <link rel="stylesheet" href="/css/common.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🐳 Docker Guide</h1>
+            <p>Resources Download Server</p>
+        </div>
+        
+        <div class="content">
+            <div class="info-box">
+                <strong>Welcome!</strong><br>
+                This server provides resources for connecting to the Docker Private Registry.<br>
+                Download the certificate and scripts you need to get started and view the documentation.
+            </div>
+            
+            <div class="section">
+                <h2>Documentation</h2>
+                <p>View comprehensive guides and documentation:</p>
+                <ul>
+                    <li><strong>DOCKER_BASICS_GUIDE.md</strong> - Docker and Docker Compose fundamentals, commands, and best practices</li>
+                    <li><strong>DOCKER_INSTALL_GUIDE.md</strong> - Complete Docker installation instructions for Linux, Windows, and macOS</li>
+                    <li><strong>EXTERNAL_CLIENT_GUIDE.md</strong> - Step-by-step guide for external clients to connect to the registry</li>
+                    <li><strong>CERT_DOWNLOAD_GUIDE.md</strong> - Detailed certificate download and installation guide</li>
+                    <li><strong>REGISTRY_USAGE_GUIDE.md</strong> - Complete guide for pushing/pulling images to/from the private registry</li>
+                </ul>
+                <a href="/docs-viewer.html" class="btn btn-secondary">View All Documentation</a>
+            </div>
+            
+            <div class="section">
+                <h2>Setup Scripts</h2>
+                <p>Automated installation and configuration scripts for Linux, macOS, and Windows.</p>
+                
+                <div class="download-box">
+                    <strong>Install Docker:</strong><br>
+                    Linux/macOS: <code>curl http://{REGISTRY_HOST}:9000/scripts/install-docker.sh -o install-docker.sh</code><br>
+                    Windows: <code>curl http://{REGISTRY_HOST}:9000/scripts/install-docker-windows.bat -o install-docker-windows.bat</code>
+                </div>
+                
+                <div class="download-box">
+                    <strong>Setup Registry:</strong><br>
+                    Linux/macOS: <code>curl http://{REGISTRY_HOST}:9000/scripts/setup-docker-registry.sh -o setup.sh</code><br>
+                    Windows: <code>curl http://{REGISTRY_HOST}:9000/scripts/setup-docker-registry-windows.bat -o setup.bat</code>
+                </div>
+                
+                <a href="/scripts/" class="btn btn-secondary">Browse Scripts Directory</a>
+            </div>
+            
+            <div class="section">
+                <h2>Certificates</h2>
+                <p>Download the SSL certificate required to connect to the registry securely.</p>
+                
+                <div class="download-box">
+                    <strong>Download Certificate:</strong>
+                    <code>curl http://{REGISTRY_HOST}:9000/certs/domain.crt -o domain.crt</code>
+                </div>
+                
+                <a href="/certs/" class="btn">Browse Certificates Directory</a>
+            </div>
+            
+            <div class="registry-url-box">
+                <strong>Registry URL</strong>
+                <div class="registry-url-copy">
+                    <span id="registryUrlText">https://{REGISTRY_HOST}:5000</span>
+                    <span id="copyButton" onclick="copyRegistryUrl(event)" style="margin-left: 15px; padding: 5px 12px; background: rgba(255, 255, 255, 0.2); border-radius: 4px; font-size: 0.9em; font-weight: 600; cursor: pointer; user-select: none;">Copy</span>
+                </div>
+            </div>
+            
+            <!-- Registry Statistics Section -->
+            <div class="registry-stats" id="registryStats" style="display: none;">
+                <h2>📊 Registry Statistics</h2>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number" id="totalImages">-</div>
+                        <div class="stat-label">Total Images</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="estimatedSize">-</div>
+                        <div class="stat-label">Estimated Size</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="totalTags">-</div>
+                        <div class="stat-label">Total Tags</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="largestImage">-</div>
+                        <div class="stat-label">Largest Repository</div>
+                    </div>
+                </div>
+                <div class="stats-loading" id="statsLoading">
+                    <p>Loading statistics...</p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>Registry Image List</h2>
+                <p>View all Docker images in the registry and download Dockerfiles:</p>
+                <a href="/registry-list" class="btn">View Image List</a>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/js/common.js"></script>
+    <script src="/js/index.js"></script>
+</body>
+</html>

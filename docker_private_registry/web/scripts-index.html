@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scripts Directory - Docker Registry</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🐳%3C/text%3E%3C/svg%3E">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/scripts-index.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📜 Setup Scripts Directory</h1>
+            <p><a href="/">← Back to Home</a></p>
+        </div>
+        
+        <div class="content">
+            <div class="info-box">
+                <strong>Installation & Setup Scripts</strong><br>
+                Download scripts to automate Docker installation and Registry configuration.
+            </div>
+            
+            <div class="section">
+                <h3>🐧 Linux Scripts</h3>
+                <div class="file-list">
+                    <div class="file-item">
+                        <div class="file-icon">🐳</div>
+                        <div class="file-info">
+                            <div class="file-name">install-docker.sh</div>
+                            <div class="file-description">Automated Docker installation script for Linux systems</div>
+                            <div class="file-size">~4 KB</div>
+                        </div>
+                        <a href="/scripts/install-docker.sh" class="download-btn">Download</a>
+                    </div>
+                    
+                    <div class="file-item">
+                        <div class="file-icon">⚙️</div>
+                        <div class="file-info">
+                            <div class="file-name">setup-docker-registry.sh</div>
+                            <div class="file-description">Docker Registry setup and configuration script for Linux systems</div>
+                            <div class="file-size">~4 KB</div>
+                        </div>
+                        <a href="/scripts/setup-docker-registry.sh" class="download-btn">Download</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h3>🪟 Windows Scripts</h3>
+                <div class="file-list">
+                    <div class="file-item">
+                        <div class="file-icon">🐳</div>
+                        <div class="file-info">
+                            <div class="file-name">install-docker-windows.bat</div>
+                            <div class="file-description">Docker Desktop installation script for Windows systems</div>
+                            <div class="file-size">~4 KB</div>
+                        </div>
+                        <a href="/scripts/install-docker-windows.bat" class="download-btn">Download</a>
+                    </div>
+                    
+                    <div class="file-item">
+                        <div class="file-icon">⚙️</div>
+                        <div class="file-info">
+                            <div class="file-name">setup-docker-registry-windows.bat</div>
+                            <div class="file-description">Docker Registry setup and configuration script for Windows systems</div>
+                            <div class="file-size">~3 KB</div>
+                        </div>
+                        <a href="/scripts/setup-docker-registry-windows.bat" class="download-btn">Download</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h3>📖 Usage</h3>
+                <div class="info-box">
+                    <strong>Linux/macOS:</strong> <code>curl [URL] -o script.sh && chmod +x script.sh && ./script.sh</code><br>
+                    <strong>Windows:</strong> <code>curl [URL] -o script.bat && script.bat</code> (Run as Admin)
+                </div>
+            </div>
+            
+            <a href="/" class="back-link">← Back to Home</a>
+        </div>
+    </div>
+    
+    <script src="/js/common.js"></script>
+    <script>
+        insertFooter('Docker Private Registry Resources Server');
+    </script>
+</body>
+</html>

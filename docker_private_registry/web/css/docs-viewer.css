@@ -1,0 +1,88 @@
+/* Documentation Viewer Page Specific Styles */
+
+.nav {
+    background: #f8f9fa;
+    padding: 20px 30px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.nav select {
+    padding: 10px 15px;
+    border: 2px solid #667eea;
+    border-radius: 6px;
+    font-size: 1em;
+    background: white;
+    color: #333;
+    cursor: pointer;
+    width: 100%;
+    max-width: 400px;
+}
+
+.markdown-body {
+    line-height: 1.6;
+}
+
+.markdown-body h1 {
+    color: #667eea;
+    border-bottom: 2px solid #667eea;
+    padding-bottom: 10px;
+    margin: 30px 0 20px 0;
+}
+
+.markdown-body h2 {
+    color: #764ba2;
+    margin: 25px 0 15px 0;
+}
+
+.markdown-body h3 {
+    color: #495057;
+    margin: 20px 0 10px 0;
+}
+
+.markdown-body code {
+    background: #f1f3f5;
+    color: #d63384;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+}
+
+.markdown-body pre {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    padding: 15px;
+    overflow-x: auto;
+    margin: 15px 0;
+}
+
+.markdown-body pre code {
+    background: transparent;
+    color: #333;
+    padding: 0;
+}
+
+.markdown-body a {
+    color: #667eea;
+    text-decoration: none;
+}
+
+.markdown-body a:hover {
+    text-decoration: underline;
+}
+
+.markdown-body ul, .markdown-body ol {
+    margin: 15px 0;
+    padding-left: 30px;
+}
+
+.markdown-body li {
+    margin: 8px 0;
+}
+
+.markdown-body blockquote {
+    border-left: 4px solid #667eea;
+    padding-left: 15px;
+    margin: 15px 0;
+    color: #6c757d;
+}

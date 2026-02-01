@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation Viewer - Docker Registry</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🐳%3C/text%3E%3C/svg%3E">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/docs-viewer.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Documentation</h1>
+            <p><a href="/">← Back to Home</a></p>
+        </div>
+        
+        <div class="nav">
+            <select id="docSelector" onchange="loadDocument()">
+                <option value="">Select a document...</option>
+                <option value="DOCKER_BASICS_GUIDE.md">DOCKER_BASICS_GUIDE.md - Docker & Docker Compose Basics</option>
+                <option value="DOCKER_INSTALL_GUIDE.md">DOCKER_INSTALL_GUIDE.md - Docker Installation Guide</option>
+                <option value="CERT_DOWNLOAD_GUIDE.md">CERT_DOWNLOAD_GUIDE.md - Certificate Download Guide</option>
+                <option value="EXTERNAL_CLIENT_GUIDE.md">EXTERNAL_CLIENT_GUIDE.md - External Client Setup</option>
+                <option value="REGISTRY_USAGE_GUIDE.md">REGISTRY_USAGE_GUIDE.md - Private Registry Usage Guide</option>
+            </select>
+        </div>
+        
+        <div class="content">
+            <div id="docContent" class="loading">
+                <p>Please select a document from the dropdown above.</p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/js/common.js"></script>
+    <script src="/js/docs-viewer.js"></script>
+</body>
+</html>

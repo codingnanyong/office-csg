@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificates Directory - Docker Registry</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🐳%3C/text%3E%3C/svg%3E">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/certs-index.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📜 Certificates Directory</h1>
+            <p><a href="/">← Back to Home</a></p>
+        </div>
+        
+        <div class="content">
+            <div class="info-box">
+                <strong>SSL/TLS Certificates</strong><br>
+                Download the certificate file required to connect to the Docker Registry securely.
+            </div>
+            
+            <div class="file-list">
+                <div class="file-item">
+                    <div class="file-icon">🔐</div>
+                    <div class="file-info">
+                        <div class="file-name">domain.crt</div>
+                        <div class="file-size">SSL Certificate File</div>
+                    </div>
+                    <a href="/certs/domain.crt" class="download-btn">Download</a>
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <strong>Usage:</strong><br>
+                After downloading, install the certificate on your system:<br>
+                <code style="background: #f1f3f5; padding: 5px 10px; border-radius: 4px; display: inline-block; margin-top: 10px;">
+                    curl http://{REGISTRY_HOST}:9000/certs/domain.crt -o domain.crt
+                </code>
+            </div>
+            
+            <a href="/" class="back-link">← Back to Home</a>
+        </div>
+    </div>
+    
+    <script src="/js/common.js"></script>
+    <script>
+        insertFooter('Docker Private Registry Resources Server');
+    </script>
+</body>
+</html>
