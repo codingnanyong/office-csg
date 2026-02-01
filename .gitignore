@@ -1,0 +1,108 @@
+# Global
+.DS_Store
+Thumbs.db
+*.log
+logs/
+*.tmp
+*.swp
+*.swo
+
+# IDE / Editor
+.vscode/
+.idea/
+*.iml
+*.code-workspace
+.vs/
+
+# Environment files and secrets
+.env
+.env.*
+**/.env
+**/.env.*
+secrets/
+**/.secrets/
+docker-compose.override.yml
+
+# Configuration files with sensitive data
+**/appsettings.json
+**/appsettings.*.json
+!**/appsettings.template.json
+**/db.json
+**/*targets*/*.json
+!**/*targets*/*.template.json
+**/plc_addresses.json
+
+# Test data with sensitive info
+**/DataSet/*.json
+!**/DataSet/*.template.json
+
+# Certificates and private keys
+*.pem
+*.key
+*.pfx
+*.p12
+*.crt
+*.cer
+*.csr
+*.srl
+
+# Database dumps and backups
+**/bak/**
+**/backup/**
+**/backups/**
+**/dump/**
+**/dumps/**
+*.sql
+
+# .NET / C#
+bin/
+obj/
+TestResults/
+*.user
+*.suo
+*.userprefs
+*.csproj.user
+*.pidb
+*.svclog
+*.pdb
+*.mdb
+
+# Python
+__pycache__/
+*.py[cod]
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+pip-wheel-metadata/
+share/python-wheels/
+.pytest_cache/
+.mypy_cache/
+.coverage*
+.cache/
+
+# Java
+target/
+out/
+.classpath
+.project
+.settings/
+
+# Frontend build artifacts (if any in subprojects)
+node_modules/
+coverage/
+*.tsbuildinfo
+
+# Docker / runtime data
+docker-data/
+.docker/
+
+
