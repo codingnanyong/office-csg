@@ -1,0 +1,121 @@
+﻿@using CSG.MI.TrMontrgSrv.Model
+@using CSG.MI.TrMontrgSrv.Model.ApiData
+@using CSG.MI.TrMontrgSrv.Web.Infrastructure
+@*@model List<CSG.MI.TrMontrgSrv.Model.ApiData.EventData>*@
+@using System.Collections.Generic
+
+<style>
+    table {
+        width: 100%;
+        max-width: 120%;
+        font-size: 0.75em;
+    }
+    table, th, td {
+        border: solid 1px gray;
+        border-collapse: collapse;
+    }
+    th, td {
+        padding: 5px;
+    }
+    th {
+        background-color: rgb(215, 215, 215);
+    }
+    .text-start {
+        text-align: left;
+    }
+    .text-center {
+        text-align: center;
+    }
+    .bg-info {
+    }
+    .bg-warning {
+        background-color: #ffc107;
+    }
+    .bg-danger {
+        background-color: #dc3545;
+    }
+    .server-url {
+        font-size: 0.85em;
+        margin-bottom: 10px;
+    }
+</style>
+
+<section class="jumbotron text-center">
+    <div class="container">
+        <div class="page-header">
+            <h2>
+                TR Monitoring Solution
+            </h2>
+        </div>
+        <div class="card card-block">
+            <div class="card-header">
+                <h3>Alert Messages</h3>
+            </div>
+            <div class="card-body">
+                <div class="server-url">
+                    Issued locations:
+                    <ul>
+                        @foreach (KeyValuePair<string, Device> entry in Model.DeviceDic)
+                        {
+                            <li>
+                                <a href="@($"http://{entry.Value.IpAddress}:9000/")">
+                                    @($"{entry.Value.PlantId}.{entry.Value.LocationId}")
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <div class="row">
+                    <table class="table table-sm table-bordered" style="font-size:0.75em;">
+                        <thead class="table-light text-center">
+                            <tr>
+                                <th scope="col">Level</th>
+                                <th scope="col">Location</th>
+                                <th scope="col">Device</th>
+                                <th scope="col">Area</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">PV</th>
+                                <th scope="col">SV</th>
+                                <th scope="col">Message</th>
+                                <th scope="col">Time</th>
+                                <th scope="col">Link</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (EventData log in Model.Data)
+                            {
+                                <tr>
+                                    @if (log.EventLevel == EventLevel.Warning)
+                                    {
+                                        <td class="bg-warning text-center">@log.EventLevel</td>
+                                    }
+                                    else if (log.EventLevel == EventLevel.Urgent)
+                                    {
+                                        <td class="bg-danger text-center">@log.EventLevel</td>
+                                    }
+                                    else
+                                    {
+                                        <td class="text-center">@log.EventLevel</td>
+                                    }
+                                    <td class="text-center">@($"{log.Device.PlantId}.{log.Device.LocationId}")</td>
+                                    <td class="text-center">@($"{log.Device.DeviceId}")</td>
+                                    <td class="text-center">@($"{log.InspArea}{log.AreaId}")</td>
+                                    <td class="text-center">@log.EventType</td>
+                                    <td class="text-center">@log.MeaValue</td>
+                                    <td class="text-center">@log.SetValue</td>
+                                    <td class="text-start">@log.Issue</td>
+                                    <td class="text-center">@(log.EvntDt.ToString("yyyy/MM/dd HH:mm:ss"))</td>
+                                    <td class="text-start">
+                                        <a href="@($"http://{log.Device.IpAddress}:9000/")">
+                                            @($"{log.Device.PlantId}.{log.Device.LocationId}")
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

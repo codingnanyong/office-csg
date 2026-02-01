@@ -1,0 +1,50 @@
+﻿@inherits LayoutComponentBase
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+    <div>
+        <CSG.MI.TrMontrgSrv.Dashboard.Components.Pages.Shared.Modals.ModalInfo @ref="modal">
+        </CSG.MI.TrMontrgSrv.Dashboard.Components.Pages.Shared.Modals.ModalInfo>
+        <CSG.MI.TrMontrgSrv.Dashboard.Components.Pages.Shared.Modals.ModalRequest @ref="modal_request">
+        </CSG.MI.TrMontrgSrv.Dashboard.Components.Pages.Shared.Modals.ModalRequest>
+    </div>
+    <main>
+
+        <div class="top-row px-4">
+            <div class="main-container">
+                <div class="float-start">
+                    <div class="icon">
+                        <i class="bi bi-info-circle" @onclick="ShowInfoModal"></i>
+                    </div>
+                    <div class="icon">
+                        <i class="bi bi-question-circle" @onclick="ShowRequestModal"></i>
+                    </div>
+                    <CultureSelector/>
+                    <div class="vr"></div>
+                    @* <div class="dropdown">
+                        <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-funnel-fill"></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><button class="dropdown-item" type="button" id="1">All</button></li>
+                            <li><button class="dropdown-item" type="button" id="2">Issue</button></li>
+                            <li><button class="dropdown-item" type="button" id="3">Not-Issue</button></li>
+                        </ul>
+                    </div> *@
+                </div>
+            </div>
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+
+<div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+</div>

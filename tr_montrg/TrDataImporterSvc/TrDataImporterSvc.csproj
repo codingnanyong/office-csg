@@ -1,0 +1,61 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>CSG.MI.TrMontrgSrv.TrDataImporterSvc</RootNamespace>
+    <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="appsettings.debug.json" />
+    <None Remove="appsettings.json" />
+    <None Remove="appsettings.release.json" />
+    <None Remove="C:\Users\jeawon.lee\.nuget\packages\nlog.config\4.7.11\contentFiles\any\any\NLog.config" />
+    <None Remove="C:\Users\Sean\.nuget\packages\nlog.config\4.7.11\contentFiles\any\any\NLog.config" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="appsettings.debug.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="appsettings.release.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.9.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.EventLog" Version="6.0.0" />
+    <PackageReference Include="NLog" Version="5.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Fsw\FileSystemWatcherEx\FileSystemWatcherEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TrMontrgSrv.BLL\TrMontrgSrv.BLL.csproj" />
+    <ProjectReference Include="..\TrMontrgSrv.EF\TrMontrgSrv.EF.csproj" />
+    <ProjectReference Include="..\TrMontrgSrv.Helpers\TrMontrgSrv.Helpers.csproj" />
+    <ProjectReference Include="..\TrMontrgSrv.LoggerService\TrMontrgSrv.LoggerService.csproj" />
+    <ProjectReference Include="..\TrMontrgSrv.Model\TrMontrgSrv.Model.csproj" />
+    <ProjectReference Include="..\TrMontrgSrv.SL\TrMontrgSrv.SL.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,74 @@
+﻿<div>
+    <ModalDialog @ref="modal"></ModalDialog>
+
+    @if (Devices == null)
+    {
+        <div class="mt-3">
+            <h3 id="timestamp" class="text-success"></h3>
+            <p id="current_time"></p>
+            <Spinner />
+        </div>
+    }
+    else
+    {
+        <div class="card-container">
+            @foreach (var device in Devices)
+            {
+                <div class="card border-dark mb-3" @onclick="() => ShowModal(device)">
+                    <div class="card-header" id="@SetCardHeaderId(device)">
+                        <div>
+                            <b>@device.Description:@device.DeviceId</b>
+                        </div>
+                        <div class="issued">
+                            <i class="bi bi-bell-fill"></i>
+                            @if (device.Temperature.EvntCnt != 0)
+                            {
+                                <i class="bi bi-circle-fill">
+                                    <p>@device.Temperature.EvntCnt</p>
+                                </i>
+                            }
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-body header">
+                            <p>Max</p>
+                            <h3 class="card-text">
+                                @device.Temperature.Max
+                                <p>ºc</p>
+                            </h3>
+                            <div class="dif-tmp">
+                                <i class="bi @SetIcon(device.Temperature.d_Max)"></i>
+                                @absContext(@device.Temperature.d_Max)
+                                <p>ºc</p>
+                            </div>
+                        </div>
+                        <div class="card-body header">
+                            <p>Diff</p>
+                            <h3 class="card-text">
+                                @device.Temperature.Dif
+                                <p>ºc</p>
+                            </h3>
+                            <div class="dif-tmp">
+                                <i class="bi @SetIcon(device.Temperature.d_Diff)"></i>
+                                @absContext(@device.Temperature.d_Diff)
+                                <p>ºc</p>
+                            </div>
+                        </div>
+                        <div class="card-body header">
+                            <p>Min</p>
+                            <h3 class="card-text">
+                                @device.Temperature.Min
+                                <p>ºc</p>
+                            </h3>
+                            <div class="dif-tmp">
+                                <i class="bi @SetIcon(device.Temperature.d_Min)"></i>
+                                @absContext(@device.Temperature.d_Min)
+                                <p>ºc</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

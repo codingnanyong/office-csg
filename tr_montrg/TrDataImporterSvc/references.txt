@@ -1,0 +1,6 @@
+﻿
+
+https://docs.microsoft.com/en-us/dotnet/core/extensions/windows-service
+
+https://devblogs.microsoft.com/ifdef-windows/creating-a-windows-service-with-c-net5/
+https://github.com/azchohfi/ImageClassifierSample/tree/net5winservice

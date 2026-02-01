@@ -1,0 +1,166 @@
+﻿body {
+}
+
+/*--------------------------------------------------------------
+# Cards - Container
+--------------------------------------------------------------*/
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: stretch;
+    border: 0.125rem solid thin;
+    border-radius: 0.625rem 0.625rem 0.625rem 0.625rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+    .card-container .card-header {
+        display: flex;
+        justify-content: space-between;
+    }
+
+
+/*--------------------------------------------------------------
+# Card - Main
+--------------------------------------------------------------*/
+.card {
+    min-width: 24rem !important;
+    max-width: 24rem !important;
+    flex: 0 0 calc(25% - 1.25rem);
+    min-height: 11rem !important;
+    border-bottom: #c5c8cf 1px solid;
+}
+
+    .card:hover {
+        box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+    }
+
+/*--------------------------------------------------------------
+# Card - Header
+--------------------------------------------------------------*/
+
+.card-header {
+    background-color: white;
+    font-size: 1.25rem;
+    border-radius: 0.625rem;
+}
+
+    .card-header b {
+        color: #040404;
+        font-size: 1.15rem;
+    }
+
+    .card-header .issued {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        position: relative;
+    }
+
+        .card-header .issued .bi-bell-fill {
+            font-size: 1.3rem;
+        }
+
+        .card-header .issued .bi-circle-fill {
+            font-size: 1rem;
+            color: #8833ff;
+            position: absolute;
+            right: -0.3rem;
+            top: -0.3rem;
+        }
+
+            .card-header .issued .bi-circle-fill p {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                margin: 0;
+                font-size: 0.7rem;
+                color: white;
+                font-style: normal;
+            }
+
+
+/*--------------------------------------------------------------
+# Card - Header(Colors)
+--------------------------------------------------------------*/
+#level_A {
+    background-color: #ffffff;
+}
+
+#level_B {
+    background-color: #34a853;
+}
+
+#level_C {
+    background-color: #fbbc05;
+}
+
+#level_D {
+    background-color: #ea4335;
+}
+
+#level_Z {
+    background-color: #545454;
+}
+
+/*--------------------------------------------------------------
+# Card - Body
+--------------------------------------------------------------*/
+.card-body {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+    .card-body .header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+
+        .card-body .header p,
+        .card-body .header h3 {
+            margin: 0;
+        }
+
+    .card-body .card-text {
+        display: flex;
+    }
+
+.dif-tmp {
+    display: flex;
+    align-items: center;
+}
+
+    .dif-tmp .bi-caret-down-fill {
+        color: blue;
+        font-size: 20px !important;
+    }
+
+    .dif-tmp .bi-caret-up-fill {
+        color: red;
+        font-size: 20px !important;
+    }
+
+/*--------------------------------------------------------------
+# Moblie Size
+--------------------------------------------------------------*/
+@media only screen and (min-width: 601px) and (max-width: 1024px) {
+    .card {
+        margin: 0 auto;
+    }
+}
+
+/*--------------------------------------------------------------
+# Moblie Size
+--------------------------------------------------------------*/
+@media only screen and (max-width: 600px) {
+    .card {
+        margin: 0 auto;
+    }
+}

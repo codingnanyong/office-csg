@@ -1,0 +1,80 @@
+﻿@page "/admin/devicectrls/{PlantId}/{DeviceId}"
+
+<div class="mb-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/admin">Admin</a></li>
+            <li class="breadcrumb-item"><a href="/admin/devices/@PlantId">@(PlantId) Devices</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Device Control</li>
+        </ol>
+    </nav>
+</div>
+
+<section class="jumbotron text-center">
+    <div class="container">
+        <div class="page-header">
+            <h1>Device Control</h1>
+        </div>
+        <!-- -->
+        <div class="card card-block">
+            <div class="card-header">
+                <h3>@(DeviceId)</h3>
+            </div>
+            <div class="card-body">
+                @if (IsDataLoaded == false)
+                {
+                    <div class="mt-3 align-content-center">
+                        <img src="/img/Spin-1s-200px.png" />
+                    </div>
+                }
+                else
+                {
+                    @if (DeviceCtrl == null)
+                    {
+                        <a href="@($"/admin/devicectrls/add/{PlantId}?deviceId={DeviceId}")" class="btn btn-lg">
+                            <i class="fas fa-plus-circle"></i>
+                        </a>
+                        <button class="btn btn-lg text-primary" @onclick="ShowDeviceCtrlAddDialog">
+                            <i class="fas fa-plus-circle"></i>
+                        </button>
+                    }
+                    <DeviceCtrlAddDialog @ref="DeviceCtrlAddDialog" PlantId="@PlantId" DeviceId="@DeviceId" CloseEventCallback="@DeviceCtrlAddDialog_OnDialogClose" />
+                    <table id="frame_info" class="table table-sm table-bordered">
+                        <thead class="table-light text-center">
+                            <tr>
+                                <th scope="col">Device ID</th>
+                                <th scope="col">Level A To</th>
+                                <th scope="col">Level B To</th>
+                                <th scope="col">Level C To</th>
+                                <th scope="col">Monitoring Hour</th>
+                                <th scope="col">Nelson Rules</th>
+                                <th scope="col">&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (DeviceCtrl != null)
+                            {
+                                <tr>
+                                    <td class="align-middle">@DeviceCtrl.DeviceId</td>
+                                    <td class="align-middle">@DeviceCtrl.LevelATo</td>
+                                    <td class="align-middle">@DeviceCtrl.LevelBTo</td>
+                                    <td class="align-middle">@DeviceCtrl.LevelCTo</td>
+                                    <td class="align-middle">@DeviceCtrl.MonitoringHour</td>
+                                    <td class="align-middle">@DeviceCtrl.NelsonRule</td>
+                                    <td class="align-middle fs-4">
+                                        <a href="@($"/admin/devicectrls/edit/{PlantId}/{DeviceCtrl.DeviceId}")" class="btn btn-lg text-primary">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+
+                <a class="btn btn-outline-primary ms-2" @onclick="@NavigateToDevices">Back to @(PlantId) Devices</a>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,32 @@
+﻿@using Microsoft.Extensions.Localization
+@using TrMontrgSrv.Dashboard.Resources
+@inject IStringLocalizer<language> localizer
+
+<Modal @ref="modal" title="@localizer["request_header"].Value" IsVerticallyCentered="true" Size="ModalSize.Regular">
+    <BodyTemplate>
+        <form>
+            <div class="mb-3">
+                <label for="recipient-name" class="col-form-label">@localizer["request_category"]</label>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span id="selectedCategory">@selected_category</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        @foreach (var category in Categories!.Select((value, index) => new { Value = value, Idx = index + 1 }))
+                        {
+                            <li><a class="dropdown-item" id="@category.Idx" @onclick="() => UpdateSelectedCategory(category.Value)">@category.Value.Value</a></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="message-text" class="col-form-label">@localizer["request_textarea"]</label>
+                <textarea class="form-control" id="message-text" @bind="Feedback.Comment"></textarea>
+            </div>
+        </form>
+    </BodyTemplate>
+    <FooterTemplate>
+        <Button Color="ButtonColor.Primary" @onclick="SendRequest">@localizer["request_button1"]</Button>
+            <Button Color="ButtonColor.Secondary" @onclick="OnHideModal">@localizer["request_button2"]</Button>
+        </FooterTemplate>
+    </Modal>

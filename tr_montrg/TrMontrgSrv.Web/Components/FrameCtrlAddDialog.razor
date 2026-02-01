@@ -1,0 +1,85 @@
+﻿
+@if (ShowDialog)
+{
+    <div class="modal fade show d-block" id="deviceAddModalWindow" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Add New Item</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" @onclick="@Close"></button>
+                </div>
+                <div class="modal-body">
+                    @if (Saved == false)
+                    {
+                        @if (ShowSpinner)
+                        {
+                            <div class="mt-3 align-content-center">
+                                <img src="/img/Spin-1s-200px.png" />
+                            </div>
+                        }
+                        else
+                        {
+                            <EditForm Model="@FrameCtrl" id="editForm" class="editForm" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="@HandleInvalidSubmit">
+                                <DataAnnotationsValidator />
+                                <div class="text-start text-danger fs-6">
+                                    <ValidationSummary />
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text d-block text-end">Device ID:</span>
+                                    <InputText id="deviceId" class="form-control" @bind-Value="@FrameCtrl.DeviceId" readonly></InputText>
+                                    <CustomValidationMessage Class="ms-2 text-danger fs-4" For="@(() => FrameCtrl.DeviceId)" UseExclamationIcon="true" />
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text d-block text-end">UCL I (max):</span>
+                                    <InputNumber id="uclIMax" class="form-control" @bind-Value="@FrameCtrl.UclIMax"></InputNumber>
+                                    <CustomValidationMessage Class="ms-2 text-danger fs-4" For="@(() => FrameCtrl.UclIMax)" UseExclamationIcon="true" />
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text d-block text-end">LCL I (max):</span>
+                                    <InputNumber id="uclIMax" class="form-control" @bind-Value="@FrameCtrl.LclIMax"></InputNumber>
+                                    <CustomValidationMessage Class="ms-2 text-danger fs-4" For="@(() => FrameCtrl.LclIMax)" UseExclamationIcon="true" />
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text d-block text-end">UCL MR (max):</span>
+                                    <InputNumber id="uclMrMax" class="form-control" @bind-Value="@FrameCtrl.UclMrMax"></InputNumber>
+                                    <CustomValidationMessage Class="ms-2 text-danger fs-4" For="@(() => FrameCtrl.UclMrMax)" UseExclamationIcon="true" />
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text d-block text-end">UCL I (diff):</span>
+                                    <InputNumber id="uclIDiff" class="form-control" @bind-Value="@FrameCtrl.UclIDiff"></InputNumber>
+                                    <CustomValidationMessage Class="ms-2 text-danger fs-4" For="@(() => FrameCtrl.UclIDiff)" UseExclamationIcon="true" />
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text d-block text-end">LCL I (diff):</span>
+                                    <InputNumber id="lclIDiff" class="form-control" @bind-Value="@FrameCtrl.LclIDiff"></InputNumber>
+                                    <CustomValidationMessage Class="ms-2 text-danger fs-4" For="@(() => FrameCtrl.LclIDiff)" UseExclamationIcon="true" />
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text d-block text-end">UCL MR (diff):</span>
+                                    <InputNumber id="uclMrDiff" class="form-control" @bind-Value="@FrameCtrl.UclMrDiff"></InputNumber>
+                                    <CustomValidationMessage class="ms-2 text-danger fs-4" For="@(() => FrameCtrl.UclMrDiff)" UseExclamationIcon="true" />
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text d-block text-end">Warning Temp.:</span>
+                                    <InputNumber id="tWarning" class="form-control" @bind-Value="@FrameCtrl.TWarning"></InputNumber>
+                                    <CustomValidationMessage class="ms-2 text-danger fs-4" For="@(() => FrameCtrl.TWarning)" UseExclamationIcon="true" />
+                                </div>
+                            </EditForm>
+                        }
+                    }
+                    else
+                    {
+                        <div class="alert @StatusClass">@Message</div>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @onclick="@Close">Close</button>
+                    @if (Saved == false)
+                    {
+                        <button type="submit" form="editForm" class="btn btn-primary edit-btn">Save</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}

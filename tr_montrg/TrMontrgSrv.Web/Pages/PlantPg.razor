@@ -1,0 +1,269 @@
+﻿@page "/{PlantId}"
+@using CSG.MI.TrMontrgSrv.Model
+
+<div class="mb-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@PlantId</li>
+        </ol>
+    </nav>
+</div>
+
+<section class="jumbotron text-center">
+    <div class="container">
+        <div class="page-header">
+            <h1>@PlantId</h1>
+            <p></p>
+        </div>
+        <!-- -->
+        <div class="card card-block">
+            <div class="card-header">Power Transformer Information</div>
+            <div class="card-body">
+                @*<div class="row">
+                    <div class="col-sm-12">
+                        <div class="card h-100">
+                            <div class="card-body text-start">
+                                @if (EvntLogs != null)
+                                {
+                                    <div>
+                                        <a class="btn bg-danger position-relative me-5">
+                                            Urgent
+                                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark">
+                                                @TotalUrgents
+                                                <span class="visually-hidden">Total urgent logs</span>
+                                            </span>
+                                        </a>
+                                        <a class="btn bg-warning position-relative me-5">
+                                            Warning
+                                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark">
+                                                @TotalWarnings
+                                                <span class="visually-hidden">Total warning logs</span>
+                                            </span>
+                                        </a>
+                                    </div>
+                                    <div class="accordion accordion-flush mt-3" id="accordionEvntLogs">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="flush-headingOne">
+                                                <button class="accordion-button collapsed btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                                    Show Details
+                                                </button>
+                                            </h2>
+                                            <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionEvntLogs">
+                                                <div class="accordion-body">
+
+                                                    <table id="frame_info" class="table table-sm table-bordered" style="font-size:0.75em;">
+                                                        <thead class="table-light text-center">
+                                                            <tr>
+                                                                <th scope="col">Level</th>
+                                                                <th scope="col">Location</th>
+                                                                <th scope="col">Device</th>
+                                                                <th scope="col">Area</th>
+                                                                <th scope="col">Type</th>
+                                                                <th scope="col">Message</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (EvntLog log in EvntLogs)
+                                                            {
+                                                            <tr>
+                                                                @if (log.EvntLevel == EventLevel.Warning.ToString())
+                                                                {
+                                                                    <td class="bg-warning text-center">@log.EvntLevel</td>
+                                                                }
+                                                                else if (log.EvntLevel == EventLevel.Urgent.ToString())
+                                                                {
+                                                                    <td class="bg-danger text-center">@log.EvntLevel</td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td class="text-center">@log.EvntLevel</td>
+                                                                }
+                                                                <td class="text-center">@log.LocationId</td>
+                                                                <td class="text-center">@log.DeviceId</td>
+                                                                <td class="text-center">@(log.InspArea)@(log.AreaId)</td>
+                                                                <td class="text-center">@log.EvntType</td>
+                                                                <td>@log.Message</td>
+                                                            </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="mt-3 align-content-center">
+                                        <img src="/img/Spin-1s-200px.png" />
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>*@
+                <div class="row mt-3">
+                    <div class="card-block">
+                        <table id="frame_info" class="table table-sm table-bordered">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th class="col-2" scope="col">Plant</th>
+                                    <th class="col-1" scope="col">ER</th>
+                                    <th scope="col">TR</th>
+                                    <th scope="col">Coverage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (PlantId == "JJ")
+                                {
+                                    <tr>
+                                        <th rowspan="4" scope="row" class="align-middle">Karawang</th>
+                                        <td class="align-middle">ER1</td>
+                                        <td class="text-left">
+                                            <div class="btn-group" role="group" aria-label="TR group">
+                                                <a class="btn btn-primary" href="/@PlantId/TR01/TRIOT-A002">TR01</a>
+                                                <a class="btn btn-primary" href="/@PlantId/TR02/TRIOT-A003">TR02</a>
+                                                <a class="btn btn-primary" href="/@PlantId/TR03/TRIOT-A001">TR03</a>
+                                                <a class="btn btn-primary" href="/@PlantId/TR04/TRIOT-A004">TR04</a>
+                                                <a class="btn btn-primary" href="/@PlantId/TR05/TRIOT-A005">TR05</a>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle">Bottom, Plant A, Main Office</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="align-middle">ER2</td>
+                                        <td class="text-left">
+                                            <div class="btn-group" role="group" aria-label="TR group">
+                                                <a class="btn btn-primary" href="/@PlantId/TR07/TRIOT-A006">TR07</a>
+                                                <a class="btn btn-primary" href="/@PlantId/TR08/TRIOT-A007">TR08</a>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle">Plant B, C, D, Mess</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ER3</td>
+                                        <td class="text-left">
+                                            <div class="btn-group" role="group" aria-label="TR group">
+                                                <a class="btn btn-primary" href="/@PlantId/TR09/TRIOT-A008">TR09</a>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle">Accessory, WWTP</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="align-middle">ER4</td>
+                                        <td class="text-left">
+                                            <div class="btn-group" role="group" aria-label="TR group">
+                                                <a class="btn btn-primary" href="/@PlantId/TR10/TRIOT-A009">TR10</a>
+                                                <a class="btn btn-primary" href="/@PlantId/TR11/TRIOT-A010">TR11</a>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle">Plant E, F, G, ECO</td>
+                                    </tr>
+                                }
+                                else if (PlantId == "CKP")
+                                {
+                                    <tr>
+                                        <th rowspan="2" scope="row" class="align-middle">Cikampek</th>
+                                        <td class="align-middle">ER1</td>
+                                        <td class="text-left">
+                                            <div class="btn-group" role="group" aria-label="TR group">
+                                                <a class="btn btn-primary" href="/@PlantId/TR01/TRIOT-A011">TR01</a>
+                                                <a class="btn btn-primary" href="/@PlantId/TR02/TRIOT-A012">TR02</a>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle">Plant A, Seo Heung office, Mold WWTP</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="align-middle">ER2</td>
+                                        <td class="text-left">
+                                            <div class="btn-group" role="group" aria-label="TR group">
+                                                <a class="btn btn-primary" href="/@PlantId/TR03/TRIOT-A013">TR03</a>
+                                                <a class="btn btn-primary" href="/@PlantId/TR04/TRIOT-A014">TR04</a>
+                                                <a class="btn btn-primary" href="/@PlantId/TR05/TRIOT-A015">TR05</a>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle">Plant A, B</td>
+                                    </tr>
+                                }
+                                else if (PlantId == "JJS")
+                                {
+                                    <tr>
+                                        <th scope="row" class="align-middle">JJS</th>
+                                        <td class="align-middle">ER1</td>
+                                        <td class="text-left">
+                                            <div class="btn-group" role="group" aria-label="TR group">
+                                                <a class="btn btn-primary" href="/@PlantId/TR01/TRIOT-A016">TR01</a>
+                                                <a class="btn btn-primary" href="/@PlantId/TR02/TRIOT-A017">TR02</a>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle">All JJS</td>
+                                    </tr>
+                                }
+                                else if (PlantId == "RJ")
+                                {
+                                    <tr>
+                                        <th scope="row" class="align-middle">RJ</th>
+                                        <td class="align-middle">ER2</td>
+                                        <td class="text-left">
+                                            <div class="btn-group" role="group" aria-label="TR group">
+                                                <a class="btn btn-primary" href="/@PlantId/TR03/TRIOT-A018">TR03</a>
+                                                <a class="btn btn-primary" href="/@PlantId/TR04/TRIOT-A019">TR04</a>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle">All RJ</td>
+                                    </tr>
+                                }
+                                else if (PlantId == "HQ")
+                                {
+                                    <tr>
+                                        <th rowspan="2" scope="row" class="align-middle">HQ</th>
+                                        <td class="align-middle">A-1</td>
+                                        <td class="text-left">
+                                            <div class="btn-group" role="group" aria-label="TR group">
+                                                <a class="btn btn-primary" href="/@PlantId/CE0095/TRIOT-A020">CE0095</a>
+                                                <a class="btn btn-primary" href="/@PlantId/TR01/TRIOT-A021">TR01</a>
+                                                <a class="btn btn-primary" href="/@PlantId/TR02/TRIOT-A022">TR02</a>
+                                                <a class="btn btn-primary" href="/@PlantId/TR03/TRIOT-A023">TR03</a>
+                                                <a class="btn btn-primary" href="/@PlantId/TR300KVA/TRIOT-A024">TR300KVA</a>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle">???</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="align-middle">D</td>
+                                        <td class="text-left">
+                                            <div class="btn-group" role="group" aria-label="TR group">
+                                                <a class="btn btn-primary" href="/@PlantId/TR04/TRIOT-A025">TR04</a>
+                                                <a class="btn btn-primary" href="/@PlantId/TR05/TRIOT-A026">TR05</a>
+                                                <a class="btn btn-primary" href="/@PlantId/TR06/TRIOT-A027">TR06</a>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle">???</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        @if (PlantId == "JJ")
+                        {
+                            <img src="/img/plant_jj_karawang.png" class="w-100" />
+                        }
+                        else if (PlantId == "CKP")
+                        {
+                            <img src="/img/plant_jj_cikampek.png" class="w-100" />
+                        }
+                        else if (PlantId == "JJS" || PlantId == "RJ")
+                        {
+                            <img src="/img/plant_jjs_rj.png" class="w-100" />
+                        }
+                        else if (PlantId == "HQ")
+                        {
+                            <img src="/img/plant_hq.png" class="w-100" />
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

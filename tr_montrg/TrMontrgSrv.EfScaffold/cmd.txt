@@ -1,0 +1,12 @@
+﻿# Install Nuget Packages
+> dotnet add package Microsoft.EntityFrameworkCore
+> dotnet add package Microsoft.EntityFrameworkCore.Design
+> dotnet add package Microsoft.EntityFrameworkCore.Tools
+> dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL
+> dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL.Design
+
+# Run EF Scaffold
+> dotnet ef dbcontext scaffold "Host={DB_HOST};Port={DB_PORT};Database=tr_montrg_srv;Username={DB_USER};Password={DB_PASSWORD}" Npgsql.EntityFrameworkCore.PostgreSQL --schema "public" -o Models --data-annotations -f -c AppDbContext --context-dir ./
+
+# References
+https://docs.microsoft.com/en-us/ef/core/cli/dotnet

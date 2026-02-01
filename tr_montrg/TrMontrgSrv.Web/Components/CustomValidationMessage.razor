@@ -1,0 +1,39 @@
+﻿@* Usage:
+    <CustomValidationMessage For="@(() => _model.FirstName)"
+                             Class="mt-2 sm:ml-4 font-semibold text-red-600"
+                             CustomMessage="*" />
+*@
+
+@typeparam TValue
+@inherits ValidationMessageBase<TValue>
+
+@if (String.IsNullOrEmpty(CustomMessage))
+{
+    @if (UseExclamationIcon == false)
+    {
+        @foreach (var message in ValidationMessages)
+        {
+            <div class="@Class">
+                @message
+            </div>
+        }
+    }
+    else
+    {
+        @if (ValidationMessages.Any())
+        {
+            <div class="@Class">
+                <i class="fas fa-exclamation-circle"></i>
+            </div>
+        }
+    }
+}
+else
+{
+    @if (ValidationMessages.Any())
+    {
+        <div class="@Class">
+            @CustomMessage
+        </div>
+    }
+}

@@ -1,0 +1,54 @@
+﻿@page "/"
+
+@implements IDisposable
+@inject IJSRuntime JsRuntime
+
+@using Blazor.Analytics.Abstractions
+@using Blazor.Analytics
+@inject ITrackingNavigationState TrackingNavigationState
+@inject IAnalytics GlobalTracking
+
+<section class="jumbotron text-center">
+    <div class="container">
+        <div class="page-header">
+            <h1 class="mt-5">TR Monitoring Solution</h1>
+            <p>
+                Welcome to the advanced <b>artificial intelligence</b> thermometer server system.
+                This power transformer preventive diagnosis solution monitors temperature of a transformer in real time with a thermal imaging camera and collects data.
+                It helps to prevent problems in advance by analyzing the data collected in real time by various algorithms.
+            </p>
+        </div>
+        <img src="/img/transformer_800x862.png" style="width:100%; max-width:600px;" />
+        @*<div id="scene3d"></div>*@
+    </div>
+</section>
+
+@*<SurveyPrompt Title="How is Blazor working for you?" />*@
+
+@code {
+
+    protected override void OnInitialized()
+    {
+        //GlobalTracking.Disable();
+    }
+
+    // https://github.com/technohippy/3MFLoader/blob/master/app/index.html
+
+    #region Override Methods
+
+    @*protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+                await JsRuntime.InvokeAsync<Task>("transformer3d");
+        }*@
+
+    #endregion
+
+    #region IDisposable Member
+
+    public void Dispose()
+    {
+    }
+
+    #endregion
+}

@@ -1,0 +1,9 @@
+﻿<img src="@ImageSrc" id="@Id" />
+
+@code {
+    [Parameter]
+    public string Id { get; set; } = "spinner";
+
+    [Parameter]
+    public string ImageSrc { get; set; } = "/img/Spin-1s-200px.png";
+}

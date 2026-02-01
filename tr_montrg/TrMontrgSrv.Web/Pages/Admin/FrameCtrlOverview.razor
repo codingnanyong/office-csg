@@ -1,0 +1,84 @@
+﻿@page "/admin/framectrls/{PlantId}/{DeviceId}"
+
+<div class="mb-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/admin">Admin</a></li>
+            <li class="breadcrumb-item"><a href="/admin/devices/@PlantId">@(PlantId) Devices</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Frame Control</li>
+        </ol>
+    </nav>
+</div>
+
+<section class="jumbotron text-center">
+    <div class="container">
+        <div class="page-header">
+            <h1>Frame Control</h1>
+        </div>
+        <!-- -->
+        <div class="card card-block">
+            <div class="card-header">
+                <h3>@(DeviceId)</h3>
+            </div>
+            <div class="card-body">
+                @if (IsDataLoaded == false)
+                {
+                    <div class="mt-3 align-content-center">
+                        <img src="/img/Spin-1s-200px.png" />
+                    </div>
+                }
+                else
+                {
+                    @if (FrameCtrl == null)
+                    {
+                        <a href="@($"/admin/framectrls/add/{PlantId}?deviceId={DeviceId}")" class="btn btn-lg">
+                            <i class="fas fa-plus-circle"></i>
+                        </a>
+                        <button class="btn btn-lg text-primary" @onclick="ShowFrameCtrlAddDialog">
+                            <i class="fas fa-plus-circle"></i>
+                        </button>
+                    }
+                    <FrameCtrlAddDialog @ref="FrameCtrlAddDialog" PlantId="@PlantId" DeviceId="@DeviceId" CloseEventCallback="@FrameCtrlAddDialog_OnDialogClose" />
+                    <table id="frame_info" class="table table-sm table-bordered">
+                        <thead class="table-light text-center">
+                            <tr>
+                                <th scope="col">Device ID</th>
+                                <th scope="col">UCL I (max)</th>
+                                <th scope="col">LCL I (max)</th>
+                                <th scope="col">UCL MR (max)</th>
+                                <th scope="col">UCL I (diff)</th>
+                                <th scope="col">LCL I (diff)</th>
+                                <th scope="col">UCL MR (diff)</th>
+                                <th scope="col">Warning temp.</th>
+                                <th scope="col">&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (FrameCtrl != null)
+                            {
+                                <tr>
+                                    <td class="align-middle">@FrameCtrl.DeviceId</td>
+                                    <td class="align-middle">@FrameCtrl.UclIMax</td>
+                                    <td class="align-middle">@FrameCtrl.LclIMax</td>
+                                    <td class="align-middle">@FrameCtrl.UclMrMax</td>
+                                    <td class="align-middle">@FrameCtrl.UclIDiff</td>
+                                    <td class="align-middle">@FrameCtrl.LclIDiff</td>
+                                    <td class="align-middle">@FrameCtrl.UclMrDiff</td>
+                                    <td class="align-middle">@FrameCtrl.TWarning</td>
+                                    <td class="align-middle fs-4">
+                                        <a href="@($"/admin/framectrls/edit/{PlantId}/{FrameCtrl.DeviceId}")" class="btn btn-lg text-primary">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+
+                <a class="btn btn-outline-primary ms-2" @onclick="@NavigateToDevices">Back to @(PlantId) Devices</a>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,172 @@
+﻿@page "/{PlantId}/{LocationId}/{DeviceId}"
+@using CSG.MI.TrMontrgSrv.Model
+
+<div class="mb-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/@PlantId">@PlantId</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@LocationId</li>
+        </ol>
+    </nav>
+</div>
+
+<section class="jumbotron text-center">
+    <div class="container">
+        <div class="page-header">
+            <h1>
+                @LocationId
+            </h1>
+        </div>
+        <!-- -->
+        <div class="card card-block">
+            <div class="card-header">
+                <h3>@DeviceId</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card h-100">
+                            <div class="card-body text-start">
+                                @if (EvntLogs != null)
+                                {
+                                    <div>
+                                        <a class="btn bg-danger position-relative me-5">
+                                            Urgent
+                                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark">
+                                                @TotalUrgents
+                                                <span class="visually-hidden">Total urgent logs</span>
+                                            </span>
+                                        </a>
+                                        <a class="btn bg-warning position-relative me-5">
+                                            Warning
+                                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark">
+                                                @TotalWarnings
+                                                <span class="visually-hidden">Total warning logs</span>
+                                            </span>
+                                        </a>
+                                        <a class="btn btn-outline-dark position-relative me-5">
+                                            Info
+                                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark">
+                                                @TotalInfos
+                                                <span class="visually-hidden">Total info logs</span>
+                                            </span>
+                                        </a>
+                                    </div>
+                                    <div class="accordion accordion-flush mt-3" id="accordionEvntLogs">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="flush-headingOne">
+                                                <button class="accordion-button collapsed btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                                    Show Details
+                                                </button>
+                                            </h2>
+                                            <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionEvntLogs">
+                                                <div class="accordion-body">
+
+                                                    <table id="frame_info" class="table table-sm table-bordered" style="font-size:0.75em;">
+                                                        <thead class="table-light text-center">
+                                                            <tr>
+                                                                <th scope="col">Level</th>
+                                                                <th scope="col">Area</th>
+                                                                <th scope="col">Type</th>
+                                                                <th scope="col">PV</th>
+                                                                <th scope="col">SV</th>
+                                                                <th scope="col">Message</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (EvntLog log in EvntLogs)
+                                                            {
+                                                                <tr>
+                                                                    @if (log.EvntLevel == EventLevel.Warning.ToString())
+                                                                    {
+                                                                        <td class="bg-warning text-center">@log.EvntLevel</td>
+                                                                    }
+                                                                    else if (log.EvntLevel == EventLevel.Urgent.ToString())
+                                                                    {
+                                                                        <td class="bg-danger text-center">@log.EvntLevel</td>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <td class="text-center">@log.EvntLevel</td>
+                                                                    }
+                                                                    <td class="text-center">@(log.InspArea)@(log.AreaId)</td>
+                                                                    <td class="text-center">@log.EvntType</td>
+                                                                    <td class="text-center">@log.MeaValue</td>
+                                                                    <td class="text-center">@log.SetValue</td>
+                                                                    <td>@log.Message</td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="mt-3 align-content-center">
+                                        <img src="/img/Spin-1s-200px.png" />
+                                    </div>
+                                }
+                                <!-- Spinner -->
+                                <div class="mt-3">
+                                    <Spinner />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row mt-3">
+                    <div class="col-sm-6">
+                        <div class="card h-100">
+                            <div class="card-body text-start">
+                                <h5 class="card-title">Real-time</h5>
+                                <p class="card-text">
+                                    You can observe the current temperature of the transformer in real time.
+                                    Temperature distribution is also displayed as RGB and IR images.
+                                </p>
+                            </div>
+                            <div class="card-footer">
+                                <a class="btn btn-primary btn-block" @onclick="@OpenPopupWindow">Open</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="card h-100">
+                            <div class="card-body text-xl-start">
+                                <h5 class="card-title">Control Charts</h5>
+                                <p class="card-text">
+                                    The control chart shows a graph to study how a process changes over time.
+                                    It is a statistical process control tool used to determine if a manufacturing or business process is in a state of control.
+                                </p>
+                            </div>
+                            <div class="card-footer">
+                                <a class="btn btn-primary btn-block" href="/@PlantId/@LocationId/@DeviceId/frame">Frame</a>
+                                <a class="btn btn-primary btn-block" href="/@PlantId/@LocationId/@DeviceId/roi">ROI</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-sm-12">
+                        <div class="card h-100">
+                            <div class="card-body text-xl-start">
+                                <h5 class="card-title">Position of Max. Temperatures</h5>
+                                <p class="card-text">
+                                    By checking the trend of the highest temperature position of the transformer, more intensive management is possible.
+                                </p>
+                            </div>
+                            <div class="card-footer">
+                                <a class="btn btn-primary btn-block" href="/@PlantId/@LocationId/@DeviceId/frame/maxpos">Check</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

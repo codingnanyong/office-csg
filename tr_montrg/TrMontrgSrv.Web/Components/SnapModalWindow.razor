@@ -1,0 +1,91 @@
+﻿<div class="modal fade" id="snapModalWindow" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title text-success"></h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="card card-block">
+                    <div class="card-header">Vision</div>
+                    <div class="card-body">
+                        <div class="card-block">
+                            <div class="text-center">
+                                <!-- RGB Camera -->
+                                <img id="rgbImage" src="" style="width:100%; height:auto; max-width:800px;" /><br />
+                                <!-- IR Camera -->
+                                <img id="irImage" src="" style="width:100%; height:auto; max-width:800px;" />
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Frame -->
+                <div class="card mt-3">
+                    <div class="card-header">
+                        Frame
+                    </div>
+                    <div class="card-body">
+                        <table id="frame_info" class="table table-sm table-bordered">
+                            <thead class="table-light text-center">
+                                <tr class="d-flex">
+                                    <th class="col-2" scope="col">&nbsp;</th>
+                                    <th class="flex-even" scope="col">Avg.</th>
+                                    <th class="flex-even" scope="col">Max.</th>
+                                    <th class="flex-even" scope="col">Min.</th>
+                                    <th class="flex-even" scope="col">Diff</th>
+                                    <th class="flex-even" scope="col">90th</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- ROIs -->
+                <div class="card mt-3">
+                    <div class="card-header">ROIs</div>
+                    <div class="card-body">
+                        <table id="roi_info" class="table table-sm table-bordered">
+                            <thead class="table-light text-center">
+                                <tr class="d-flex">
+                                    <th class="col-2" scope="col">#</th>
+                                    <th class="flex-even" scope="col">Avg.</th>
+                                    <th class="flex-even" scope="col">Max.</th>
+                                    <th class="flex-even" scope="col">Min.</th>
+                                    <th class="flex-even" scope="col">Diff</th>
+                                    <th class="flex-even" scope="col">90th</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- Boxes -->
+                <div class="card mt-3">
+                    <div class="card-header">Boxes</div>
+                    <div class="card-body">
+                        <table id="box_info" class="table table-sm table-bordered">
+                            <thead class="table-light text-center">
+                                <tr class="d-flex">
+                                    <th class="col-2" scope="col">#</th>
+                                    <th class="flex-even" scope="col">Avg.</th>
+                                    <th class="flex-even" scope="col">Max.</th>
+                                    <th class="flex-even" scope="col">Min.</th>
+                                    <th class="flex-even" scope="col">Diff</th>
+                                    <th class="flex-even" scope="col">90th</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

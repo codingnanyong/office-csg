@@ -1,0 +1,12 @@
+﻿body {
+}
+
+.modal-content {
+    border: none;
+    display: flex;
+}
+
+.card-info {
+    width: 100%;
+    height: 100%;
+}

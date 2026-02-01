@@ -1,0 +1,104 @@
+﻿@page "/admin/grpkeys/add"
+@page "/admin/grpkeys/edit/{group}/{key}"
+
+<div class="mb-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/admin">Admin</a></li>
+            <li class="breadcrumb-item"><a href="/admin/grpkeys">Group Key</a></li>
+            @if (String.IsNullOrEmpty(Group))
+            {
+                <li class="breadcrumb-item active" aria-current="page">Add</li>
+            }
+            else
+            {
+                <li class="breadcrumb-item active" aria-current="page">Edit</li>
+            }
+        </ol>
+    </nav>
+</div>
+<section class="jumbotron text-center">
+    <div class="container">
+        <div class="page-header">
+            @if (String.IsNullOrEmpty(Group))
+            {
+                <h1>Add</h1>
+            }
+            else
+            {
+                <h1>Edit</h1>
+            }
+        </div>
+        <!-- -->
+        <div class="card card-block">
+            <div class="card-header">
+                @if (String.IsNullOrEmpty(Group))
+                {
+                    <h3>New</h3>
+                }
+                else
+                {
+                    <h3>@(Group) : @(Key)</h3>
+                }
+            </div>
+            <div class="card-body">
+                @if (Saved == false)
+                {
+                    @if (ShowSpinner)
+                    {
+                        <div class="mt-3 align-content-center">
+                            <img src="/img/Spin-1s-200px.png" />
+                        </div>
+                    }
+                    else
+                    {
+                        <EditForm Model="@GrpKey" class="editForm" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="@HandleInvalidSubmit">
+                            <DataAnnotationsValidator />
+                            <div class="text-start text-danger fs-6">
+                                <ValidationSummary />
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text d-block text-end">Group:</span>
+                                <InputText id="group" class="form-control" @bind-Value="@GrpKey.Group"></InputText>
+                                <CustomValidationMessage Class="ms-2 text-danger fs-4" For="@(() => GrpKey.Group)" UseExclamationIcon="true" />
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text d-block text-end">Key:</span>
+                                <InputText id="key" class="form-control" @bind-Value="@GrpKey.Key"></InputText>
+                                <CustomValidationMessage Class="ms-2 text-danger fs-4" For="@(() => GrpKey.Key)" UseExclamationIcon="true" />
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text d-block text-end">Description:</span>
+                                <InputText id="description" class="form-control" @bind-Value="@GrpKey.Description"></InputText>
+                                <CustomValidationMessage Class="ms-2 text-danger fs-4" For="@(() => GrpKey.Description)" UseExclamationIcon="true" />
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text d-block text-end">Order:</span>
+                                <InputNumber id="uclIMax" class="form-control" @bind-Value="@GrpKey.Order"></InputNumber>
+                                <CustomValidationMessage Class="ms-2 text-danger fs-4" For="@(() => GrpKey.Order)" UseExclamationIcon="true" />
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text d-block text-end">Inactive:</span>
+                                <InputCheckbox id="inactive" class="form-check-input ms-2 mt-2" @bind-Value="@GrpKey.Inactive"></InputCheckbox>
+                                <CustomValidationMessage Class="ms-2 text-danger fs-4" For="@(() => GrpKey.Inactive)" UseExclamationIcon="true" />
+                            </div>
+
+                            <button type="submit" class="btn btn-primary edit-btn">Save</button>
+                            @if (String.IsNullOrEmpty(GrpKey.Group) == false)
+                            {
+                                <a class="btn btn-danger ms-2" @onclick="@Delete">Delete</a>
+                            }
+                            <a class="btn btn-outline-primary ms-2" @onclick="@NavigateToOverview">Back to Group Key</a>
+                        </EditForm>
+                    }
+                }
+                else
+                {
+                    <div class="alert @StatusClass">@Message</div>
+                    <a class="btn btn-outline-primary mt-2 ms-2" @onclick="@NavigateToOverview">Back to Group Key</a>
+                }
+            </div>
+        </div>
+    </div>
+</section>

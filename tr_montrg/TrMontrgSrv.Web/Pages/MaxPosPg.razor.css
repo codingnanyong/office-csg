@@ -1,0 +1,17 @@
+﻿.maxPosWrapper {
+    margin: auto; width:800px;
+}
+.maxPosTable {
+    float: left;
+}
+.maxPosChartWrapper {
+    width: 800px;
+    height: 600px;
+    margin: 0;
+    padding: 0;
+}
+.maxPosChart {
+    float: left;
+    display: inline-block;
+    padding: 0;
+}

@@ -1,0 +1,113 @@
+﻿@page "/admin"
+
+@using Blazor.Analytics.Abstractions
+@using Blazor.Analytics
+@inject ITrackingNavigationState TrackingNavigationState
+@inject IAnalytics GlobalTracking
+
+<div class="mb-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Admin</li>
+        </ol>
+    </nav>
+</div>
+<section class="jumbotron text-center">
+    <div class="container">
+        <div class="page-header">
+            <h1>
+                Admin Home
+            </h1>
+        </div>
+        <!-- -->
+        <div class="card card-block">
+            <div class="card-header">
+                <h3>Menu</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="card h-100">
+                            <div class="card-body text-start">
+                                <h5 class="card-title">Device</h5>
+                                <p class="card-text">
+
+                                </p>
+                            </div>
+                            <div class="card-footer">
+                                <a class="btn btn-primary btn-block" href="/admin/devices/HQ">HQ</a>
+                                <a class="btn btn-primary btn-block" href="/admin/devices/JJ">JJ</a>
+                                <a class="btn btn-primary btn-block" href="/admin/devices/CKP">CKP</a>
+                                <a class="btn btn-primary btn-block" href="/admin/devices/JJS">JJS</a>
+                                <a class="btn btn-primary btn-block" href="/admin/devices/RJ">RJ</a>
+                                <a class="btn btn-primary btn-block" href="/admin/devices/QD">QD</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="card h-100">
+                            <div class="card-body text-xl-start">
+                                <h5 class="card-title">Grobal Setting</h5>
+                                <p class="card-text">
+
+                                </p>
+                            </div>
+                            <div class="card-footer">
+                                <a class="btn btn-primary btn-block" href="/admin/grpkeys">Group Key</a>
+
+                                <div class="btn-group" role="group">
+                                    <a class="btn btn-outline-primary btn-block" href="/admin/mailingaddrs/HQ">HQ</a>
+                                    <a class="btn btn-outline-primary btn-block" href="/admin/mailingaddrs/JJ">JJ</a>
+                                    <a class="btn btn-outline-primary btn-block" href="/admin/mailingaddrs/CKP">CKP</a>
+                                    <a class="btn btn-outline-primary btn-block" href="/admin/mailingaddrs/JJS">JJS</a>
+                                    <a class="btn btn-outline-primary btn-block" href="/admin/mailingaddrs/RJ">RJ</a>
+                                    <a class="btn btn-outline-primary btn-block" href="/admin/mailingaddrs/QD">QD</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @*<div class="row">
+                        <div class="col-sm-6">
+                            <div class="card h-100">
+                                <div class="card-body text-start">
+                                    <h5 class="card-title">Frame Control</h5>
+                                    <p class="card-text">
+
+                                    </p>
+                                </div>
+                                <div class="card-footer">
+                                    <a class="btn btn-primary btn-block" href="#">Manage</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="card h-100">
+                                <div class="card-body text-xl-start">
+                                    <h5 class="card-title">ROI Control</h5>
+                                    <p class="card-text">
+
+                                    </p>
+                                </div>
+                                <div class="card-footer">
+                                    <a class="btn btn-primary btn-block" href="#">Manage</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>*@
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@code {
+    [Inject]
+    private Blazor.Analytics.IAnalytics Analytics { get; set; }
+
+    protected override void OnInitialized()
+    {
+        TrackingNavigationState.DisableTracking();
+    }
+}

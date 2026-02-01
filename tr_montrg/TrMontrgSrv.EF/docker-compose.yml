@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+
+    postgresql_database:
+        container_name: pg_container
+        image: postgres:latest
+        ports:
+            - "5433:5432"
+        restart: always
+        volumes:
+            - type: bind
+              source: d:/docker_mnt/pg_data
+              target: /var/lib/postgresql/data
+            - type: bind
+              source: d:/docker_mnt/pg_tablespace
+              target: /var/lib/postgresql/tablespace
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+            - POSTGRES_DB=postgres
+
+    pgadmin:
+        container_name: pgadmin4_container
+        image: dpage/pgadmin4:latest
+        depends_on:
+            - postgresql_database
+        ports:
+            - "5050:80"
+        restart: always
+        volumes:
+            - pgadmin:/root/.pgadmin
+        environment:
+            - PGADMIN_DEFAULT_EMAIL=pg@pg.org
+            - PGADMIN_DEFAULT_PASSWORD=postgres
+
+volumes:
+    pgadmin:

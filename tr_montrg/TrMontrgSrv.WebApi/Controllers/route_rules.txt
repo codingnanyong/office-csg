@@ -1,0 +1,80 @@
+﻿
+
+- DeviceController
+GET /api/v1/[controller]/[device_id] -> device
+GET /api/v1/[controller]/ -> devices
+GET /api/v1/[controller]/?plantId=[plant_id] -> devices
+GET /api/v1/[controller]/?plantId=[plant_id]&locationOnly -> locations
+GET /api/v1/[controller]/?plantId=[plant_id]&locationId=[location_id] -> devices
+
+- FrameController
+GET /api/v1/[controller]/[device_id]/[ymd_hms] -> frame
+GET /api/v1/[controller]/[device_id]/?start=[start_ymdhms]&end=[end_ymdhms] -> frames
+
+- RoiController
+GET /api/v1/[controller]/[device_id]/[roi_id]/[ymd_hms] -> roi
+GET /api/v1/[controller]/[device_id]/[ymd_hms] -> rois
+GET /api/v1/[controller]/[device_id]/?start=[start_ymdhms]&end=[end_ymdhms] -> rois
+GET /api/v1/[controller]/[device_id]/[roi_id]/?start=[start_ymdhms]&end=[end_ymdhms] -> rois
+
+- BoxController
+GET /api/v1/[controller]/[device_id]/[box_id]/[ymd_hms] -> box
+GET /api/v1/[controller]/[device_id]/[ymd_hms] -> boxes
+GET /api/v1/[controller]/[device_id]/?start=[start_ymdhms]&end=[end_ymdhms] -> boxes
+
+- CfgController
+GET /api/v1/[controller]/[device_id]/last -> cfg (the last)
+GET /api/v1/[controller]/[device_id]/last/[n] -> cfgs (the last n), cf. n=1: the last
+GET /api/v1/[controller]/[device_id]/roi -> rois
+
+- MediumController
+GET /api/v1/[controller]/[device_id]/[medium_type]/[ymd_hms] -> medium
+GET /api/v1/[controller]/[device_id]/[medium_type]/?start=[start_ymdhms]&end=[end_ymdhms] -> media
+
+------------------------------------------------------------------------------------------------------
+- ImrController
+GET /api/v1/[controller]/[device_id]/frame/?start=[start_ymdhms]&end=[end_ymdhms] -> imr_data
+GET /api/v1/[controller]/[device_id]/roi/[roi_id]/?start=[start_ymdhms]&end=[end_ymdhms] -> imr_data
+
+- SnapController
+GET /api/v1/[controller]/[device_id]/[ymd_hms] -> device
+
+------------------------------------------------------------------------------------------------------
+- DeviceCtrlController
+GET /api/v1/[controller]/[device_id] -> device_ctrl
+GET /api/v1/[controller]/ -> device_ctrls
+
+- FrameCtrlController
+GET /api/v1/[controller]/[device_id] -> frame_ctrl
+GET /api/v1/[controller]/ -> frame_ctrls
+GET /api/v1/[controller]/imr/[device_id] -> IImrCtrl
+
+- RoiCtrlController
+GET /api/v1/[controller]/[device_id]/[roi_id] -> roi_ctrl
+GET /api/v1/[controller]/[device_id] -> roi_ctrls
+GET /api/v1/[controller]/imr/[device_id]/[roi_id] -> IImrCtrl
+
+- BoxCtrlController
+GET /api/v1/[controller]/[device_id] -> box_ctrl
+GET /api/v1/[controller]/ -> box_ctrls
+
+- EvntLogController
+GET /api/v1/[controller]/[id] -> evnt_log
+GET /api/v1/[controller]/[device_id]/ -> evnt_logs
+GET /api/v1/[controller]/[device_id]/?start=[start_ymdhms]&end=[end_ymdhms] -> evnt_logs
+GET /api/v1/[controller]/[device_id]/[evnt_lvl]/?start=[start_ymdhms]&end=[end_ymdhms] -> evnt_logs
+GET /api/v1/[controller]/?plantId=[plant_id] -> evnt_logs
+GET /api/v1/[controller]/?plantId=[plant_id]&start=[start_ymdhms]&end=[end_ymdhms] -> evnt_logs
+GET /api/v1/[controller]/latest/[plant_id]?excludingInfoLevel -> evnt_logs
+GET /api/v1/[controller]/latest/[plant_id]/[device_id]/?excludingInfoLevel -> evnt_logs
+GET /api/v1/[controller]/exist/[device_id]/[ymdhms] -> true/false
+
+- MailingAddrController
+GET /api/v1/[controller]/[plant_id]/[email] -> mailing_addr
+GET /api/v1/[controller]/[plant_id]/ -> mailing_addrs
+GET /api/v1/[controller]/ -> mailing_addrs
+
+- GrpKeyController
+GET /api/v1/[controller]/[group]/[key] -> grp_key
+GET /api/v1/[controller]/[group]/ -> grp_keys
+GET /api/v1/[controller]/ -> grp_keys

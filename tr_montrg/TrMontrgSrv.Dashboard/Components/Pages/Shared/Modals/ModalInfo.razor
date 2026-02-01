@@ -1,0 +1,29 @@
+﻿@using Microsoft.Extensions.Localization
+@using TrMontrgSrv.Dashboard.Resources
+@inject IStringLocalizer<language> localizer
+
+<Modal @ref="modal" title="@localizer["info_header"].Value" IsVerticallyCentered="true" Size="ModalSize.Regular">
+    <BodyTemplate>
+        <div class="@SetModalId">
+            @if (currentModalContent == nameof(ModalInfo1))
+            {
+                <ModalInfo1 />
+            }
+            else if (currentModalContent == nameof(ModalInfo2))
+            {
+                <ModalInfo2 />
+            }
+        </div>
+    </BodyTemplate>
+    <FooterTemplate>
+        @if (currentModalContent == nameof(ModalInfo1))
+        {
+            <Button Color="ButtonColor.Primary" @onclick="NextModalContent">@localizer["info_button1"]</Button>
+        }
+        else if (currentModalContent == nameof(ModalInfo2))
+        {
+            <Button Color="ButtonColor.Primary" @onclick="PreviusModalContent">@localizer["info_button2"]</Button>
+        }
+        <Button Color="ButtonColor.Secondary" @onclick="OnHideModal">@localizer["info_button3"]</Button>
+    </FooterTemplate>
+</Modal>

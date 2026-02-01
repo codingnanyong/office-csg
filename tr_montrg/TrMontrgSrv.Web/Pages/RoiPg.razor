@@ -1,0 +1,78 @@
+﻿@page "/{PlantId}/{LocationId}/{DeviceId}/roi"
+
+<div class="mb-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/@PlantId">@PlantId</a></li>
+            <li class="breadcrumb-item"><a href="/@PlantId/@LocationId/@DeviceId">@LocationId</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Control Chart (ROI)</li>
+        </ol>
+    </nav>
+</div>
+
+<section class="jumbotron text-center">
+    <div class="container">
+        <div class="page-header">
+            <h1>Control Chart (ROI)</h1>
+            <p>@DeviceId</p>
+        </div>
+        <!-- ROI Definition -->
+        <img src="/img/devices/@(DeviceId)_ROIs.png" class="w-50 mb-3" />
+        <!-- Menu -->
+        <div class="row">
+            <div class="col-lg-3 m-1">
+                <div class="input-group">
+                    <span class="input-group-text">ROI:</span>
+                    <select class="form-select" @bind="@RoiId">
+                        <option value="-1">-- select --</option>
+                        @foreach (var roiId in RoiIds)
+                        {
+                            <option value="@roiId">@roiId</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-6 m-1">
+                <div class="input-group">
+                    <span class="input-group-text">Time Range:</span>
+                    <input type="text" class="form-control" name="datetimes" id="timeRange" readonly />
+                </div>
+            </div>
+            <div class="col-lg-2 m-1">
+                <button class="btn btn-primary w-100" @onclick="LoadChartAsync"
+                        disabled="@(String.IsNullOrEmpty(RoiId) || RoiId == "-1")">
+                    Load
+                </button>
+            </div>
+        </div>
+        <!-- Spinner -->
+        <div class="mt-3">
+            <h3 id="timestamp" class="text-success"></h3>
+            <p id="current_time"></p>
+            <Spinner />
+        </div>
+        <!-- Diff. Temperature -->
+        <div class="card mt-3 mb-5">
+            <div class="card-header">
+                Diff. Temperature
+            </div>
+            <div class="card-body">
+                <div id="iDiffChart" class="imr-chart"></div>
+                <div id="mrDiffChart" class="imr-chart"></div>
+            </div>
+        </div>
+        <!-- Max. Temperature -->
+        <div class="card mt-3">
+            <div class="card-header">
+                Max. Temperature
+            </div>
+            <div class="card-body">
+                <div id="iMaxChart" class="imr-chart"></div>
+                <div id="mrMaxChart" class="imr-chart"></div>
+            </div>
+        </div>
+    </div>
+</section>
+<MessageModalWindow Title="@ModalTitle" Message="@ModalMessage" />
+<SnapModalWindow />

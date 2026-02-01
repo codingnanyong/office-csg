@@ -1,0 +1,26 @@
+﻿# Create a library project
+Open Windows terminal
+
+# Install EF tool
+> dotnet tool install dotnet-ef --global
+> dotnet tool list --global
+# update tool
+> dotnet tool update --global dotnet-ef
+
+# EF Migration Add
+> dotnet ef migrations add initial --project ..\TrMontrgSrv.EF\TrMontrgSrv.EF.csproj
+
+# EF Migration Remove
+> dotnet ef migrations remove --project ..\TrMontrgSrv.EF\TrMontrgSrv.EF.csproj
+
+# Apply the Migration
+> dotnet ef database update
+
+# Roll Back to the target migration
+> dotnet ef database update <target migration name>
+
+# Drop the database
+> dotnet ef database drop
+
+# References
+https://docs.microsoft.com/en-us/ef/core/cli/dotnet

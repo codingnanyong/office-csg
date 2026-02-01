@@ -1,0 +1,116 @@
+﻿@page "/admin/mailingaddrs/add/{PlantId}"
+@page "/admin/mailingaddrs/edit/{PlantId}/{Email}"
+
+<div class="mb-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/admin">Admin</a></li>
+            <li class="breadcrumb-item"><a href="/admin/mailingaddrs/@PlantId">@(PlantId) Mailing Address</a></li>
+            @if (String.IsNullOrEmpty(Email))
+            {
+                <li class="breadcrumb-item active" aria-current="page">Add</li>
+            }
+            else
+            {
+                <li class="breadcrumb-item active" aria-current="page">Edit</li>
+            }
+        </ol>
+    </nav>
+</div>
+<section class="jumbotron text-center">
+    <div class="container">
+        <div class="page-header">
+            @if (String.IsNullOrEmpty(Email))
+            {
+                <h1>Add</h1>
+            }
+            else
+            {
+                <h1>Edit</h1>
+            }
+        </div>
+        <!-- -->
+        <div class="card card-block">
+            <div class="card-header">
+                @if (String.IsNullOrEmpty(Email))
+                {
+                    <h3>New</h3>
+                }
+                else
+                {
+                    <h3>@Email</h3>
+                }
+            </div>
+            <div class="card-body">
+                @if (Saved == false)
+                {
+                    @if (ShowSpinner)
+                    {
+                        <div class="mt-3 align-content-center">
+                            <img src="/img/Spin-1s-200px.png" />
+                        </div>
+                    }
+                    else
+                    {
+                        <EditForm Model="@MailingAddr" class="editForm" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="@HandleInvalidSubmit">
+                            <DataAnnotationsValidator />
+                            <div class="text-start text-danger fs-6">
+                                <ValidationSummary />
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text d-block text-end">Plant ID:</span>
+                                <InputSelect id="plantId" class="form-control" @bind-Value="@MailingAddr.PlantId">
+                                    <option value="">-- select --</option>
+                                    @foreach (var plant in (Model.Plant[])Enum.GetValues(typeof(Model.Plant)))
+                                     {
+                                        <option value="@plant">@plant</option>
+                                     }
+                                </InputSelect>
+                                <CustomValidationMessage Class="ms-2 text-danger fs-4" For="@(() => MailingAddr.PlantId)" UseExclamationIcon="true" />
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text d-block text-end">Email:</span>
+                                <InputText id="email" class="form-control" @bind-Value="@MailingAddr.Email"></InputText>
+                                <CustomValidationMessage Class="ms-2 text-danger fs-4" For="@(() => MailingAddr.Email)" UseExclamationIcon="true" />
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <span class="input-group-text d-block text-end">Name:</span>
+                                <InputText id="name" class="form-control" @bind-Value="@MailingAddr.Name"></InputText>
+                                <CustomValidationMessage Class="ms-2 text-danger fs-4" For="@(() => MailingAddr.Name)" UseExclamationIcon="true" />
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text d-block text-end">Telephone:</span>
+                                <InputText id="telephone" class="form-control" @bind-Value="@MailingAddr.Telephone"></InputText>
+                                <CustomValidationMessage Class="ms-2 text-danger fs-4" For="@(() => MailingAddr.Telephone)" UseExclamationIcon="true" />
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text d-block text-end">Team:</span>
+                                <InputText id="team" class="form-control" @bind-Value="@MailingAddr.Team"></InputText>
+                                <CustomValidationMessage class="ms-2 text-danger fs-4" For="@(() => MailingAddr.Team)" UseExclamationIcon="true" />
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text d-block text-end">Inactive:</span>
+                                <InputCheckbox id="inactive" class="form-check-input ms-2 mt-2" @bind-Value="@MailingAddr.Inactive"></InputCheckbox>
+                                <CustomValidationMessage Class="ms-2 text-danger fs-4" For="@(() => MailingAddr.Inactive)" UseExclamationIcon="true" />
+                            </div>
+
+                            <button type="submit" class="btn btn-primary edit-btn">Save</button>
+                            @if (String.IsNullOrEmpty(MailingAddr.Email) == false)
+                            {
+                                <a class="btn btn-danger ms-2" @onclick="@Delete">Delete</a>
+                            }
+                            <a class="btn btn-outline-primary ms-2" @onclick="@NavigateToOverview">Back to @(PlantId) Mailing Address</a>
+                        </EditForm>
+                    }
+                }
+                else
+                {
+                    <div class="alert @StatusClass">@Message</div>
+                    <a class="btn btn-outline-primary mt-2 ms-2" @onclick="@NavigateToOverview">Back to @(PlantId) Mailing Address</a>
+                }
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,8 @@
+﻿
+dotnet ef migrations add [comment] --startup-project ..\TrMontrgSrv.WebApi\
+dotnet ef database update --startup-project ..\TrMontrgSrv.WebApi\
+
+
+# samples
+dotnet ef migrations add MyMigration --project ../SqlServerMigrations -- --provider SqlServer
+dotnet ef migrations add MyMigration --project ../SqliteMigrations -- --provider Sqlite

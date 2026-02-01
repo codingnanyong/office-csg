@@ -1,0 +1,102 @@
+﻿
+@if (ShowDialog)
+{
+    <div class="modal fade show d-block" id="deviceAddModalWindow" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Add New Item</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" @onclick="@Close"></button>
+                </div>
+                <div class="modal-body">
+                    @if (Saved == false)
+                    {
+                        @if (ShowSpinner)
+                        {
+                            <div class="mt-3 align-content-center">
+                                <img src="/img/Spin-1s-200px.png" />
+                            </div>
+                        }
+                        else
+                        {
+                            <EditForm Model="@Device" id="editForm" class="editForm" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="@HandleInvalidSubmit">
+                                <DataAnnotationsValidator />
+                                <div class="text-start text-danger fs-6">
+                                    <ValidationSummary />
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text d-block text-end">Device ID:</span>
+                                    <InputText id="deviceId" class="form-control" @bind-Value="@Device.DeviceId"></InputText>
+                                    <CustomValidationMessage Class="ms-2 text-danger fs-4" For="@(() => Device.DeviceId)" UseExclamationIcon="true" />
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text d-block text-end">Location ID:</span>
+                                    <InputText id="locationId" class="form-control" @bind-Value="@Device.LocationId"></InputText>
+                                    <CustomValidationMessage Class="ms-2 text-danger fs-4" For="@(() => Device.LocationId)" UseExclamationIcon="true" />
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text d-block text-end">Plant ID:</span>
+                                    <InputSelect id="plantId" class="form-control" @bind-Value="@Device.PlantId">
+                                        <option value="">-- select --</option>
+                                        @foreach (var plant in (Model.Plant[])Enum.GetValues(typeof(Model.Plant)))
+                                        {
+                                            <option value="@plant">@plant</option>
+                                        }
+                                    </InputSelect>
+                                    <CustomValidationMessage Class="ms-2 text-danger fs-4" For="@(() => Device.PlantId)" UseExclamationIcon="true" />
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text d-block text-end">Name:</span>
+                                    <InputText id="name" class="form-control" @bind-Value="@Device.Name"></InputText>
+                                    <CustomValidationMessage Class="ms-2 text-danger fs-4" For="@(() => Device.Name)" UseExclamationIcon="true" />
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text d-block text-end">Description:</span>
+                                    <InputTextArea id="description" class="form-control" @bind-Value="@Device.Description"></InputTextArea>
+                                    <CustomValidationMessage Class="ms-2 text-danger fs-4" For="@(() => Device.Description)" UseExclamationIcon="true" />
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text d-block text-end">Root Path:</span>
+                                    <InputText id="rootPath" class="form-control" @bind-Value="@Device.RootPath"></InputText>
+                                    <CustomValidationMessage class="ms-2 text-danger fs-4" For="@(() => Device.RootPath)" UseExclamationIcon="true" />
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text d-block text-end">Order:</span>
+                                    <InputNumber id="order" class="form-control" @bind-Value="@Device.Order"></InputNumber>
+                                    <CustomValidationMessage class="ms-2 text-danger fs-4" For="@(() => Device.Order)" UseExclamationIcon="true" />
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text d-block text-end">IP Address:</span>
+                                    <InputText id="ipAddress" class="form-control" @bind-Value="@Device.IpAddress"></InputText>
+                                    <CustomValidationMessage class="ms-2 text-danger fs-4" For="@(() => Device.IpAddress)" UseExclamationIcon="true" />
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text d-block text-end">UI Port:</span>
+                                    <InputNumber id="order" class="form-control" @bind-Value="@Device.UiPort"></InputNumber>
+                                    <CustomValidationMessage class="ms-2 text-danger fs-4" For="@(() => Device.UiPort)" UseExclamationIcon="true" />
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text d-block text-end">API Port:</span>
+                                    <InputNumber id="order" class="form-control" @bind-Value="@Device.ApiPort"></InputNumber>
+                                    <CustomValidationMessage class="ms-2 text-danger fs-4" For="@(() => Device.ApiPort)" UseExclamationIcon="true" />
+                                </div>
+                            </EditForm>
+                        }
+                    }
+                    else
+                    {
+                        <div class="alert @StatusClass">@Message</div>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @onclick="@Close">Close</button>
+                    @if (Saved == false)
+                    {
+                        <button type="submit" form="editForm" class="btn btn-primary edit-btn">Save</button>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+}

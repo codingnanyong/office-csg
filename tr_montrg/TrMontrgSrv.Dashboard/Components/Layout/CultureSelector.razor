@@ -1,0 +1,9 @@
+﻿<div class="dropdown">
+    <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="bi bi-globe"></i>
+    </button>
+    <ul class="dropdown-menu">
+        <li><button class="dropdown-item" type="button" @onclick="@(() => OnSelectedCultureChanged("ko-KR"))">Korea</button></li>
+        <li><button class="dropdown-item" type="button" @onclick="@(() => OnSelectedCultureChanged("en-US"))">English</button></li>
+    </ul>
+</div>

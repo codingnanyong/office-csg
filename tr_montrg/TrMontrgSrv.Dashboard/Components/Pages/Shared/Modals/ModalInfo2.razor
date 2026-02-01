@@ -1,0 +1,28 @@
+﻿@using Microsoft.Extensions.Localization
+@using TrMontrgSrv.Dashboard.Resources
+@inject IStringLocalizer<language> localizer
+
+<div class="modal-content">
+    <span>
+        @localizer["info2_header"]
+        <p> @localizer["info2_context"] </p>
+    </span>
+    <span class="dif-level">
+        <p class="dif-level-id level-A"> A </p><p class="dif-level-content"> : 0 ~ 10ºc</p>
+    </span>
+    <span class="dif-level">
+        <p class="dif-level-id level-B"> B </p><p class="dif-level-content"> : 10 ~ 20ºc</p>
+    </span>
+    <span class="dif-level">
+        <p class="dif-level-id level-C"> C </p><p class="dif-level-content"> : 20 ~ 40ºc</p>
+    </span>
+    <span class="dif-level">
+        <p class="dif-level-id level-D"> D </p><p class="dif-level-content"> : 40 ~ ºc</p>
+    </span>
+    <span class="dif-level">
+        <p class="dif-level-id level-Z"> Z </p><p class="dif-level-content"> : @localizer["info2_error"]</p>
+    </span>
+    <span>
+        <p class="ps"> @localizer["info2_ps1"] <b> @localizer["info2_ps2"]</b>.</p>
+    </span>
+</div>

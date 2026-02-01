@@ -1,0 +1,12 @@
+﻿@using Microsoft.Extensions.Localization
+@using TrMontrgSrv.Dashboard.Resources
+@inject IStringLocalizer<language> localizer
+
+<div class="modal-content">
+    <div>
+        @localizer["info1_header"]
+        <div>
+            <img class="card-info" src="/img/card_@(localizer["info1_img"]).png" />
+        </div>
+    </div>
+</div>

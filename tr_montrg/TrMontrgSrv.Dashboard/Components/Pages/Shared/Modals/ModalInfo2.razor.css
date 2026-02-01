@@ -1,0 +1,60 @@
+﻿body {
+}
+
+.modal-content {
+    border: none;
+    display: flex;
+}
+
+    .modal-content .dif-level {
+        display: flex;
+    }
+
+        .modal-content .dif-level p {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .modal-content .dif-level .dif-level-id {
+            border: 1px solid gray;
+            border-radius: 4px;
+            padding: 6px;
+            display: inline-block;
+            align-items: center;
+            margin: 2px;
+        }
+
+        .modal-content .dif-level .dif-level-content {
+            display: flex;
+            align-items: center;
+            margin: 2px;
+        }
+
+    .modal-content span:last-child {
+        margin-left: auto;
+    }
+
+    .modal-content .ps {
+        text-align: right;
+        font-size: 14px;
+    }
+
+.level-A {
+    background-color: white;
+}
+
+.level-B {
+    background-color: #34a853;
+}
+
+.level-C {
+    background-color: #fbbc05;
+}
+
+.level-D {
+    background-color: #ea4335;
+}
+
+.level-Z {
+    background-color: #545454;
+}

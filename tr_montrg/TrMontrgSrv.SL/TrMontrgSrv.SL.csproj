@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>CSG.MI.TrMontrgSrv.SL</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TrMontrgSrv.EF\TrMontrgSrv.EF.csproj" />
+    <ProjectReference Include="..\TrMontrgSrv.Helpers\TrMontrgSrv.Helpers.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,111 @@
+﻿@page "/admin/devicectrls/add/{PlantId}"
+@page "/admin/devicectrls/edit/{PlantId}/{DeviceId}"
+
+<div class="mb-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/admin">Admin</a></li>
+            <li class="breadcrumb-item"><a href="/admin/devices/@PlantId">@(PlantId) Devices</a></li>
+            <li class="breadcrumb-item"><a href="/admin/devicectrls/@PlantId/@DeviceId">Device Control</a></li>
+            @if (IsAddMode)
+            {
+                <li class="breadcrumb-item active" aria-current="page">Add</li>
+            }
+            else
+            {
+                <li class="breadcrumb-item active" aria-current="page">Edit</li>
+            }
+        </ol>
+    </nav>
+</div>
+<section class="jumbotron text-center">
+    <div class="container">
+        <div class="page-header">
+            @if (IsAddMode)
+            {
+                <h1>Add</h1>
+            }
+            else
+            {
+                <h1>Edit</h1>
+            }
+        </div>
+        <!-- -->
+        <div class="card card-block">
+            <div class="card-header">
+                @if (IsAddMode)
+                {
+                    <h3>New</h3>
+                }
+                else
+                {
+                    <h3>@DeviceId</h3>
+                }
+            </div>
+            <div class="card-body">
+                @if (Saved == false)
+                {
+                    @if (ShowSpinner)
+                    {
+                        <div class="mt-3 align-content-center">
+                            <img src="/img/Spin-1s-200px.png" />
+                        </div>
+                    }
+                    else
+                    {
+                        <EditForm Model="@DeviceCtrl" class="editForm" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="@HandleInvalidSubmit">
+                            <DataAnnotationsValidator />
+                            <div class="text-start text-danger fs-6">
+                                <ValidationSummary />
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text d-block text-end">Device ID:</span>
+                                <InputText id="deviceId" class="form-control" @bind-Value="@DeviceCtrl.DeviceId" readonly></InputText>
+                                <CustomValidationMessage Class="ms-2 text-danger fs-4" For="@(() => DeviceCtrl.DeviceId)" UseExclamationIcon="true" />
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text d-block text-end">Level A To:</span>
+                                <InputNumber id="levelATo" class="form-control" @bind-Value="@DeviceCtrl.LevelATo"></InputNumber>
+                                <CustomValidationMessage Class="ms-2 text-danger fs-4" For="@(() => DeviceCtrl.LevelATo)" UseExclamationIcon="true" />
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text d-block text-end">Level B To:</span>
+                                <InputNumber id="levelBTo" class="form-control" @bind-Value="@DeviceCtrl.LevelBTo"></InputNumber>
+                                <CustomValidationMessage Class="ms-2 text-danger fs-4" For="@(() => DeviceCtrl.LevelBTo)" UseExclamationIcon="true" />
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text d-block text-end">Level C To:</span>
+                                <InputNumber id="levelCTo" class="form-control" @bind-Value="@DeviceCtrl.LevelCTo"></InputNumber>
+                                <CustomValidationMessage Class="ms-2 text-danger fs-4" For="@(() => DeviceCtrl.LevelCTo)" UseExclamationIcon="true" />
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text d-block text-end">Monitoring Hour:</span>
+                                <InputNumber id="monitoringHour" class="form-control" @bind-Value="@DeviceCtrl.MonitoringHour"></InputNumber>
+                                <CustomValidationMessage Class="ms-2 text-danger fs-4" For="@(() => DeviceCtrl.MonitoringHour)" UseExclamationIcon="true" />
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <span class="input-group-text d-block text-end">Nelson Rule:</span>
+                                <InputText id="nelsonRule" class="form-control" @bind-Value="@DeviceCtrl.NelsonRule"></InputText>
+                                <CustomValidationMessage class="ms-2 text-danger fs-4" For="@(() => DeviceCtrl.NelsonRule)" UseExclamationIcon="true" />
+                            </div>
+
+                            <button type="submit" class="btn btn-primary edit-btn">Save</button>
+                            @if (IsAddMode == false)
+                            {
+                                <a class="btn btn-danger ms-2" @onclick="@Delete">Delete</a>
+                            }
+                            <a class="btn btn-outline-primary ms-2" @onclick="@NavigateToOverview">Back to Device Control</a>
+                        </EditForm>
+                    }
+                }
+                else
+                {
+                    <div class="alert @StatusClass">@Message</div>
+                    <a class="btn btn-outline-primary mt-2 ms-2" @onclick="@NavigateToOverview">Back to Device Control</a>
+                }
+            </div>
+        </div>
+    </div>
+</section>
