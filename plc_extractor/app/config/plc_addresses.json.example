@@ -1,0 +1,37 @@
+{
+  "comment": "PLC 주소 맵 설정 - 실제 환경에 맞게 수정하세요",
+  "addresses": {
+    "X": {
+      "start_address": 0,
+      "count": 76,
+      "extract_addresses": [
+        0, 1, 2, 3, 4, 5
+      ]
+    },
+    "Y": {
+      "start_address": 0,
+      "count": 48,
+      "extract_addresses": [
+        0, 1, 2, 3, 4, 5
+      ]
+    },
+    "M": {
+      "start_address": 0,
+      "count": 1104,
+      "modbus_addresses": [
+        32, 33, 34, 35
+      ],
+      "extract_addresses": [
+        0, 1, 2, 3, 4, 5
+      ]
+    },
+    "D": {
+      "start_address": 0,
+      "count": 2108,
+      "extract_addresses": [
+        8, 60, 61, 62, 63
+      ]
+    }
+  }
+}
+
