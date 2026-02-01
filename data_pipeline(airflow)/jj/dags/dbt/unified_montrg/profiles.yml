@@ -1,0 +1,28 @@
+# dbt 프로필 설정 파일
+# unified_montrg 데이터베이스 연결 정보
+# 결과 테이블은 unified_montrg 데이터베이스의 silver 스키마에 저장
+
+unified_montrg:
+  outputs:
+    # ============================================================
+    # Unified Monitoring 데이터베이스 (결과 저장용)
+    # ============================================================
+    dev:
+      type: postgres
+      host: "{{ env_var('DBT_HOST', '10.10.100.80') }}"
+      port: "{{ env_var('DBT_PORT', '5432') }}"
+      user: "{{ env_var('DBT_USER', 'mi') }}"
+      password: "{{ env_var('DBT_PASSWORD', '1q2w3e4r!') }}"
+      dbname: unified_montrg
+      schema: silver  # dbt 모델 결과 저장 스키마
+    
+    prod:
+      type: postgres
+      host: "{{ env_var('DBT_HOST', '10.10.100.80') }}"
+      port: "{{ env_var('DBT_PORT', '5432') }}"
+      user: "{{ env_var('DBT_USER', 'mi') }}"
+      password: "{{ env_var('DBT_PASSWORD', '1q2w3e4r!') }}"
+      dbname: unified_montrg
+      schema: silver
+  
+  target: dev  # 기본 target

@@ -1,0 +1,162 @@
+# Source 정의
+# 신규 기능에서 사용할 소스 테이블들을 여기에 정의하세요
+# 
+# 주의: pg_jj_unified_montrg_dw 연결을 통해 모든 데이터베이스(production, quality, maintenance 등)의
+# bronze 스키마 테이블에 접근 가능합니다. Foreign Data Wrapper 또는 cross-database 접근이 설정되어 있습니다.
+
+version: 2
+
+sources:
+  - name: bronze
+    description: "Bronze 레이어 원본 데이터 (production, quality, maintenance 등 모든 데이터베이스의 bronze 스키마)"
+    schema: bronze
+    tables:
+      - name: mspd_pcard_result
+        description: "생산 카드 결과 데이터"
+        columns:
+          - name: op_cd
+            description: "운영 코드"
+          - name: fa_date
+            description: "공장 일자"
+          - name: prod_move_type
+            description: "생산 이동 유형"
+          - name: plan_prod_date
+            description: "계획 생산 일자"
+          - name: prod_date
+            description: "생산 일자"
+          - name: pcard_qty
+            description: "카드 수량"
+      - name: sss_ipp_so
+        description: "SSS IPP SO 계획 데이터"
+        columns:
+          - name: zone_cd
+            description: "존 코드"
+          - name: machine_cd
+            description: "머신 코드"
+          - name: ymd
+            description: "일자 (YYYYMMDD)"
+          - name: hh
+            description: "시간"
+          - name: prs_qty
+            description: "계획 수량"
+      - name: smp_ss_ipi_rst
+        description: "SMP SS IPI RST 생산 실적 데이터"
+        columns:
+          - name: zone_cd
+            description: "존 코드"
+          - name: machine_cd
+            description: "머신 코드"
+          - name: rst_ymd
+            description: "실적 일자 (YYYYMMDD)"
+          - name: prs_qty
+            description: "생산 수량"
+          - name: start_date
+            description: "시작 일시"
+          - name: end_date
+            description: "종료 일시"
+      - name: mspq_in_osnd_bt_ipi
+        description: "불량 데이터 (IPI)"
+        columns:
+          - name: osnd_date
+            description: "불량 일자 (YYYYMMDD)"
+          - name: machine_cd
+            description: "머신 코드"
+          - name: ref_value03
+            description: "존 코드"
+          - name: osnd_bt_qty
+            description: "불량 수량"
+      - name: sss_php_so
+        description: "SSS PHP SO 계획 데이터"
+        columns:
+          - name: resource_cd
+            description: "리소스 코드"
+          - name: plan_date
+            description: "계획 일자 (YYYYMMDD)"
+          - name: plan_hour
+            description: "계획 시간"
+          - name: prs_qty
+            description: "계획 수량"
+      - name: smp_ss_php_rst
+        description: "SMP SS PHP RST 생산 실적 데이터"
+        columns:
+          - name: resource_cd
+            description: "리소스 코드"
+          - name: work_date
+            description: "작업 일자 (YYYYMMDD)"
+          - name: hms
+            description: "시간 (HHMMSS)"
+          - name: prod_qty
+            description: "생산 수량"
+      - name: mspq_in_osnd_bt
+        description: "불량 데이터"
+        columns:
+          - name: op_cd
+            description: "운영 코드"
+          - name: osnd_date
+            description: "불량 일자 (YYYYMMDD)"
+          - name: sub_wc_cd
+            description: "서브 작업 센터 코드"
+          - name: reason_cd
+            description: "불량 사유 코드"
+          - name: osnd_bt_qty
+            description: "불량 수량"
+      - name: mc_master
+        description: "기계 마스터 데이터"
+        columns:
+          - name: loc_cd
+            description: "위치 코드"
+          - name: machine_cd
+            description: "기계 코드"
+          - name: machine_type_cd
+            description: "기계 유형 코드"
+          - name: machine_no
+            description: "기계 번호"
+      - name: wof_order_raw
+        description: "작업 지시서 원본 데이터"
+        columns:
+          - name: loc_cd
+            description: "위치 코드"
+          - name: mach_id
+            description: "기계 ID"
+          - name: defe_date
+            description: "불량 일시"
+          - name: wo_type
+            description: "작업 지시서 유형"
+          - name: stop_yn
+            description: "정지 여부"
+          - name: down_time
+            description: "다운타임 (분)"
+      - name: ans_target
+        description: "ANS 타겟 원본 데이터"
+        columns:
+          - name: target_date
+            description: "타겟 일자"
+          - name: target_type
+            description: "타겟 유형"
+          - name: loc_cd
+            description: "위치 코드"
+          - name: target_value
+            description: "타겟 값"
+
+  # Silver 레이어 처리된 데이터
+  # 다른 dbt 프로젝트나 파이프라인에서 생성된 silver 테이블 참조 시 tables 배열에 정의
+  # 예시:
+  #   tables:
+  #     - name: example_processed
+  #       description: "처리된 예시 데이터"
+  - name: silver
+    description: "Silver 레이어 처리된 데이터"
+    schema: silver
+    tables: []
+
+  # Gold 레이어 최종 데이터
+  # 최종 분석 결과 테이블 참조 시 tables 배열에 정의
+  # 예시:
+  #   tables:
+  #     - name: example_final
+  #       description: "최종 분석 결과"
+  - name: gold
+    description: "Gold 레이어 최종 데이터"
+    schema: gold
+    tables: []
+

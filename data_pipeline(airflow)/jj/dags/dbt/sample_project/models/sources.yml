@@ -1,0 +1,32 @@
+# 소스 데이터 정의
+# 실제 원본 데이터 테이블이 있을 때 사용합니다
+
+version: 2
+
+sources:
+  - name: raw
+    description: "원본 데이터 소스"
+    database: test_db  # 실제 데이터베이스 이름
+    schema: public     # 실제 스키마 이름
+    
+    tables:
+      - name: products
+        description: "제품 원본 데이터 테이블"
+        # columns:
+        #   - name: id
+        #     description: "제품 ID"
+        #   - name: product_name
+        #     description: "제품 이름"
+        #   - name: price
+        #     description: "제품 가격"
+        #   - name: created_date
+        #     description: "생성일"
+        #   - name: status
+        #     description: "상태"
+        
+      # 추가 테이블 예시:
+      # - name: orders
+      #   description: "주문 원본 데이터"
+      # - name: customers
+      #   description: "고객 원본 데이터"
+

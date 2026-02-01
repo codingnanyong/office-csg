@@ -1,0 +1,28 @@
+version: 2
+
+sources:
+  - name: bronze
+    description: Bronze 레이어의 원본 데이터
+    database: "{{ env_var('DBT_DATABASE', 'telemetry') }}"
+    schema: bronze
+    tables:
+      - name: os_banb_plc_raw_data
+        description: Banbury PLC 원시 데이터 (이상 감지 알고리즘용)
+        columns:
+          - name: plc_key
+            description: PLC 주소 키
+          - name: raw_value
+            description: 원시 값 (문자열)
+          - name: numeric_value
+            description: 숫자 값 (변환된)
+          - name: boolean_value
+            description: 불린 값 (변환된)
+          - name: collection_timestamp
+            description: 데이터 수집 시간
+          - name: data_quality_score
+            description: 데이터 품질 점수 (0-100)
+          - name: etl_extract_time
+            description: ETL 추출 시간
+          - name: etl_ingest_time
+            description: ETL 적재 시간
+

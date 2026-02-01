@@ -1,0 +1,23 @@
+# dbt 프로필 설정 파일
+# 실제 데이터베이스 정보로 수정하세요
+
+sample_project:
+  outputs:
+    dev:
+      type: postgres
+      host: "{{ env_var('DBT_HOST', '10.10.100.80') }}"  # 실제 데이터 저장소 호스트
+      port: "{{ env_var('DBT_PORT', '5432') | int }}"  # 포트는 정수형이어야 함
+      user: "{{ env_var('DBT_USER', 'mi') }}"
+      password: "{{ env_var('DBT_PASSWORD', '1q2w3e4r!') }}"
+      dbname: "{{ env_var('DBT_DATABASE', 'test_db') }}"  # 실제 데이터베이스 이름
+      schema: public  # 기본 public 스키마 사용
+    prod:
+      type: postgres
+      host: "{{ env_var('DBT_HOST', '10.10.100.80') }}"
+      port: "{{ env_var('DBT_PORT', '5432') | int }}"  # 포트는 정수형이어야 함
+      user: "{{ env_var('DBT_USER', 'mi') }}"
+      password: "{{ env_var('DBT_PASSWORD', '1q2w3e4r!') }}"
+      dbname: "{{ env_var('DBT_DATABASE', 'test_db') }}"
+      schema: public
+  target: dev
+

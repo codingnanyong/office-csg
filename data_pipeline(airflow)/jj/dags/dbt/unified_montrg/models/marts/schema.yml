@@ -1,0 +1,154 @@
+version: 2
+
+models:
+  - name: mart_productivity_by_op_cd
+    description: "단위 공정 (IPI/OSP/PHH/PHM) 생산성 집계 (op_cd)"
+    columns:
+      - name: business_date
+        tests:
+          - not_null
+      - name: op_cd
+        tests:
+          - not_null
+      - name: op_group
+        tests:
+          - not_null
+      - name: plan_qty
+        tests:
+          - not_null
+      - name: prod_qty
+        tests:
+          - not_null
+      - name: defect_qty
+        tests:
+          - not_null
+
+  - name: mart_productivity_by_op_group
+    description: "대 공정(IP/OS/PH) 생산성 집계 (op_group)"
+    columns:
+      - name: business_date
+        tests:
+          - not_null
+      - name: op_group
+        tests:
+          - not_null
+      - name: plan_qty
+        tests:
+          - not_null
+      - name: prod_qty
+        tests:
+          - not_null
+      - name: defect_qty
+        tests:
+          - not_null
+
+  - name: mart_productivity_by_ip_zone
+    description: "IP 공정 생산성 (zone 단위 집계)"
+    columns:
+      - name: business_date
+        tests:
+          - not_null
+      - name: zone_cd
+        tests:
+          - not_null
+      - name: plan_qty
+        tests:
+          - not_null
+      - name: prod_qty
+        tests:
+          - not_null
+      - name: defect_qty
+        tests:
+          - not_null
+
+  - name: mart_productivity_by_ip_machine
+    description: "IP 공정 생산성 (zone+machine 단위)"
+    columns:
+      - name: business_date
+        tests:
+          - not_null
+      - name: machine_cd
+        tests:
+          - not_null
+      - name: plan_qty
+        tests:
+          - not_null
+      - name: prod_qty
+        tests:
+          - not_null
+      - name: defect_qty
+        tests:
+          - not_null
+
+  - name: mart_productivity_by_ph_zone
+    description: "PH 공정 생산성 (line 단위 집계)"
+    columns:
+      - name: business_date
+        tests:
+          - not_null
+      - name: line_group
+        tests:
+          - not_null
+      - name: plan_qty
+        tests:
+          - not_null
+      - name: prod_qty
+        tests:
+          - not_null
+      - name: defect_qty
+        tests:
+          - not_null
+
+  - name: mart_productivity_by_ph_machine
+    description: "PH 공정 생산성 (line+machine 단위)"
+    columns:
+      - name: business_date
+        tests:
+          - not_null
+      - name: machine_cd
+        tests:
+          - not_null
+      - name: plan_qty
+        tests:
+          - not_null
+      - name: prod_qty
+        tests:
+          - not_null
+      - name: defect_qty
+        tests:
+          - not_null
+
+  - name: mart_downtime_by_line
+    description: "라인별 다운타임"
+    columns:
+      - name: business_date
+        tests:
+          - not_null
+      - name: line_cd
+        tests:
+          - not_null
+      - name: down_time_target
+        tests:
+          - not_null
+      - name: down_time_value
+        tests:
+          - not_null
+
+  - name: mart_downtime_by_machine
+    description: "기계별 다운타임"
+    columns:
+      - name: business_date
+        tests:
+          - not_null
+      - name: line_cd
+        tests:
+          - not_null
+      - name: machine_cd
+        tests:
+          - not_null
+      - name: down_time_target
+        tests:
+          - not_null
+      - name: down_time_value
+        tests:
+          - not_null

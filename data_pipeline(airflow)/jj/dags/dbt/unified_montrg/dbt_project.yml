@@ -1,0 +1,42 @@
+name: 'unified_montrg'
+version: '1.0.0'
+config-version: 2
+
+# dbt 프로젝트 프로필 이름 (profiles.yml과 일치해야 함)
+profile: 'unified_montrg'
+
+# dbt 프로젝트 디렉토리 구조
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+# 빌드 산출물 경로
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+# 모델 설정
+models:
+  unified_montrg:
+    # 기본 materialization 방식
+    +materialized: view
+    
+    # 스테이징 모델 설정 (원본 데이터 정제)
+    staging:
+      +materialized: view
+      +tags: ["staging"]
+    
+    # 마트 모델 설정 (비즈니스 로직 적용)
+    marts:
+      +materialized: table
+      +tags: ["marts"]
+
+# 변수 정의 (선택사항)
+# vars:
+#   start_date: "2024-01-01"
+#   end_date: "2024-12-31"
+

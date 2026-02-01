@@ -1,0 +1,67 @@
+name: 'sample_project'
+version: '1.0.0'
+config-version: 2
+
+# dbt 프로젝트 프로필 이름 (profiles.yml과 일치해야 함)
+profile: 'sample_project'
+
+# dbt 프로젝트 디렉토리 구조
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+# 빌드 산출물 경로
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+# 모델 설정
+models:
+  sample_project:
+    # 기본 materialization 방식 (view, table, incremental 등)
+    +materialized: view
+    
+    # 스테이징 모델 설정 예시
+    staging:
+      +materialized: view
+      +tags: ["staging"]
+    
+    # 마트 모델 설정 예시
+    marts:
+      +materialized: table
+      +tags: ["marts"]
+
+# Elementary 데이터 품질 모니터링 설정
+vars:
+  elementary:
+    # 데이터 품질 체크 활성화
+    data_quality_enabled: true
+    # 모델 freshness 체크 활성화 (데이터 최신성 확인)
+    freshness_enabled: true
+    # 스키마 변경 감지 활성화
+    schema_changes_enabled: true
+    # 데이터 드리프트 감지 활성화 (통계적 이상치 감지)
+    anomaly_detection_enabled: true
+    
+    # Slack 알림 설정 (선택사항)
+    # slack:
+    #   token: "{{ env_var('ELEMENTARY_SLACK_TOKEN') }}"
+    #   channel: "#data-quality"
+    #   notify_on: ["test_failure", "anomaly_detected"]
+    
+    # Email 알림 설정 (선택사항)
+    # email:
+    #   smtp_host: "{{ env_var('SMTP_HOST') }}"
+    #   smtp_port: "{{ env_var('SMTP_PORT', '587') }}"
+    #   smtp_user: "{{ env_var('SMTP_USER') }}"
+    #   smtp_password: "{{ env_var('SMTP_PASSWORD') }}"
+    #   to_emails: ["data-team@example.com"]
+
+# 시드 데이터 설정 (선택사항)
+# seeds:
+#   sample_project:
+#     +quote_columns: true

@@ -1,0 +1,156 @@
+"""공통 함수 모듈 - OS MSBP Roll SO Silver"""
+import logging
+from datetime import datetime, timedelta, timezone
+from plugins.hooks.postgres_hook import PostgresHelper
+from airflow.models import Variable
+
+
+# ════════════════════════════════════════════════════════════════
+# 1️⃣ Configuration Constants
+# ════════════════════════════════════════════════════════════════
+
+# Default Configuration
+POSTGRES_CONN_ID = "pg_jj_production_dw"
+SCHEMA_NAME = "silver"
+TABLE_NAME = "os_msbp_roll_so"
+SOURCE_SCHEMA = "bronze"
+SO_TABLE = "msbp_roll_so_raw"
+PLAN_TABLE = "msbp_roll_plan_raw"
+INDO_TZ = timezone(timedelta(hours=7))
+INITIAL_START_DATE = datetime(2010, 1, 1, 0, 0, 0)
+DAYS_OFFSET_FOR_INCREMENTAL = 2
+
+
+# ════════════════════════════════════════════════════════════════
+# 2️⃣ Utility Functions
+# ════════════════════════════════════════════════════════════════
+
+def parse_datetime(dt_str: str) -> datetime:
+    """Parse datetime string with microsecond support"""
+    try:
+        return datetime.strptime(dt_str, "%Y-%m-%d %H:%M:%S.%f")
+    except ValueError:
+        return datetime.strptime(dt_str, "%Y-%m-%d %H:%M:%S")
+
+
+def get_month_end_date(start_date: datetime) -> datetime:
+    """Get the last day of the month for a given date"""
+    next_month = start_date.replace(day=1) + timedelta(days=32)
+    month_end = next_month.replace(day=1) - timedelta(days=1)
+    return month_end.replace(hour=23, minute=59, second=59, microsecond=999999)
+
+
+def calculate_expected_monthly_loops(start_date: datetime, end_date: datetime) -> int:
+    """Calculate expected number of monthly loops"""
+    current_date = start_date
+    month_count = 0
+    while current_date < end_date:
+        month_end = get_month_end_date(current_date)
+        if month_end > end_date:
+            month_end = end_date
+        current_date = month_end + timedelta(days=1)
+        month_count += 1
+    return month_count
+
+
+# ════════════════════════════════════════════════════════════════
+# 3️⃣ Data Transformation
+# ════════════════════════════════════════════════════════════════
+
+def build_silver_transform_sql(start_date: str, end_date: str) -> str:
+    """Build SQL for silver SO with JOIN to PLAN and OP filter"""
+    return f'''
+        SELECT
+            SO.SO_ID, SO.SO_SEQ, SO.MC_CD, SO.MC_SEQ, SO.SHIFT,
+            SO.HH, SO.HH_SEQ, SO.STATUS, SO.BATCH_TYPE, SO.BATCH_SIZE,
+            SO.BATCH_QTY, SO.UNID_SEQ, SO.UPD_YMD, SO.OLD_MC_CD,
+            SO.SOTBL_MCS_CD, SO.SOTBL_EXTRA2, SO.SEQ, SO.INPUT_DT,
+            SO.ETL_EXTRACT_TIME, SO.ETL_INGEST_TIME
+        FROM {SOURCE_SCHEMA}.{SO_TABLE} SO
+        JOIN {SOURCE_SCHEMA}.{PLAN_TABLE} PLAN ON SO.SO_ID = PLAN.SO_ID
+        WHERE PLAN.OP_CD = 'OS'
+        AND SO.UPD_YMD BETWEEN '{start_date}' AND '{end_date}'
+    '''
+
+
+def extract_silver_data(pg: PostgresHelper, start_date: str, end_date: str) -> tuple:
+    """Extract and transform data from bronze to silver"""
+    sql = build_silver_transform_sql(start_date, end_date)
+    logging.info(f"실행 쿼리: {sql}")
+    data = pg.execute_query(sql, task_id="extract_silver_so_data_task", xcom_key=None)
+    
+    if data and isinstance(data, list):
+        row_count = len(data)
+    elif data and hasattr(data, 'rowcount'):
+        row_count = data.rowcount
+    else:
+        row_count = 0
+    
+    logging.info(f"{start_date} ~ {end_date} Silver SO 변환 row 수: {row_count}")
+    return data, row_count
+
+
+# ════════════════════════════════════════════════════════════════
+# 4️⃣ Data Loading
+# ════════════════════════════════════════════════════════════════
+
+def prepare_silver_insert_data(data: list, extract_time: datetime) -> list:
+    """Prepare data for PostgreSQL insertion"""
+    if data and isinstance(data[0], dict):
+        return [
+            (
+                row['so_id'], row['so_seq'], row['mc_cd'], row['mc_seq'], row['shift'],
+                row['hh'], row['hh_seq'], row['status'], row['batch_type'], row['batch_size'],
+                row['batch_qty'], row['unid_seq'], row['upd_ymd'], row['old_mc_cd'],
+                row['sotbl_mcs_cd'], row['sotbl_extra2'], row['seq'], row['input_dt'],
+                row['etl_extract_time'], row['etl_ingest_time']
+            ) for row in data
+        ]
+    else:
+        return [
+            (
+                row[0], row[1], row[2], row[3], row[4],
+                row[5], row[6], row[7], row[8], row[9],
+                row[10], row[11], row[12], row[13],
+                row[14], row[15], row[16], row[17],
+                row[18], row[19]
+            ) for row in data
+        ]
+
+
+def get_silver_column_names() -> list:
+    """Get column names for PostgreSQL silver table"""
+    return [
+        "so_id", "so_seq", "mc_cd", "mc_seq", "shift",
+        "hh", "hh_seq", "status", "batch_type", "batch_size",
+        "batch_qty", "unid_seq", "upd_ymd", "old_mc_cd",
+        "sotbl_mcs_cd", "sotbl_extra2", "seq", "input_dt",
+        "etl_extract_time", "etl_ingest_time"
+    ]
+
+
+def load_silver_data(
+    pg: PostgresHelper, 
+    data: list, 
+    extract_time: datetime,
+    schema_name: str = SCHEMA_NAME,
+    table_name: str = TABLE_NAME
+) -> None:
+    """Load data into PostgreSQL silver database"""
+    insert_data = prepare_silver_insert_data(data, extract_time)
+    columns = get_silver_column_names()
+    conflict_columns = ["so_id", "so_seq", "mc_cd", "mc_seq"]
+    
+    pg.insert_data(schema_name, table_name, insert_data, columns, conflict_columns)
+    logging.info(f"✅ {len(data)} rows inserted into silver SO layer.")
+
+
+# ════════════════════════════════════════════════════════════════
+# 5️⃣ Variable Management
+# ════════════════════════════════════════════════════════════════
+
+def update_variable(increment_key: str, end_extract_time: str) -> None:
+    """Update Airflow variable with last extract time"""
+    Variable.set(increment_key, end_extract_time)
+    logging.info(f"📌 Variable `{increment_key}` Update: {end_extract_time}")
+

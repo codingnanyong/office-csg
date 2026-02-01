@@ -1,0 +1,61 @@
+# dbt 모델 문서화 및 테스트 정의
+# 이 파일은 모델에 대한 설명과 데이터 품질 테스트를 정의합니다
+
+version: 2
+
+models:
+  - name: stg_sample_data
+    description: "Staging 모델: 원본 데이터를 정제하고 표준화"
+    columns:
+      - name: id
+        description: "제품 ID"
+        tests:
+          - unique
+          - not_null
+      - name: product_name
+        description: "제품 이름"
+        tests:
+          - not_null
+      - name: price
+        description: "제품 가격"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: true
+      - name: status_normalized
+        description: "정규화된 상태 (소문자)"
+        tests:
+          - accepted_values:
+              values: ['active', 'inactive']
+
+  - name: dim_products
+    description: "제품 차원 테이블: 비즈니스 로직이 적용된 제품 데이터"
+    columns:
+      - name: product_id
+        description: "제품 ID (Primary Key)"
+        tests:
+          - unique
+          - not_null
+      - name: price_category
+        description: "가격대 분류 (Low, Medium, High)"
+        tests:
+          - accepted_values:
+              values: ['Low', 'Medium', 'High']
+      - name: is_active
+        description: "활성 제품 여부"
+        tests:
+          - not_null
+
+  - name: agg_product_summary
+    description: "제품 요약 통계: 가격대별, 상태별 집계 데이터"
+    columns:
+      - name: product_count
+        description: "제품 개수"
+        tests:
+          - not_null
+      - name: total_price
+        description: "총 가격"
+        tests:
+          - not_null
+

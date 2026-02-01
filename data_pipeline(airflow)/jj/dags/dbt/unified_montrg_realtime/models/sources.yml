@@ -1,0 +1,55 @@
+# Source 정의
+# Oracle GMES에서 추출한 원본 데이터
+
+version: 2
+
+sources:
+  - name: bronze
+    description: "Bronze 레이어 원본 데이터 (Oracle GMES에서 추출한 데이터)"
+    schema: bronze
+    tables:
+      - name: production_ip_staging_raw
+        description: "IP 공정 실시간 원본 데이터 (오늘 기준 계획/실적/불량)"
+        columns:
+          - name: zone_cd
+            description: "존 코드"
+          - name: machine_cd
+            description: "머신 코드"
+          - name: plan_qty
+            description: "계획 수량"
+          - name: prod_qty
+            description: "생산 수량"
+          - name: defect_qty
+            description: "불량 수량"
+          - name: etl_extract_time
+            description: "ETL 추출 시간"
+      - name: production_ph_staging_raw
+        description: "PH 공정 실시간 원본 데이터 (오늘 기준 계획/실적/불량)"
+        columns:
+          - name: line_cd
+            description: "라인 코드"
+          - name: machine_cd
+            description: "머신 코드 (PHxx)"
+          - name: plan_qty
+            description: "계획 수량"
+          - name: prod_qty
+            description: "생산 수량"
+          - name: defect_qty
+            description: "불량 수량"
+          - name: etl_extract_time
+            description: "ETL 추출 시간"
+      - name: production_op_group_staging_raw
+        description: "OP 그룹(IP/OS/PH) 실시간 원본 데이터 (오늘 기준 계획/실적/불량)"
+        columns:
+          - name: op_group
+            description: "OP 그룹 (IP/OS/PH)"
+          - name: op_cd
+            description: "원본 OP 코드"
+          - name: plan_qty
+            description: "계획 수량"
+          - name: prod_qty
+            description: "생산 수량"
+          - name: defect_qty
+            description: "불량 수량"
+          - name: etl_extract_time
+            description: "ETL 추출 시간"

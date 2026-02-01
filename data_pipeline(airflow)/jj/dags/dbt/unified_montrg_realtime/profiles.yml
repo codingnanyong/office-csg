@@ -1,0 +1,28 @@
+# dbt 프로필 설정 파일
+# unified_montrg_realtime 프로젝트용
+# Oracle에서 추출한 데이터를 PostgreSQL에 저장 후 dbt로 처리
+
+unified_montrg_realtime:
+  outputs:
+    # ============================================================
+    # PostgreSQL 데이터베이스 (결과 저장용)
+    # ============================================================
+    dev:
+      type: postgres
+      host: "{{ env_var('DBT_HOST', '10.10.100.80') }}"
+      port: "{{ env_var('DBT_PORT', '5432') }}"
+      user: "{{ env_var('DBT_USER', 'mi') }}"
+      password: "{{ env_var('DBT_PASSWORD', '1q2w3e4r!') }}"
+      dbname: unified_montrg
+      schema: silver  # dbt 모델 결과 저장 스키마
+    
+    prod:
+      type: postgres
+      host: "{{ env_var('DBT_HOST', '10.10.100.80') }}"
+      port: "{{ env_var('DBT_PORT', '5432') }}"
+      user: "{{ env_var('DBT_USER', 'mi') }}"
+      password: "{{ env_var('DBT_PASSWORD', '1q2w3e4r!') }}"
+      dbname: unified_montrg
+      schema: silver
+  
+  target: dev  # 기본 target

@@ -1,0 +1,56 @@
+name: 'banbury_anomaly_detection'
+version: '1.0.0'
+config-version: 2
+
+# dbt 프로젝트 프로필 이름 (profiles.yml과 일치해야 함)
+profile: 'banbury_anomaly_detection'
+
+# dbt 프로젝트 디렉토리 구조
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+# 빌드 산출물 경로
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+# 모델 설정
+models:
+  banbury_anomaly_detection:
+    # 기본 materialization 방식 (view, table, incremental 등)
+    +materialized: view
+    
+    # 스테이징 모델 설정
+    staging:
+      +materialized: view
+      +tags: ["staging"]
+    
+    # 마트 모델 설정
+    marts:
+      +materialized: table
+      +tags: ["marts"]
+    
+    # 중간 처리 모델 설정 (피처 준비)
+    intermediate:
+      +materialized: table
+      +tags: ["intermediate", "banbury"]
+    
+    # 최종 결과 모델 설정 (Gold 레이어)
+    result:
+      +materialized: table
+      +tags: ["result", "banbury", "gold"]
+
+# 변수 정의 (선택사항)
+# vars:
+#   key: value
+
+# 시드 데이터 설정 (선택사항)
+# seeds:
+#   banbury_anomaly_detection:
+#     +quote_columns: true
+

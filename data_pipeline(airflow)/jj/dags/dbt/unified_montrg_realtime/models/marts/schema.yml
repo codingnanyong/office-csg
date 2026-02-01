@@ -1,0 +1,105 @@
+version: 2
+
+models:
+  - name: mart_realtime_productivity_ip_machine
+    description: "IP 공정 실시간 생산성 (zone+machine 단위)"
+    columns:
+      - name: zone_cd
+        tests:
+          - not_null
+      - name: machine_cd
+        tests:
+          - not_null
+      - name: plan_qty
+        tests:
+          - not_null
+      - name: prod_qty
+        tests:
+          - not_null
+      - name: defect_qty
+        tests:
+          - not_null
+
+  - name: mart_realtime_productivity_ip_zone
+    description: "IP 공정 실시간 생산성 (zone 단위 집계)"
+    columns:
+      - name: zone_cd
+        tests:
+          - not_null
+      - name: plan_qty
+        tests:
+          - not_null
+      - name: prod_qty
+        tests:
+          - not_null
+      - name: defect_qty
+        tests:
+          - not_null
+
+  - name: mart_realtime_productivity_ph_machine
+    description: "PH 공정 실시간 생산성 (line+machine 단위)"
+    columns:
+      - name: line_cd
+        tests:
+          - not_null
+      - name: machine_cd
+        tests:
+          - not_null
+      - name: plan_qty
+        tests:
+          - not_null
+      - name: prod_qty
+        tests:
+          - not_null
+      - name: defect_qty
+        tests:
+          - not_null
+
+  - name: mart_realtime_productivity_ph_line
+    description: "PH 공정 실시간 생산성 (line 단위 집계)"
+    columns:
+      - name: line_cd
+        tests:
+          - not_null
+      - name: plan_qty
+        tests:
+          - not_null
+      - name: prod_qty
+        tests:
+          - not_null
+      - name: defect_qty
+        tests:
+          - not_null
+  - name: mart_realtime_productivity_op_group
+    description: "대 공정(IP/OS/PH) 실시간 생산성 집계 (op_group)"
+    columns:
+      - name: op_group
+        tests:
+          - not_null
+      - name: plan_qty
+        tests:
+          - not_null
+      - name: prod_qty
+        tests:
+          - not_null
+      - name: defect_qty
+        tests:
+          - not_null
+  - name: mart_realtime_productivity_op_cd
+    description: "단위 공정 (IPI/OSP/PHH/PHM) 실시간 생산성 집계 (op_group,op_cd)"
+    columns:
+      - name: op_group
+        tests:
+          - not_null
+      - name: op_cd
+        tests:
+          - not_null
+      - name: plan_qty
+        tests:
+          - not_null
+      - name: prod_qty
+        tests:
+          - not_null
+      - name: defect_qty
+        tests:
+          - not_null

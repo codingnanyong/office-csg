@@ -1,0 +1,7 @@
+# dbt 패키지 의존성 정의
+# dbt deps 명령으로 설치됩니다
+
+packages:
+  - package: dbt-labs/dbt_utils
+    version: 1.3.0  # dbt-core 1.7과 호환되는 버전
+

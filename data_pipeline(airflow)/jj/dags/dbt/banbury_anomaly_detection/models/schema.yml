@@ -1,0 +1,177 @@
+version: 2
+
+# 모델 스키마 정의 및 테스트 설정
+
+models:
+  - name: stg_banbury_plc_raw
+    description: "Banbury PLC 원시 데이터 스테이징 모델 - 이상 감지 알고리즘용"
+    columns:
+      - name: plc_key
+        description: "PLC 주소 키"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['D207', 'D256', 'D540', 'D542', 'D544', 'D546']
+      - name: collection_timestamp
+        description: "데이터 수집 시간"
+        tests:
+          - not_null
+      - name: numeric_value
+        description: "숫자 값 (변환된)"
+      - name: raw_value
+        description: "원시 값 (문자열)"
+      - name: boolean_value
+        description: "불린 값 (변환된)"
+      - name: data_quality_score
+        description: "데이터 품질 점수 (0-100)"
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 100
+
+  - name: mart_banbury_plc_pivot
+    description: "Banbury PLC 데이터 피벗 변환 모델 - PLC 키를 컬럼으로 변환하고 값 정규화"
+    columns:
+      - name: collection_timestamp
+        description: "데이터 수집 시간 (기본키)"
+        tests:
+          - not_null
+          - unique
+      - name: motor_current
+        description: "모터 값 (D207)"
+      - name: chamber_temperature
+        description: "온도 값 (D256, 1000 초과 시 NULL)"
+      - name: mixer_run
+        description: "믹서 상태 (D540: STOP/RUN)"
+        tests:
+          - accepted_values:
+              values: ['STOP', 'RUN']
+      - name: run_mode
+        description: "실행 모드 (D542: manual/Semi/Auto)"
+        tests:
+          - accepted_values:
+              values: ['manual', 'Semi', 'Auto']
+      - name: process_stage
+        description: "공정 단계 (D544: load/mix/discharge)"
+        tests:
+          - accepted_values:
+              values: ['load', 'mix', 'discharge']
+      - name: drop_door_position
+        description: "드롭 도어 상태 (D546: open/close)"
+        tests:
+          - accepted_values:
+              values: ['open', 'close']
+
+  - name: banbury_segments
+    description: "Banbury 공정 유효한 생산 세그먼트 분할 모델 - 10분 이상 간격으로 세그먼트 분할하고 유휴 세그먼트 제거"
+    columns:
+      - name: prod_set_id
+        description: "생산 세트 ID (세그먼트 식별자)"
+        tests:
+          - not_null
+      - name: collection_timestamp
+        description: "데이터 수집 시간"
+        tests:
+          - not_null
+      - name: motor_current
+        description: "모터 값"
+      - name: chamber_temperature
+        description: "온도 값"
+      - name: mixer_run
+        description: "믹서 상태"
+      - name: run_mode
+        description: "실행 모드"
+      - name: process_stage
+        description: "공정 단계"
+      - name: drop_door_position
+        description: "드롭 도어 상태"
+      - name: segment_start
+        description: "세그먼트 시작 시간"
+      - name: segment_end
+        description: "세그먼트 종료 시간"
+      - name: segment_row_count
+        description: "세그먼트 내 행 수"
+
+  - name: banbury_cycles
+    description: "Banbury 공정 사이클 경계 탐지 및 요약 모델 - 사이클 경계 찾기, 믹스 지속 시간 계산, 피크 탐지, 사이클 요약"
+    columns:
+      - name: prod_set_id
+        description: "생산 세트 ID (세그먼트 식별자)"
+        tests:
+          - not_null
+      - name: cycle_id
+        description: "사이클 ID"
+        tests:
+          - not_null
+      - name: start
+        description: "사이클 시작 시간"
+        tests:
+          - not_null
+      - name: "end"
+        description: "사이클 종료 시간"
+      - name: run_mode_start
+        description: "시작 시 실행 모드"
+        tests:
+          - accepted_values:
+              values: ['manual', 'Semi', 'Auto']
+      - name: mix_duration_sec
+        description: "믹스 지속 시간 (초)"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 60
+      - name: max_temp
+        description: "최대 온도 (30초 이후)"
+      - name: peak_count
+        description: "피크 개수 (Python에서 find_peaks로 계산)"
+      - name: is_3_stage
+        description: "3단계 공정 여부 (Python에서 peak_count와 max_temp 기반으로 계산)"
+
+  - name: banbury_plc_segments
+    description: "Banbury PLC 사이클별 신호 세그먼트 모델 - 사이클 윈도우에 맞춰 PLC 신호를 슬라이싱하고 전처리"
+    columns:
+      - name: prod_set_id
+        description: "생산 세트 ID"
+      - name: cycle_id
+        description: "사이클 ID"
+        tests:
+          - not_null
+      - name: collection_timestamp
+        description: "데이터 수집 시간"
+        tests:
+          - not_null
+      - name: motor_current
+        description: "모터 값 (forward fill 및 backward fill 적용)"
+      - name: chamber_temperature
+        description: "온도 값 (forward fill 및 backward fill 적용)"
+
+  - name: banbury_anomaly_result
+    description: "Banbury 공정 이상 감지 CNN 모델 추론 결과 (Gold 레이어) - 최종 분석 결과"
+    columns:
+      - name: prod_set_id
+        description: "생산 세트 ID (세그먼트 식별자)"
+      - name: cycle_id
+        description: "사이클 ID"
+      - name: cycle_start
+        description: "사이클 시작 시간"
+      - name: cycle_end
+        description: "사이클 종료 시간"
+      - name: run_mode_start
+        description: "시작 시 실행 모드"
+      - name: mix_duration_sec
+        description: "믹스 지속 시간 (초)"
+      - name: max_temp
+        description: "최대 온도 (30초 이후)"
+      - name: peak_count
+        description: "피크 개수"
+      - name: is_3_stage
+        description: "3단계 공정 여부"
+      - name: anomaly_prob
+        description: "CNN 모델 이상 확률 (0.0 ~ 1.0, 낮을수록 이상)"
+      - name: is_anomaly
+        description: "이상 여부 (anomaly_prob < 0.5)"
+      - name: etl_extract_time
+        description: "ETL 추출 시간 (DAG 실행 시간)"
+      - name: etl_ingest_time
+        description: "ETL 적재 시간"
+
