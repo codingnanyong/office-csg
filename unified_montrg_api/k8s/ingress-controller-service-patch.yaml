@@ -1,0 +1,21 @@
+# This file is a reference. The setup script will automatically modify the Service.
+# If you need to manually patch, use this as a template.
+apiVersion: v1
+kind: Service
+metadata:
+  name: ingress-nginx-controller
+  namespace: ingress-nginx
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: http
+      nodePort: 30081
+    - name: https
+      port: 443
+      protocol: TCP
+      targetPort: https
+      nodePort: 30443
+

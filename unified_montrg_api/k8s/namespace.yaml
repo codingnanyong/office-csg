@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: unified-montrg
+  labels:
+    app.kubernetes.io/name: unified-montrg
+    app.kubernetes.io/component: api
+

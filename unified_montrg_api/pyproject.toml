@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "unified-montrg"
+version = "0.1.0"
+description = "Unified monitoring API running on a single Kubernetes cluster."
+authors = ["Your Name <you@example.com>"]
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.115.0"
+uvicorn = {extras = ["standard"], version = "^0.32.0"}
+pydantic-settings = "^2.6.0"
+SQLAlchemy = {version = "^2.0.34", extras = ["asyncio"]}
+aiomysql = "^0.2.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.0"
+httpx = "^0.27.0"
+
+[build-system]
+requires = ["poetry-core>=1.8.0"]
+build-backend = "poetry.core.masonry.api"
+
+
