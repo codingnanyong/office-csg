@@ -1,0 +1,27 @@
+services:
+  dev:
+    image: csg/openapi-dev:latest
+    build:
+      context: ../
+    container_name: openapi_dev
+    environment:
+      - DEPLOY_ENV=dev
+    working_dir: /app
+    volumes:
+      - ../:/app
+    ports:
+      - "8100:8000"
+    networks:
+      - openapi_network
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/deploy"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+networks:
+  openapi_network:
+    driver: bridge
+    external: true

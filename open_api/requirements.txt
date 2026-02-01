@@ -1,0 +1,15 @@
+fastapi
+fastapi-versioning
+uvicorn
+sqlalchemy
+pydantic
+alembic
+psycopg2-binary 
+asyncpg 
+pytest
+pytest-asyncio
+httpx 
+pytz
+# prometheus
+prometheus_fastapi_instrumentator 
+prometheus_client

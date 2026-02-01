@@ -1,0 +1,84 @@
+services:
+  blue:
+    image: csg/openapi:latest
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    container_name: openapi_blue
+    environment:
+      - DEPLOY_ENV=blue
+      - PYTHONUNBUFFERED=1
+    working_dir: /app
+    ports:
+      - "8001:8000"
+    networks:
+      - openapi_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/deploy"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  green:
+    image: csg/openapi:latest
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    container_name: openapi_green
+    environment:
+      - DEPLOY_ENV=green
+      - PYTHONUNBUFFERED=1
+    working_dir: /app
+    ports:
+      - "8002:8000"
+    networks:
+      - openapi_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/deploy"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    volumes:
+      - ../nginx/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "80:80"
+    depends_on:
+      - blue
+      - green
+    restart: unless-stopped
+    networks:
+      - openapi_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  openapi_network:
+    driver: bridge
+    external: true
