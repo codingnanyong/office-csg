@@ -1,0 +1,37 @@
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Docker
+.dockerignore
+
+# Backup files
+*.backup
+*.bak
+
+# NOTE: Certificate files are intentionally NOT ignored
+# domain.crt and domain.key should be tracked for deployment
+# If you need to exclude certificates, uncomment the lines below:
+# *.crt
+# *.key
+# *.pem

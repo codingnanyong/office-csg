@@ -1,0 +1,27 @@
+services:
+  postgresql:
+    image: postgres:17
+    container_name: postgres
+    env_file: .env
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - /media/de/storage/postgresql/data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    restart: always
+    networks:
+      - storage_network
+
+networks:
+  storage_network:
+    driver: bridge
+    external: true
+  

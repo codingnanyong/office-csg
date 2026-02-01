@@ -1,0 +1,29 @@
+services:
+  registry:
+    image: registry:2
+    container_name: registry
+    ports:
+      - "5000:5000"
+    volumes:
+      - /media/de/data/registry:/var/lib/registry
+      - /media/de/data/registry/certs:/certs
+      - /media/de/data/registry/config.yml:/etc/docker/registry/config.yml 
+    restart: always
+    environment:
+      REGISTRY_HTTP_ADDR: :5000
+      REGISTRY_HTTP_TLS_CERTIFICATE: /certs/domain.crt
+      REGISTRY_HTTP_TLS_KEY: /certs/domain.key
+    networks:
+      - storage_network
+    command: ["registry", "serve", "/etc/docker/registry/config.yml"]
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-check-certificate --no-verbose --tries=1 --spider https://localhost:5000/v2/_catalog || exit 1"]
+      interval: 30s  
+      timeout: 10s   
+      retries: 3     
+      start_period: 30s 
+
+networks:
+  storage_network:
+    driver: bridge
+    external: true

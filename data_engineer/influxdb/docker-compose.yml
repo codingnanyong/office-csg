@@ -1,0 +1,48 @@
+services:
+  influxdb2:
+    image: influxdb:2
+    container_name: influxdb
+    env_file: .env
+    ports:
+      - 8086:8086
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME_FILE: /run/secrets/influxdb2-admin-username
+      DOCKER_INFLUXDB_INIT_PASSWORD_FILE: /run/secrets/influxdb2-admin-password
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN_FILE: /run/secrets/influxdb2-admin-token
+      DOCKER_INFLUXDB_INIT_ORG: ${org}
+      DOCKER_INFLUXDB_INIT_BUCKET: ${bucket}
+    secrets:
+      - influxdb2-admin-username
+      - influxdb2-admin-password
+      - influxdb2-admin-token
+    volumes:
+      - type: bind
+        source: /media/de/storage/influxdb2-data
+        target: /var/lib/influxdb2  
+      - type: bind
+        source: /media/de/storage/influxdb2-config
+        target: /etc/influxdb2 
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail http://localhost:8086/health || exit 1"]
+      interval: 30s       
+      timeout: 10s        
+      retries: 3          
+      start_period: 30s
+    restart: always    
+    networks:
+      - storage_network
+
+networks:
+  storage_network:
+    driver: bridge
+    external: true
+
+secrets:
+  influxdb2-admin-username:
+    file: ./.env.influxdb2-admin-username
+  influxdb2-admin-password:
+    file: ./.env.influxdb2-admin-password
+  influxdb2-admin-token:
+    file: ./.env.influxdb2-admin-token
+
