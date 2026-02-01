@@ -1,0 +1,43 @@
+global:
+  scrape_interval: 15s
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: ["alertmanager:9093"]
+
+rule_files:
+  - "alert_rules.yml"
+
+scrape_configs:
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]
+        labels:
+          corporation: "HQ"
+          role: "services"
+          type: "prometheus"
+
+  - job_name: "HQ_infra"
+    file_sd_configs:
+      - files:
+          - ./targets/hq_targets.json
+        refresh_interval: 30s
+
+  - job_name: "JJ_infra"
+    file_sd_configs:
+      - files:
+          - ./targets/jj_targets.json
+        refresh_interval: 30s
+
+  - job_name: "RJ_infra"
+    file_sd_configs:
+      - files:
+          - ./targets/rj_targets.json
+        refresh_interval: 30s
+
+  - job_name: "CKP_infra"
+    file_sd_configs:
+      - files:
+          - ./targets/ckp_targets.json
+        refresh_interval: 30s
