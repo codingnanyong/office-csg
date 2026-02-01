@@ -1,0 +1,36 @@
+services:
+  mongodb-exporter:
+    image: percona/mongodb_exporter:latest
+    container_name: mongodb-exporter
+    restart: always
+    ports:
+      - "9216:9216"
+    environment:
+      - MONGODB_URI=${MONGODB_URI}
+      - MONGODB_USERNAME=${MONGODB_USERNAME}
+      - MONGODB_PASSWORD=${MONGODB_PASSWORD}
+      - MONGODB_DATABASE=${MONGODB_DATABASE}
+    command:
+      - '--mongodb.uri=${MONGODB_URI}'
+      - '--mongodb.username=${MONGODB_USERNAME}'
+      - '--mongodb.password=${MONGODB_PASSWORD}'
+      - '--mongodb.database=${MONGODB_DATABASE}'
+      - '--web.listen-address=:9216'
+      - '--web.telemetry-path=/metrics'
+      - '--log.level=info'
+      - '--mongodb.collect-all'
+      - '--mongodb.collect-connpoolstats'
+      - '--mongodb.collect-top'
+      - '--mongodb.collect-indexusage'
+    networks:
+      - prometheus-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider -q http://localhost:9216/metrics || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+networks:
+  prometheus-network:
+    external: true 

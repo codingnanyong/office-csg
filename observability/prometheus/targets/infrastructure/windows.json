@@ -1,0 +1,22 @@
+[
+    {
+        "targets": ["203.228.101.190:9182"],
+        "labels": {
+            "corporation": "HQ",
+            "service": "Windows",
+            "component": "windows_exporter",
+            "category": "infrastructure",
+            "server": "FDW Server"
+        }
+    },
+    {
+        "targets": ["203.228.101.185:9182"],
+        "labels": {
+            "corporation": "HQ",
+            "service": "Windows",
+            "component": "windows_exporter",
+            "category": "infrastructure",
+            "server": "MI AppServer"
+        }
+    }
+]

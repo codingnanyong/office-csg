@@ -1,0 +1,22 @@
+[
+    {
+        "targets": ["10.10.18.233:9182"],
+        "labels": {
+            "corporation": "JJ",
+            "service": "Windows",
+            "component": "windows_exporter",
+            "category": "infrastructure",
+            "server": "Banbury#1"
+        }
+    },
+    {
+        "targets": ["10.10.18.106:9182"],
+        "labels": {
+            "corporation": "JJ",
+            "service": "Windows",
+            "component": "windows_exporter",
+            "category": "infrastructure",
+            "server": "Banbury#3"
+        }
+    }
+] 

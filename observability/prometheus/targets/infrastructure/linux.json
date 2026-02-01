@@ -1,0 +1,52 @@
+[
+  {
+    "targets": ["203.228.107.184:9100"],
+    "labels": {
+      "corporation": "HQ",
+      "service": "Linux",
+      "component": "node_exporter",
+      "category": "infrastructure",
+      "server": "DWServer"
+    }
+  },
+  {
+    "targets": ["203.228.107.220:9100"],
+    "labels": {
+      "corporation": "HQ",
+      "service": "Linux",
+      "component": "node_exporter",
+      "category": "infrastructure",
+      "server": "InfraWatchServer"
+    }
+  },
+  {
+    "targets": ["10.10.18.177:9100"],
+    "labels": {
+      "corporation": "JJ",
+      "service": "Linux",
+      "component": "node_exporter",
+      "category": "infrastructure",
+      "server": "DataCollector"
+    }
+  },
+  {
+    "targets": ["10.10.49.197:9100"],
+    "labels": {
+      "corporation": "CKP",
+      "service": "Linux",
+      "component": "node_exporter",
+      "category": "infrastructure",
+      "server": "DataCollector"
+    }
+  },
+  {
+    "targets": ["20.20.17.69:9100"],
+    "labels": {
+      "corporation": "JJ2",
+      "service": "Linux",
+      "component": "node_exporter",
+      "category": "infrastructure",
+      "server": "DataCollector"
+    }
+  }
+] 

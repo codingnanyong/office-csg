@@ -1,0 +1,66 @@
+services:
+  # MongoDB Exporter
+  mongodb-exporter:
+    image: bitnami/mongodb-exporter:latest
+    container_name: mongodb-exporter
+    environment:
+      - MONGODB_URI=mongodb://${MONGO_USER}:${MONGO_PASSWORD}@mongodb:27017/?authSource=admin&directConnection=true
+      - MONGODB_COLLECTOR_COLLSTATS=true
+      - MONGODB_COLLECTOR_DBPSTATS=true
+      - MONGODB_COLLECTOR_REPLSET=true
+      - MONGODB_COLLECTOR_TOPMETRICS=true
+      - MONGODB_COLLECTOR_INDEXUSAGE=true
+    ports:
+      - "9216:9216"
+    networks:
+      - storage_network
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "ps aux | grep -q '[m]ongodb_exporter' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 180s
+      
+  # PostgreSQL Exporter
+  postgres-exporter:
+    image: prometheuscommunity/postgres-exporter
+    container_name: postgres-exporter
+    environment:
+      - DATA_SOURCE_NAME=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/postgres?sslmode=disable
+      - PG_EXPORTER_EXTEND_QUERY_STATS=${PG_EXPORTER_EXTEND_QUERY_STATS}
+    ports:
+      - "9187:9187"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:9187/metrics || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+    restart: always
+    networks:
+      - storage_network
+
+  # InfluxDB Exporter
+  influxdb-exporter:
+    image: prom/influxdb-exporter
+    container_name: influxdb-exporter
+    environment:
+      - INFLUXDB_ADDR=http://influxdb:8086
+      - INFLUXDB_TOKEN=${INFLUXDB_TOKEN}
+      - INFLUXDB_ORG=${INFLUXDB_ORG}
+    ports:
+      - "9122:9122"
+    networks:
+      - storage_network
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider -q http://localhost:9122/metrics || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+
+networks:
+  storage_network:
+    external: true

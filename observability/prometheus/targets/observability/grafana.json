@@ -1,0 +1,12 @@
+[
+  {
+    "targets": ["203.228.107.220:3000"],
+    "labels": {
+      "corporation": "HQ",
+      "service": "InfraWatch",
+      "component": "grafana",
+      "category": "observability",
+      "server": "InfraWatchServer"
+    }
+  }
+] 

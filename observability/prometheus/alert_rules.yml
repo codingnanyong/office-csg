@@ -1,0 +1,11 @@
+groups:
+  - name: instance-health
+    rules:
+      - alert: InstanceDown
+        expr: up == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "🔴 {{ $labels.instance }} is down"
+          description: "Prometheus could not reach {{ $labels.instance }} for over 1 minutes."

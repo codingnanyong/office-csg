@@ -1,0 +1,22 @@
+[
+  {
+    "targets": ["203.228.107.184:9187"],
+    "labels": {
+      "corporation": "HQ",
+      "service": "PostgreSQL",
+      "component": "postgresql",
+      "category": "platform",
+      "server": "DWServer"
+    }
+  },
+  {
+    "targets": ["203.228.101.190:9187"],
+    "labels": {
+      "corporation": "HQ",
+      "service": "PostgreSQL",
+      "component": "postgresql",
+      "category": "platform",
+      "server": "factorydatawarehouseServer"
+    }
+  }
+] 

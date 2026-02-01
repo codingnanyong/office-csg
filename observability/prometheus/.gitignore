@@ -1,0 +1,57 @@
+# Prometheus 데이터 디렉토리
+data/
+prometheus_data/
+storage/
+
+# 로그 파일들
+*.log
+logs/
+
+# 임시 파일들
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# OS 생성 파일들
+.DS_Store
+Thumbs.db
+
+# IDE/에디터 파일들
+.vscode/
+.idea/
+*.sublime-*
+
+# Docker 관련
+.dockerignore
+
+# 환경 변수 파일 (민감한 정보 포함)
+.env
+.env.local
+.env.production
+
+# 백업 파일들
+*.bak
+*.backup
+
+# 캐시 파일들
+.cache/
+*.cache
+
+# 권한 파일들
+*.key
+*.pem
+*.crt
+*.cert
+
+# 설정 백업
+*.yml.bak
+*.yaml.bak
+
+# 메트릭 데이터 (대용량)
+metrics/
+tsdb/
+
+# 알림 매니저 데이터
+alertmanager_data/

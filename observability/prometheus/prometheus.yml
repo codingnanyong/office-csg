@@ -1,0 +1,68 @@
+global:
+  scrape_interval: 1m
+  scrape_timeout: 30s
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: ["alertmanager:9093"]
+
+rule_files:
+  - "alert_rules.yml"
+
+scrape_configs:
+  - job_name: "observability"
+    file_sd_configs:
+      - files:
+          - ./targets/observability/*.json
+        refresh_interval: 30s
+
+  - job_name: "service"
+    file_sd_configs:
+      - files:
+          - ./targets/service/*.json
+        refresh_interval: 30s
+
+  - job_name: "platform"
+    scrape_timeout: 30s
+    file_sd_configs:
+      - files:
+          - ./targets/platform/airflow/airflow.json
+          - ./targets/platform/influxdb/influxdb.json
+          - ./targets/platform/mongos/mongodb.json
+          - ./targets/platform/postgres/postgresql.json
+        refresh_interval: 30s
+
+  - job_name: "infrastructure"
+    file_sd_configs:
+      - files:
+          - ./targets/infrastructure/linux.json
+          - ./targets/infrastructure/windows.json
+        refresh_interval: 30s
+
+  - job_name: "banbury"
+    scrape_interval: 60s
+    scrape_timeout: 30s
+    file_sd_configs:
+      - files:
+          - ./targets/infrastructure/banbury.json
+          - ./targets/platform/mariadb/banbury.json
+        refresh_interval: 30s
+
+  - job_name: "infrastructure_blackbox"
+    metrics_path: /probe
+    params:
+      module: [http_2xx, tcp_connect]
+    file_sd_configs:
+      - files:
+          - ./targets/infrastructure/blackbox.json
+        refresh_interval: 30s
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: "{BLACKBOX_EXPORTER_HOST}:9115"
+      - source_labels: [probe_type]
+        target_label: probe_type

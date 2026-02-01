@@ -1,0 +1,24 @@
+[
+  {
+    "targets": ["http://203.228.107.184", "http://203.228.107.184:80"],
+    "labels": {
+      "corporation": "HQ",
+      "service": "Blackbox HTTP",
+      "component": "blackbox_exporter",
+      "category": "infrastructure",
+      "server": "DWServer",
+      "probe_type": "http_2xx"
+    }
+  },
+  {
+    "targets": ["203.228.107.184:80", "203.228.107.184:9100", "203.228.107.184:9216", "203.228.107.184:9187"],
+    "labels": {
+      "corporation": "HQ",
+      "service": "Blackbox TCP",
+      "component": "blackbox_exporter",
+      "category": "infrastructure",
+      "server": "DWServer",
+      "probe_type": "tcp_connect"
+    }
+  }
+] 

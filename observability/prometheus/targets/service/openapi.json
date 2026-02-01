@@ -1,0 +1,12 @@
+[
+  {
+    "targets": ["203.228.107.184:80"],
+    "labels": {
+      "corporation": "HQ",
+      "service": "OpenAPI",
+      "component": "openapi",
+      "category": "service",
+      "server": "DWServer"
+    }
+  }
+] 

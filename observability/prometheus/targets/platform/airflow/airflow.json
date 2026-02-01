@@ -1,0 +1,126 @@
+[
+    { 
+      "targets": ["203.228.107.184:9102"], 
+      "labels": { 
+        "corporation": "HQ", 
+        "service": "airflow", 
+        "component": "airflow",
+        "category": "platform",
+        "server": "DWServer"
+      } 
+    },
+    { 
+      "targets": ["203.228.107.184:9121"], 
+      "labels": { 
+        "corporation": "HQ", 
+        "service": "airflow", 
+        "component": "redis",
+        "category": "platform",
+        "server": "DWServer"
+      } 
+    },
+    { 
+        "targets": ["203.228.107.184:9188"], 
+        "labels": { 
+          "corporation": "HQ", 
+          "service": "airflow", 
+          "component": "postgresql",
+          "category": "platform",
+          "server": "DWServer"
+        } 
+      },
+
+      {
+        "targets": ["10.10.18.177:9102"],
+        "labels": {
+          "corporation": "JJ",
+          "service": "airflow",
+          "component": "airflow",
+          "category": "platform",
+          "server": "DataCollector"
+        }
+      },
+      {
+        "targets": ["10.10.18.177:9121"],
+        "labels": {
+          "corporation": "JJ",
+          "service": "airflow",
+          "component": "redis",
+          "category": "platform",
+          "server": "DataCollector"
+        }
+      },
+      {
+        "targets": ["10.10.18.177:9187"],
+        "labels": {
+          "corporation": "JJ",
+          "service": "airflow",
+          "component": "postgresql",
+          "category": "platform",
+          "server": "DataCollector"
+        }
+      },
+
+
+      {
+        "targets": ["10.10.49.197:9102"],
+        "labels": {
+          "corporation": "CKP",
+          "service": "airflow",
+          "component": "airflow",
+          "category": "platform",
+          "server": "DataCollector"
+        }
+      },
+      {
+        "targets": ["10.10.49.197:9121"],
+        "labels": {
+          "corporation": "CKP",
+          "service": "airflow",
+          "component": "redis",
+          "category": "platform",
+          "server": "DataCollector"
+        }
+      },
+      {
+        "targets": ["10.10.49.197:9187"],
+        "labels": {
+          "corporation": "CKP",
+          "service": "airflow",
+          "component": "postgresql",
+          "category": "platform",
+          "server": "DataCollector"
+        }
+      },
+
+      {
+        "targets": ["20.20.17.69:9102"],
+        "labels": {
+          "corporation": "JJ2",
+          "service": "airflow",
+          "component": "airflow",
+          "category": "platform",
+          "server": "DataCollector"
+        }
+      },
+      {
+        "targets": ["20.20.17.69:9121"],
+        "labels": {
+          "corporation": "JJ2",
+          "service": "airflow",
+          "component": "redis",
+          "category": "platform",
+          "server": "DataCollector"
+        }
+      },
+      {
+        "targets": ["20.20.17.69:9187"],
+        "labels": {
+          "corporation": "JJ2",
+          "service": "airflow",
+          "component": "postgresql",
+          "category": "platform",
+          "server": "DataCollector"
+        }
+      }
+  ] 

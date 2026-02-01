@@ -1,0 +1,22 @@
+[
+    {
+      "targets": ["10.10.18.233:9104"],
+      "labels": {
+        "corporation": "JJ",
+        "service": "MariaDB",
+        "component": "mysqld_exporter",
+        "category": "platform",
+        "server": "Banbury#1"
+      }
+    },
+    {
+      "targets": ["10.10.18.106:9104"],
+      "labels": {
+        "corporation": "JJ",
+        "service": "MariaDB",
+        "component": "mysqld_exporter",
+        "category": "platform",
+        "server": "Banbury#3"
+      }
+    }
+  ] 

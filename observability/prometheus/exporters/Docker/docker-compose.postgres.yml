@@ -1,0 +1,31 @@
+services:
+  postgres-exporter:
+    image: prometheuscommunity/postgres-exporter:latest
+    container_name: postgres-exporter
+    restart: always
+    ports:
+      - "9187:9187"
+    environment:
+      - DATA_SOURCE_NAME=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=disable
+      - PG_EXPORTER_EXTEND_QUERY_STATS=true
+      - PG_EXPORTER_DISABLE_DEFAULT_METRICS=false
+      - PG_EXPORTER_DISABLE_SETTINGS_METRICS=false
+    command:
+      - '--extend.query-path=/etc/postgres_exporter/queries.yaml'
+      - '--log.level=info'
+      - '--web.listen-address=:9187'
+      - '--web.telemetry-path=/metrics'
+    volumes:
+      - ./queries.yaml:/etc/postgres_exporter/queries.yaml:ro
+    networks:
+      - prometheus-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider -q http://localhost:9187/metrics || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+networks:
+  prometheus-network:
+    external: true

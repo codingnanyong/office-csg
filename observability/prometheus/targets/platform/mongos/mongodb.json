@@ -1,0 +1,12 @@
+[
+  {
+    "targets": ["203.228.107.184:9216"],
+    "labels": {
+      "corporation": "HQ",
+      "service": "MongoDB",
+      "component": "mongodb",
+      "category": "platform",
+      "server": "DWServer"
+    }
+  }
+] 

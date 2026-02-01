@@ -1,0 +1,32 @@
+services:
+  influxdb-exporter:
+    image: prom/influxdb-exporter:latest
+    container_name: influxdb-exporter
+    restart: always
+    ports:
+      - "9122:9122"
+    environment:
+      - INFLUXDB_URL=${INFLUXDB_URL}
+      - INFLUXDB_USERNAME=${INFLUXDB_USERNAME}
+      - INFLUXDB_PASSWORD=${INFLUXDB_PASSWORD}
+      - INFLUXDB_DATABASE=${INFLUXDB_DATABASE}
+    command:
+      - '--influxdb.url=${INFLUXDB_URL}'
+      - '--influxdb.username=${INFLUXDB_USERNAME}'
+      - '--influxdb.password=${INFLUXDB_PASSWORD}'
+      - '--influxdb.database=${INFLUXDB_DATABASE}'
+      - '--web.listen-address=:9122'
+      - '--web.telemetry-path=/metrics'
+      - '--log.level=info'
+    networks:
+      - prometheus-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider -q http://localhost:9122/metrics || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+networks:
+  prometheus-network:
+    external: true

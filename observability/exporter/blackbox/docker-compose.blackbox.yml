@@ -1,0 +1,17 @@
+services:
+    # Blackbox Exporter
+  blackbox-exporter:
+    image: prom/blackbox-exporter:latest
+    container_name: blackbox-exporter
+    network_mode: host
+    volumes:
+      - ./blackbox.yml:/etc/blackbox_exporter/config.yml:ro
+    command:
+      - '--config.file=/etc/blackbox_exporter/config.yml'
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider -q http://localhost:9115/metrics || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
