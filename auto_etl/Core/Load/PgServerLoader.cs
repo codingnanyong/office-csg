@@ -62,8 +62,7 @@ namespace CSG.MI.AutoETL.Core.Load
 					columns = reader.ReadLine();
 				}
 
-				// HQ FDW Information
-				var connString = $"Server={AppConfig.FdwServer};Port={AppConfig.FdwPort};Database={factory};User Id={AppConfig.FdwId};Password={AppConfig.FdwPwd};";
+				//DB Connection
 
 				using (var conn = new NpgsqlConnection(connString))
 				{
